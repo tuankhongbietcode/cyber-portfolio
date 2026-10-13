@@ -6,7 +6,7 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function initAsciiPortrait(){
   const portrait=$('#asciiPortrait');
   if(!portrait)return;
-  const pctx=portrait.getContext('2d',{alpha:false});
+  const pctx=portrait.getContext('2d',{alpha:true});
   const source=new Image();
   source.decoding='async';
   source.src=portrait.dataset.src;
@@ -16,6 +16,14 @@ function initAsciiPortrait(){
     const bctx=buffer.getContext('2d',{willReadFrequently:true});
     bctx.drawImage(source,0,0,width,height);
     const pixels=bctx.getImageData(0,0,width,height).data;
+    const underlay=document.createElement('canvas');underlay.width=width;underlay.height=height;
+    const uctx=underlay.getContext('2d'),underData=uctx.createImageData(width,height);
+    for(let i=0;i<pixels.length;i+=4){
+      const light=.2126*pixels[i]+.7152*pixels[i+1]+.0722*pixels[i+2];
+      if(light<22)continue;
+      underData.data[i]=224;underData.data[i+1]=205;underData.data[i+2]=165;underData.data[i+3]=Math.min(145,light*.72);
+    }
+    uctx.putImageData(underData,0,0);
     const glyphs='.:;i1tfLCG08@',points=[];
     for(let y=3;y<height;y+=step){
       for(let x=3;x<width;x+=step){
@@ -24,8 +32,8 @@ function initAsciiPortrait(){
         if(a<20||light<22)continue;
         const char=glyphs[Math.min(glyphs.length-1,Math.floor(light/256*glyphs.length))];
         const angle=Math.random()*Math.PI*2,spread=reduced?0:35+Math.random()*75;
-        const opacity=Math.min(1,.28+light/190);
-        points.push({baseX:x,baseY:y,x:x+Math.cos(angle)*spread,y:y+Math.sin(angle)*spread,vx:0,vy:0,char,color:`rgba(212,190,152,${opacity})`});
+        const opacity=Math.min(1,.45+light/320);
+        points.push({baseX:x,baseY:y,x:x+Math.cos(angle)*spread,y:y+Math.sin(angle)*spread,vx:0,vy:0,char,color:`rgba(224,205,165,${opacity})`});
       }
     }
     const pointer={x:-9999,y:-9999,active:false};
@@ -36,8 +44,9 @@ function initAsciiPortrait(){
     portrait.addEventListener('pointerup',()=>pointer.active=false);
     portrait.addEventListener('pointercancel',()=>pointer.active=false);
     const draw=()=>{
-      pctx.fillStyle='#080b0c';pctx.fillRect(0,0,width,height);
-      pctx.font='5px "Cascadia Code",Consolas,monospace';pctx.textAlign='center';pctx.textBaseline='middle';
+      pctx.clearRect(0,0,width,height);
+      pctx.globalAlpha=.58;pctx.drawImage(underlay,0,0);pctx.globalAlpha=1;
+      pctx.font='5px "Cascadia Code",Consolas,monospace';pctx.textAlign='center';pctx.textBaseline='middle';pctx.shadowColor='rgba(212,190,152,.16)';pctx.shadowBlur=.8;
       const radius=innerWidth>768?48:70;
       for(const point of points){
         if(!reduced&&pointer.active){
