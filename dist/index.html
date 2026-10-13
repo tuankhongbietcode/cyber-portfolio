@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#06090d">
+  <meta name="description" content="Portfolio offensive security theo định hướng CPTS — methodology, lab notes và báo cáo kỹ thuật.">
+  <title>CPTS // Offensive Security Portfolio</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="matrix" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot__inner">
+      <p class="boot__label">INITIALIZING SECURE SESSION</p>
+      <div class="boot__track"><i></i></div>
+      <p class="boot__status">loading methodology<span class="blink">_</span></p>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Trang đầu">
+      <span class="brand__mark">//</span>
+      <span>CPTS.PATH</span>
+    </a>
+    <nav aria-label="Điều hướng chính">
+      <a href="#method">Method</a>
+      <a href="#labs">Labs</a>
+      <a href="#arsenal">Arsenal</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="status"><i></i> AVAILABLE TO LEARN</div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-grid">
+      <div class="hero__copy reveal">
+        <p class="eyebrow"><span>01</span> OFFENSIVE SECURITY PORTFOLIO</p>
+        <h1>I map the<br><span class="glitch" data-text="attack path.">attack path.</span></h1>
+        <p class="hero__lead">Một portfolio theo định hướng <strong>CPTS</strong>: enumeration có hệ thống, khai thác có kiểm soát, bằng chứng rõ ràng và báo cáo có thể hành động.</p>
+        <div class="hero__actions">
+          <a class="button magnetic" href="#labs"><span>EXPLORE LABS</span><b>↘</b></a>
+          <a class="text-link" href="#terminal">OPEN TERMINAL <span>⌁</span></a>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal" aria-label="Bản đồ tấn công minh hoạ">
+        <div class="radar">
+          <div class="radar__rings"></div>
+          <div class="radar__sweep"></div>
+          <i class="node node--1"><span>ENUM</span></i>
+          <i class="node node--2"><span>FOOTHOLD</span></i>
+          <i class="node node--3"><span>PRIVESC</span></i>
+          <i class="node node--4"><span>REPORT</span></i>
+          <div class="radar__core"><span>CPTS</span><small>TRACK</small></div>
+        </div>
+        <div class="telemetry telemetry--a"><small>SCOPE</small><strong>LAB_ONLY</strong></div>
+        <div class="telemetry telemetry--b"><small>MODE</small><strong>METHODICAL</strong></div>
+      </div>
+
+      <aside class="hero__meta reveal">
+        <div><span>FOCUS</span><strong>Penetration Testing</strong></div>
+        <div><span>FRAMEWORK</span><strong>CPTS Methodology</strong></div>
+        <div><span>PRINCIPLE</span><strong>Evidence &gt; Assumptions</strong></div>
+      </aside>
+      <div class="scroll-cue" aria-hidden="true"><span>SCROLL TO TRACE</span><i></i></div>
+    </section>
+
+    <section class="marquee" aria-hidden="true">
+      <div>ENUMERATION <i>◆</i> WEB EXPLOITATION <i>◆</i> ACTIVE DIRECTORY <i>◆</i> PIVOTING <i>◆</i> PRIVILEGE ESCALATION <i>◆</i> REPORTING <i>◆</i>&nbsp;</div>
+      <div>ENUMERATION <i>◆</i> WEB EXPLOITATION <i>◆</i> ACTIVE DIRECTORY <i>◆</i> PIVOTING <i>◆</i> PRIVILEGE ESCALATION <i>◆</i> REPORTING <i>◆</i>&nbsp;</div>
+    </section>
+
+    <section class="method section-pad" id="method">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span>02</span> OPERATING METHOD</p>
+        <h2>Không đoán.<br><em>Đi theo bằng chứng.</em></h2>
+        <p>Mỗi bước tạo ra tín hiệu cho bước kế tiếp. Phạm vi, bằng chứng và khả năng tái hiện luôn được giữ xuyên suốt quá trình kiểm thử.</p>
+      </header>
+
+      <div class="method__rail">
+        <article class="method-card reveal" data-index="01">
+          <div class="method-card__icon">⌖</div>
+          <small>DISCOVERY</small>
+          <h3>Recon &amp; Enumeration</h3>
+          <p>Xác định bề mặt tấn công, dịch vụ, danh tính và giả thuyết — không bỏ qua những chi tiết nhỏ.</p>
+          <ul><li>Host &amp; service mapping</li><li>Web content discovery</li><li>Identity enumeration</li></ul>
+        </article>
+        <article class="method-card reveal" data-index="02">
+          <div class="method-card__icon">◉</div>
+          <small>ACCESS</small>
+          <h3>Foothold &amp; Exploitation</h3>
+          <p>Kiểm chứng đường vào trong lab được cho phép, ghi lại payload, điều kiện và tác động.</p>
+          <ul><li>Vulnerability validation</li><li>Controlled exploitation</li><li>Evidence capture</li></ul>
+        </article>
+        <article class="method-card reveal" data-index="03">
+          <div class="method-card__icon">⌁</div>
+          <small>DEPTH</small>
+          <h3>Post-Exploitation</h3>
+          <p>Mở rộng ngữ cảnh sau foothold: quyền hạn, credential, pivot và attack path trong mạng nội bộ.</p>
+          <ul><li>Privilege escalation</li><li>Pivoting &amp; tunnelling</li><li>AD attack paths</li></ul>
+        </article>
+        <article class="method-card reveal" data-index="04">
+          <div class="method-card__icon">▤</div>
+          <small>DELIVERY</small>
+          <h3>Reporting</h3>
+          <p>Chuyển kỹ thuật thành câu chuyện rủi ro: tái hiện được, ưu tiên được và có hướng khắc phục.</p>
+          <ul><li>Reproducible steps</li><li>Impact &amp; root cause</li><li>Actionable remediation</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="labs section-pad" id="labs">
+      <header class="section-head section-head--row reveal">
+        <div>
+          <p class="eyebrow"><span>03</span> SELECTED LAB WORK</p>
+          <h2>Case files<span class="acid">_</span></h2>
+        </div>
+        <p>Các thẻ bên dưới là khung nội dung mẫu. Thay bằng lab thật, giữ lại scope và làm mờ mọi dữ liệu nhạy cảm trước khi công khai.</p>
+      </header>
+
+      <div class="case-list">
+        <article class="case reveal">
+          <div class="case__num">CASE<br>001</div>
+          <div class="case__body">
+            <div class="case__tags"><span>ACTIVE DIRECTORY</span><span>LAB TEMPLATE</span></div>
+            <h3>From exposed service to domain compromise</h3>
+            <p>Minh hoạ chuỗi tấn công: enumeration → initial access → credential path → privilege escalation.</p>
+          </div>
+          <div class="case__metric"><small>ATTACK CHAIN</small><strong>04<span>steps</span></strong></div>
+          <button class="case__open" type="button" data-case="0" aria-label="Mở case study 1">↗</button>
+        </article>
+        <article class="case reveal">
+          <div class="case__num">CASE<br>002</div>
+          <div class="case__body">
+            <div class="case__tags"><span>WEB</span><span>LAB TEMPLATE</span></div>
+            <h3>Turning a web flaw into a stable foothold</h3>
+            <p>Minh hoạ cách xác nhận lỗ hổng, giới hạn tác động và thu thập bằng chứng cho báo cáo.</p>
+          </div>
+          <div class="case__metric"><small>FINDINGS</small><strong>03<span>linked</span></strong></div>
+          <button class="case__open" type="button" data-case="1" aria-label="Mở case study 2">↗</button>
+        </article>
+        <article class="case reveal">
+          <div class="case__num">CASE<br>003</div>
+          <div class="case__body">
+            <div class="case__tags"><span>PIVOTING</span><span>LAB TEMPLATE</span></div>
+            <h3>Mapping an internal network through a pivot</h3>
+            <p>Minh hoạ tunnel, route validation và khám phá dịch vụ nội bộ mà không làm mất dấu bằng chứng.</p>
+          </div>
+          <div class="case__metric"><small>NETWORKS</small><strong>02<span>zones</span></strong></div>
+          <button class="case__open" type="button" data-case="2" aria-label="Mở case study 3">↗</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="arsenal section-pad" id="arsenal">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span>04</span> WORKING ARSENAL</p>
+        <h2>Tools are secondary.<br><em>Thinking is the skill.</em></h2>
+      </header>
+      <div class="arsenal__grid reveal">
+        <div class="skill-map" role="list">
+          <button class="skill active" data-skill="recon" type="button"><span>01</span> Enumeration</button>
+          <button class="skill" data-skill="web" type="button"><span>02</span> Web Testing</button>
+          <button class="skill" data-skill="ad" type="button"><span>03</span> Active Directory</button>
+          <button class="skill" data-skill="linux" type="button"><span>04</span> Linux / Windows</button>
+          <button class="skill" data-skill="report" type="button"><span>05</span> Reporting</button>
+        </div>
+        <div class="skill-display" id="skillDisplay" aria-live="polite">
+          <p class="skill-display__path">~/arsenal/<span>enumeration</span></p>
+          <h3>Build the map before choosing the path.</h3>
+          <p>Service discovery, banner analysis, content enumeration và liên kết từng tín hiệu thành giả thuyết có thể kiểm chứng.</p>
+          <div class="chips"><span>Nmap</span><span>ffuf</span><span>NetExec</span><span>BloodHound</span><span>Burp Suite</span></div>
+          <div class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="terminal-wrap section-pad" id="terminal">
+      <div class="terminal-copy reveal">
+        <p class="eyebrow"><span>05</span> INTERACTIVE SHELL</p>
+        <h2>Query the operator.</h2>
+        <p>Thử các lệnh <code>help</code>, <code>about</code>, <code>method</code>, <code>labs</code>, <code>ethics</code> hoặc <code>contact</code>.</p>
+      </div>
+      <div class="terminal reveal" role="application" aria-label="Terminal portfolio tương tác">
+        <div class="terminal__bar"><span></span><span></span><span></span><b>guest@cpts-path:~</b></div>
+        <div class="terminal__screen" id="terminalOutput" aria-live="polite">
+          <p><span class="muted">[secure-session]</span> Portfolio shell v1.0</p>
+          <p>Type <strong>help</strong> to inspect available commands.</p>
+        </div>
+        <form class="terminal__form" id="terminalForm">
+          <label for="terminalInput">guest@cpts-path:~$</label>
+          <input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Nhập lệnh terminal">
+        </form>
+      </div>
+    </section>
+
+    <section class="ethics section-pad reveal">
+      <p class="eyebrow"><span>06</span> RULES OF ENGAGEMENT</p>
+      <blockquote>“Chỉ kiểm thử khi có <span>phạm vi rõ ràng</span>, quyền cho phép rõ ràng và mục tiêu giảm rủi ro.”</blockquote>
+      <div class="ethics__line"><span>AUTHORIZED LABS</span><span>RESPONSIBLE DISCLOSURE</span><span>NO UNVERIFIED CLAIMS</span></div>
+    </section>
+
+    <section class="contact section-pad" id="contact">
+      <div class="contact__orb" aria-hidden="true"><i></i><i></i><span>@</span></div>
+      <div class="contact__copy reveal">
+        <p class="eyebrow"><span>07</span> ESTABLISH CONNECTION</p>
+        <h2>Let’s exchange<br><em>signals.</em></h2>
+        <p>Đang học theo lộ trình CPTS và mở với cơ hội lab collaboration, internship hoặc trao đổi về offensive security.</p>
+        <a class="button magnetic" href="mailto:your.email@example.com"><span>YOUR.EMAIL@EXAMPLE.COM</span><b>↗</b></a>
+      </div>
+      <footer>
+        <p>© <span id="year"></span> YOUR NAME // CPTS PATH</p>
+        <div><a href="#">GITHUB</a><a href="#">LINKEDIN</a><a href="#top">BACK TO TOP ↑</a></div>
+      </footer>
+    </section>
+  </main>
+
+  <dialog class="case-modal" id="caseModal">
+    <button class="case-modal__close" type="button" aria-label="Đóng">×</button>
+    <p class="eyebrow"><span>CASE FILE</span> LAB TEMPLATE</p>
+    <h2 id="modalTitle">Case study</h2>
+    <p id="modalBody"></p>
+    <div class="modal-flow" id="modalFlow"></div>
+    <p class="modal-note">PLACEHOLDER // Hãy thay bằng bằng chứng từ lab thật trước khi xuất bản công khai.</p>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
