@@ -34,7 +34,7 @@ const commands={
   method:'01 enumerate → 02 validate → 03 exploit → 04 escalate/pivot → 05 report',
   labs:'Case files are templates. Replace them with sanitized, authorized lab write-ups.',
   ethics:'Authorization and scope come first. Evidence stays reproducible. Sensitive data stays private.',
-  contact:'your.email@example.com · github.com/yourhandle · linkedin.com/in/yourhandle'
+  contact:'Võ Lê Anh Tuấn · anhtuanpm3939@gmail.com · CPTS path / no certification claims'
 };
 $('#terminalForm').addEventListener('submit',e=>{e.preventDefault();const raw=input.value.trim(),cmd=raw.toLowerCase();if(!raw)return;output.insertAdjacentHTML('beforeend',`<p><span class="success">guest@cpts-path:~$</span> ${escapeHtml(raw)}</p>`);if(cmd==='clear')output.innerHTML='';else if(commands[cmd])output.insertAdjacentHTML('beforeend',`<p>${commands[cmd]}</p>`);else output.insertAdjacentHTML('beforeend',`<p class="error">command not found: ${escapeHtml(cmd)} — try help</p>`);input.value='';output.scrollTop=output.scrollHeight});
 function escapeHtml(v){const d=document.createElement('div');d.textContent=v;return d.innerHTML}
