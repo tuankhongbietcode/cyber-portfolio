@@ -21,18 +21,18 @@ const data={
 $$('.skill').forEach(btn=>btn.addEventListener('click',()=>{ $$('.skill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const d=data[btn.dataset.skill],box=$('#skillDisplay');box.animate([{opacity:.25,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:280});$('.skill-display__path span',box).textContent=d.path;$('h3',box).textContent=d.title;$(':scope > p:not(.skill-display__path)',box).textContent=d.text;$('.chips',box).innerHTML=d.chips.map(x=>`<span>${x}</span>`).join('')}));
 
 const cases=[
-  {title:'From exposed service to domain compromise',body:'Khung write-up cho một lab Active Directory. Nội dung công khai nên tập trung vào tư duy, mối liên hệ giữa các bước và biện pháp khắc phục — không công bố flag hoặc credential còn hiệu lực.',flow:['ENUMERATE','FOOTHOLD','PRIVESC','REPORT']},
-  {title:'Turning a web flaw into a stable foothold',body:'Khung write-up cho một lab web. Làm rõ input, trust boundary, cách xác nhận lỗ hổng an toàn và bằng chứng cho tác động thực tế.',flow:['MAP','VALIDATE','CONTROL','REMEDIATE']},
-  {title:'Mapping an internal network through a pivot',body:'Khung write-up cho lab pivoting. Mô tả topology, route, tunnel và kiểm tra kết nối theo cách người đọc có thể tái hiện trong môi trường được phép.',flow:['DISCOVER','TUNNEL','ROUTE','VERIFY']}
+  {title:'Distributed Splunk & multi-source log onboarding',body:'Dựng lab Splunk Enterprise phân tán với Deployment Server và Universal Forwarders; onboard Windows Event, Sysmon, Linux, web application và firewall/syslog; kiểm tra ingestion, field extraction, dashboard, report và alert.',flow:['COLLECT','PARSE','NORMALIZE','VALIDATE']},
+  {title:'Virtual lab infrastructure operations',body:'Vận hành VMware ESXi và EVE-NG/UnetLab phục vụ đào tạo kỹ thuật; hỗ trợ lab routing, switching, firewall, VPN, wireless và Cisco ISE, đồng thời duy trì tài liệu và backup.',flow:['PROVISION','MONITOR','RESTORE','DOCUMENT']},
+  {title:'Offensive security case files',body:'Khu vực dành cho write-up CPTS trong tương lai. Chỉ đưa lên các lab được phép, đã làm sạch flag, credential và dữ liệu nhạy cảm; tập trung vào methodology và remediation.',flow:['ENUMERATE','FOOTHOLD','PRIVESC','REPORT']}
 ];
 const modal=$('#caseModal');$$('.case__open').forEach(b=>b.addEventListener('click',()=>{const d=cases[+b.dataset.case];$('#modalTitle').textContent=d.title;$('#modalBody').textContent=d.body;$('#modalFlow').innerHTML=d.flow.map(x=>`<span>${x}</span>`).join('');modal.showModal()}));$('.case-modal__close').addEventListener('click',()=>modal.close());modal.addEventListener('click',e=>{if(e.target===modal)modal.close()});
 
 const output=$('#terminalOutput'),input=$('#terminalInput');
 const commands={
   help:'AVAILABLE: about · method · labs · ethics · contact · clear',
-  about:'CPTS-focused learner building practical penetration-testing methodology through authorized labs.',
+  about:'Võ Lê Anh Tuấn · Cybersecurity student at Swinburne · IT Intern at Got It · former Security Consultant Intern at VNCS.',
   method:'01 enumerate → 02 validate → 03 exploit → 04 escalate/pivot → 05 report',
-  labs:'Case files are templates. Replace them with sanitized, authorized lab write-ups.',
+  labs:'Verified work: distributed Splunk lab + virtual lab operations. CPTS offensive case files are currently in progress.',
   ethics:'Authorization and scope come first. Evidence stays reproducible. Sensitive data stays private.',
   contact:'Võ Lê Anh Tuấn · anhtuanpm3939@gmail.com · CPTS path / no certification claims'
 };
