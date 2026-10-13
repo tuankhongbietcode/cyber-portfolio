@@ -3,6 +3,57 @@ window.addEventListener('load',()=>setTimeout(()=>$('#boot').classList.add('done
 $('#year').textContent=new Date().getFullYear();
 
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function initAsciiPortrait(){
+  const portrait=$('#asciiPortrait');
+  if(!portrait)return;
+  const pctx=portrait.getContext('2d',{alpha:false});
+  const source=new Image();
+  source.decoding='async';
+  source.src=portrait.dataset.src;
+  source.onload=()=>{
+    const width=portrait.width,height=portrait.height,step=4;
+    const buffer=document.createElement('canvas');buffer.width=width;buffer.height=height;
+    const bctx=buffer.getContext('2d',{willReadFrequently:true});
+    bctx.drawImage(source,0,0,width,height);
+    const pixels=bctx.getImageData(0,0,width,height).data;
+    const glyphs='.:;i1tfLCG08@',points=[];
+    for(let y=3;y<height;y+=step){
+      for(let x=3;x<width;x+=step){
+        const i=(y*width+x)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2],a=pixels[i+3];
+        const light=.2126*r+.7152*g+.0722*b;
+        if(a<20||light<22)continue;
+        const char=glyphs[Math.min(glyphs.length-1,Math.floor(light/256*glyphs.length))];
+        const angle=Math.random()*Math.PI*2,spread=reduced?0:35+Math.random()*75;
+        const opacity=Math.min(1,.28+light/190);
+        points.push({baseX:x,baseY:y,x:x+Math.cos(angle)*spread,y:y+Math.sin(angle)*spread,vx:0,vy:0,char,color:`rgba(212,190,152,${opacity})`});
+      }
+    }
+    const pointer={x:-9999,y:-9999,active:false};
+    const locate=e=>{const box=portrait.getBoundingClientRect();pointer.x=(e.clientX-box.left)*width/box.width;pointer.y=(e.clientY-box.top)*height/box.height;pointer.active=true};
+    portrait.addEventListener('pointermove',locate);
+    portrait.addEventListener('pointerdown',e=>{portrait.setPointerCapture?.(e.pointerId);locate(e)});
+    portrait.addEventListener('pointerleave',()=>pointer.active=false);
+    portrait.addEventListener('pointerup',()=>pointer.active=false);
+    portrait.addEventListener('pointercancel',()=>pointer.active=false);
+    const draw=()=>{
+      pctx.fillStyle='#080b0c';pctx.fillRect(0,0,width,height);
+      pctx.font='5px "Cascadia Code",Consolas,monospace';pctx.textAlign='center';pctx.textBaseline='middle';
+      const radius=innerWidth>768?48:70;
+      for(const point of points){
+        if(!reduced&&pointer.active){
+          const dx=point.x-pointer.x,dy=point.y-pointer.y,distance=Math.hypot(dx,dy)||1;
+          if(distance<radius){const force=(radius-distance)/radius*2.4;point.vx+=dx/distance*force;point.vy+=dy/distance*force}
+        }
+        point.vx+=(point.baseX-point.x)*.035;point.vy+=(point.baseY-point.y)*.035;
+        point.vx*=.84;point.vy*=.84;point.x+=point.vx;point.y+=point.vy;
+        pctx.fillStyle=point.color;pctx.fillText(point.char,point.x,point.y);
+      }
+      requestAnimationFrame(draw);
+    };
+    draw();
+  };
+}
+initAsciiPortrait();
 const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.13});
 $$('.reveal').forEach(el=>observer.observe(el));
 
