@@ -427,7 +427,6 @@
     ['links', 'profiles elsewhere'],
     ['history', 'past commands'],
     ['theme', 'dark / light'],
-    ['music', 'ambient sound'],
     ['banner', 'print the banner'],
     ['clear', 'clear the screen'],
   ];
@@ -488,7 +487,7 @@
     print([
       { html: `<div class="nf"><pre class="nf__logo" aria-hidden="true">${logo}</pre><div class="nf__rows">${rows}</div></div>` },
       '',
-      { html: '<span class="t-dim">tip: </span><span class="t-accent">avatar</span><span class="t-dim"> · </span><span class="t-accent">cat about.txt</span><span class="t-dim"> · </span><span class="t-accent">ls projects</span><span class="t-dim"> · </span><span class="t-accent">open work</span><span class="t-dim"> · </span><span class="t-accent">music on</span>' },
+      { html: '<span class="t-dim">tip: </span><span class="t-accent">avatar</span><span class="t-dim"> · </span><span class="t-accent">cat about.txt</span><span class="t-dim"> · </span><span class="t-accent">ls projects</span><span class="t-dim"> · </span><span class="t-accent">open work</span>' },
     ]);
   }
 
@@ -628,7 +627,6 @@
       { html: '<span class="t-dim">currently   </span>Information Technology Intern @ Got It' },
       { html: '<span class="t-dim">studying    </span>BCS Cyber Security, Swinburne (2023–2027)' },
       { html: '<span class="t-dim">direction   </span>offensive security · CPTS track' },
-      { html: '<span class="t-dim">on repeat   </span>GIANTS — True Damage' },
       { html: '<span class="t-dim">rule        </span>no claim I cannot back with evidence' },
     ]);
   }
@@ -655,33 +653,6 @@
     }
     applyTheme(want);
     ok(`theme → ${want}`);
-  }
-
-  /* Drives the same engine as the topbar button (see audio.js) rather than a
-     second copy of it — one source of truth for what "playing" means. */
-  function cmdMusic(args) {
-    const sound = window.vlat273Sound;
-    if (!sound) { err('music: this browser has no Web Audio support'); return; }
-
-    const want = (args[0] || '').toLowerCase();
-    if (want === 'on' || want === 'play') {
-      if (sound.isOn()) { note('ambient is already on'); return; }
-      sound.on();
-      print([
-        { html: '<span class="t-accent">♪ ambient on</span> <span class="t-dim">— five detuned drone voices through a slow-swept lowpass, and bells picked from a pentatonic scale.</span>' },
-        { cls: 't-dim', text: 'synthesised in your browser. there is no audio file to download.' },
-      ]);
-      return;
-    }
-    if (want === 'off' || want === 'stop') {
-      if (!sound.isOn()) { note('ambient is already off'); return; }
-      sound.off();
-      note('♪ ambient off');
-      return;
-    }
-    if (want === 'toggle') { sound.toggle(); ok(`♪ ambient ${sound.isOn() ? 'on' : 'off'}`); return; }
-
-    note(`ambient is ${sound.isOn() ? 'on' : 'off'} · usage: music on | off | toggle`);
   }
 
   function cmdClear() { termOut.replaceChildren(); }
@@ -723,7 +694,6 @@
     links: cmdContact,
     history: cmdHistory,
     theme: cmdTheme,
-    music: cmdMusic,
     banner: () => { banner(); },
     clear: cmdClear,
     /* easter eggs */

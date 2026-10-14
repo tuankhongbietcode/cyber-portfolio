@@ -230,19 +230,6 @@ code, kbd, pre { font-family: var(--mono); }
 .iconbtn:hover { color: var(--text); border-color: var(--line); background: var(--bg-3); }
 .iconbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 
-/* Ambient toggle. Off is the default, so the waves sit dim rather than the
-   control looking like a broken mute button. */
-.iconbtn .snd-wave { opacity: .22; transition: opacity var(--t); }
-.iconbtn.is-on {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
-  background: var(--accent-2);
-}
-.iconbtn.is-on .snd-wave { opacity: 1; }
-.iconbtn.is-on .snd-wave--1 { animation: wave 2.6s ease-in-out infinite; }
-.iconbtn.is-on .snd-wave--2 { animation: wave 2.6s ease-in-out .4s infinite; }
-@keyframes wave { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
-
 .kbd-hint {
   display: flex;
   align-items: center;
@@ -1287,35 +1274,6 @@ a.contact__big:hover { background: var(--bg-3); padding-left: clamp(24px, 4vw, 4
 }
 .contact__arrow { color: var(--accent); font-size: 1.1rem; opacity: 0; transition: opacity var(--t), transform var(--t); }
 a.contact__big:hover .contact__arrow { opacity: 1; transform: translate(2px, -2px); }
-
-/* One personal line to close on. Deliberately a single item — a wall of taste
-   signals reads as padding, and this is not a music profile. */
-.onrepeat {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 14px;
-  margin-top: 30px;
-}
-.onrepeat__label {
-  font: 500 .62rem var(--mono);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-.onrepeat__track {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 9px;
-  color: var(--text);
-  font-size: .94rem;
-  font-weight: 500;
-  letter-spacing: -.01em;
-  transition: color var(--t-fast);
-}
-.onrepeat__track:hover { color: var(--accent); }
-.onrepeat__by { color: var(--mute); font-size: .82rem; font-weight: 400; letter-spacing: 0; }
-.onrepeat__arrow { color: var(--accent); font-size: .78rem; }
 
 .rules {
   margin-top: 22px;
