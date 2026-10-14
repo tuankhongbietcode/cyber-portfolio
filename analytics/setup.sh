@@ -2,7 +2,12 @@
 #
 # One-shot setup for the portfolio analytics Worker.
 #
-#   cd analytics
+# From PowerShell, call it with the full path to bash:
+#
+#   & "$env:USERPROFILE\.workbuddy-ai\binaries\PortableGit\versions\1.2.0\bin\bash.exe" setup.sh
+#
+# From any shell that already has bash on its PATH:
+#
 #   bash setup.sh
 #
 # It logs you in, creates the D1 database, applies the schema, sets a dashboard
@@ -13,7 +18,6 @@
 
 set -euo pipefail
 
-WR="npx --yes wrangler@latest"
 DB_NAME="portfolio-analytics"
 TOML="wrangler.toml"
 SITE_HTML="../dist/index.html"
@@ -24,21 +28,50 @@ ok()   { printf '\033[1;32m    %s\033[0m\n' "$1"; }
 warn() { printf '\033[1;33m    %s\033[0m\n' "$1"; }
 die()  { printf '\n\033[1;31mERROR: %s\033[0m\n' "$1" >&2; exit 1; }
 
-command -v node >/dev/null 2>&1 || die "Node is required. Install Node 18+ first."
 [ -f "$TOML" ]      || die "Run this from inside the analytics/ directory."
 [ -f "schema.sql" ] || die "schema.sql is missing."
 
-# ---------------------------------------------------------------- 1. login
+# ------------------------------------------------------------------ 0. tools
+#
+# node and npx are not guaranteed to be on the PATH of a shell you open by
+# hand: WorkBuddy ships its own copy under ~/.workbuddy-ai and only some
+# processes see it. Look on the PATH first, then fall back to that copy.
+
+say "0/6  Finding node and npx"
+
+NODE="$(command -v node 2>/dev/null || true)"
+NPX="$(command -v npx 2>/dev/null || true)"
+
+if [ -z "$NPX" ]; then
+  for cand in "$HOME"/.workbuddy-ai/binaries/node/versions/*/npx; do
+    if [ -x "$cand" ]; then
+      NPX="$cand"
+      NODE="${cand%/*}/node"
+      break
+    fi
+  done
+fi
+
+[ -n "$NPX" ] || die "Could not find npx. Install Node 18+ from https://nodejs.org and re-run."
+[ -n "$NODE" ] || NODE="${NPX%/*}/node"
+
+ok "node : $NODE"
+ok "npx  : $NPX"
+
+# Every wrangler call goes through the npx we resolved.
+wr() { "$NPX" --yes wrangler@latest "$@"; }
+
+# ------------------------------------------------------------------ 1. login
 
 say "1/6  Cloudflare login"
-if $WR whoami >/dev/null 2>&1; then
+if wr whoami >/dev/null 2>&1; then
   ok "Already logged in."
 else
   echo "    A browser window will open. Click Allow, then come back here."
-  $WR login
+  wr login
 fi
 
-# ------------------------------------------------------- 2. D1 database
+# --------------------------------------------------------------- 2. database
 
 say "2/6  D1 database"
 
@@ -48,7 +81,7 @@ if [ -n "$CURRENT_ID" ] && [ "$CURRENT_ID" != "$PLACEHOLDER" ]; then
   DB_ID="$CURRENT_ID"
   ok "wrangler.toml already points at $DB_ID — reusing it."
 else
-  OUT="$($WR d1 create "$DB_NAME" 2>&1 || true)"
+  OUT="$(wr d1 create "$DB_NAME" 2>&1 || true)"
   printf '%s\n' "$OUT"
 
   DB_ID="$(printf '%s' "$OUT" | grep -oE "database_id *= *\"[^\"]+\"" | head -1 | sed 's/.*"\(.*\)"/\1/' || true)"
@@ -63,7 +96,7 @@ else
 
   [ -n "$DB_ID" ] || die "No database_id, stopping."
 
-  node -e '
+  "$NODE" -e '
     const fs = require("fs");
     const p = process.argv[1], id = process.argv[2];
     let s = fs.readFileSync(p, "utf8");
@@ -74,32 +107,30 @@ else
   ok "Wrote database_id into $TOML."
 fi
 
-# -------------------------------------------------------------- 3. schema
+# ------------------------------------------------------------------ 3. schema
 
 say "3/6  Applying schema"
-$WR d1 execute "$DB_NAME" --remote --file=./schema.sql
+wr d1 execute "$DB_NAME" --remote --file=./schema.sql
 ok "Table and indexes are in place."
 
-# -------------------------------------------------------------- 4. token
+# ------------------------------------------------------------------- 4. token
 
 say "4/6  Dashboard token"
-if [ -n "${ROTATE_TOKEN:-}" ]; then
-  warn "ROTATE_TOKEN is set — generating a new token."
-fi
 
-if [ -n "${ROTATE_TOKEN:-}" ] || ! $WR secret list 2>/dev/null | grep -q "DASHBOARD_TOKEN"; then
-  TOKEN="$(node -e 'console.log(require("crypto").randomBytes(32).toString("hex"))')"
-  printf '%s' "$TOKEN" | $WR secret put DASHBOARD_TOKEN >/dev/null
+if [ -n "${ROTATE_TOKEN:-}" ] || ! wr secret list 2>/dev/null | grep -q "DASHBOARD_TOKEN"; then
+  [ -n "${ROTATE_TOKEN:-}" ] && warn "ROTATE_TOKEN is set — generating a new token."
+  TOKEN="$("$NODE" -e 'console.log(require("crypto").randomBytes(32).toString("hex"))')"
+  printf '%s' "$TOKEN" | wr secret put DASHBOARD_TOKEN >/dev/null
   ok "Generated and stored a new token."
 else
   TOKEN=""
   ok "DASHBOARD_TOKEN already exists — left untouched."
 fi
 
-# -------------------------------------------------------------- 5. deploy
+# ------------------------------------------------------------------- 5. deploy
 
 say "5/6  Deploying"
-OUT="$($WR deploy 2>&1 || true)"
+OUT="$(wr deploy 2>&1 || true)"
 printf '%s\n' "$OUT"
 
 WORKER_URL="$(printf '%s' "$OUT" | grep -oE 'https://[a-zA-Z0-9._-]+\.workers\.dev' | head -1 || true)"
@@ -107,7 +138,7 @@ WORKER_URL="$(printf '%s' "$OUT" | grep -oE 'https://[a-zA-Z0-9._-]+\.workers\.d
 
 ok "Worker is live at $WORKER_URL"
 
-# ------------------------------------------------------- 6. wire the site
+# --------------------------------------------------------------- 6. wire site
 
 say "6/6  Pointing the site at it"
 
@@ -115,7 +146,7 @@ if [ ! -f "$SITE_HTML" ]; then
   warn "$SITE_HTML not found — set ENDPOINT by hand:"
   warn "  $WORKER_URL/collect"
 else
-  node -e '
+  "$NODE" -e '
     const fs = require("fs");
     const p = process.argv[1], endpoint = process.argv[2];
     let s = fs.readFileSync(p, "utf8");
@@ -130,7 +161,7 @@ else
   ok "Set ENDPOINT in $SITE_HTML"
 fi
 
-# ------------------------------------------------------------- summary
+# -------------------------------------------------------------------- summary
 
 printf '\n\033[1;32m%s\033[0m\n' "================================================"
 printf '\033[1;32m  Done.\033[0m\n'
