@@ -13,14 +13,15 @@
 <meta name="theme-color" content="#0a0b0c" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
 
-<!-- Absolute URLs are derived from `location` by the inline script below, not
-     baked in: the hosting domain is not guaranteed to stay the same, and a
-     canonical tag pointing at a domain that no longer answers is worse than
-     none at all. The relative values here are the no-JS fallback. -->
-<link rel="canonical" href="./">
-<meta property="og:url" content="./">
-<meta property="og:image" content="og-image.png">
-<meta name="twitter:image" content="og-image.png">
+<!-- Absolute URLs are baked in because the crawlers that matter most for a
+     portfolio — LinkedIn, Slack, most chat unfurlers — do not run JavaScript,
+     so a relative og:image or canonical never resolves for them. The inline
+     script below re-derives these from `location`, so the values stay correct
+     if the site is ever served from a different host. -->
+<link rel="canonical" href="https://tuankhongbietcode.github.io/cyber-portfolio/">
+<meta property="og:url" content="https://tuankhongbietcode.github.io/cyber-portfolio/">
+<meta property="og:image" content="https://tuankhongbietcode.github.io/cyber-portfolio/og-image.png">
+<meta name="twitter:image" content="https://tuankhongbietcode.github.io/cyber-portfolio/og-image.png">
 
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
@@ -54,10 +55,9 @@
     window.__revealFailsafe = setTimeout(function () { root.classList.remove('js'); }, 3000);
   })();
 
-  /* The site can be served from more than one host, so the absolute URLs that
-     have to name it — canonical, og:url, the social preview image — are built
-     from the address actually being used. Baked-in domains go stale the moment
-     the site moves, and a canonical pointing at a dead host is worse than none. */
+  /* Re-derive the absolute URLs from the address actually being used, so the
+     baked-in GitHub Pages values in the head stay correct if the site is ever
+     served from another host. */
   (function () {
     var here = location.origin + location.pathname;
     var abs = function (p) { return new URL(p, here).href; };

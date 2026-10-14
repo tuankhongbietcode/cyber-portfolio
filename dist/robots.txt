@@ -1,6 +1,4 @@
-# Single-page site — served from a host that is not guaranteed to be stable,
-# so no absolute URL is recorded here.
+# Single-page site — every route resolves to the same URL, so there is nothing
+# for a sitemap to add.
 User-agent: *
 Allow: /
-
-# Single-page site — no sitemap needed.
