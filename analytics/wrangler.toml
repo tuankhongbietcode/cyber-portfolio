@@ -1,0 +1,23 @@
+#:schema node_modules/wrangler/config-schema.json
+
+name = "portfolio-analytics"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# The D1 database that stores the visits.
+# Create it first:  npx wrangler d1 create portfolio-analytics
+# Then paste the id that command prints into database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-analytics"
+database_id = "PASTE_YOUR_DATABASE_ID_HERE"
+
+[vars]
+# Only this origin may post beacons to /collect.
+ALLOWED_ORIGIN = "https://tuankhongbietcode.github.io"
+
+# Rows older than this are swept away. 0 disables the sweep.
+RETENTION_DAYS = "90"
+
+[observability]
+enabled = true

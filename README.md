@@ -14,6 +14,7 @@ step: everything in `dist/` is exactly what ships.
 | `dist/portrait-data.js` | Generated glyph grid, base64 |
 | `dist/fonts/` | Self-hosted JetBrains Mono and Inter subsets |
 | `writeups/` | CTF writeup plan and template |
+| `analytics/` | Self-hosted Cloudflare Worker that logs visits — never published, only `dist/` ships |
 | `.github/workflows/pages.yml` | Publishes `dist/` to GitHub Pages |
 
 ## Running it locally
@@ -71,57 +72,89 @@ so the page stays correct for browsers either way.
 
 ## Visitor analytics
 
-The site ships with **no analytics and no third-party requests**. Nothing loads
-until you opt in by pasting a website ID into `dist/index.html`.
+The site ships with **no analytics and no third-party requests**. Nothing is sent
+anywhere until you opt in by setting an endpoint in `dist/index.html`.
 
-### Turning it on
+There are two ways to switch it on. Pick one.
 
-1. Sign up at <https://cloud.umami.is/signup>. The **Hobby** plan is free —
-   100k events per month, one website, six months of history.
-2. **Add website** → any name, domain `tuankhongbietcode.github.io`.
-3. Copy the **website ID** (a UUID).
-4. Paste it into the analytics block near the bottom of `dist/index.html`:
+### Option A — self-hosted (own your data)
 
-   ```js
-   var WEBSITE_ID = ""; // ← paste the Umami website ID here to switch it on
-   ```
+A Cloudflare Worker in [`analytics/`](analytics/) receives the beacon and writes
+it into your own D1 database. You own the code, the database and the data, and
+the **raw visitor IP is stored**. Free tier, no analytics vendor in the path.
 
-5. Commit and push. The next deploy starts collecting.
+Full instructions live in [`analytics/README.md`](analytics/README.md). The
+short version:
 
-### What it records
+```bash
+cd analytics
+npx wrangler@latest login
+npx wrangler@latest d1 create portfolio-analytics   # paste the id into wrangler.toml
+npx wrangler@latest d1 execute portfolio-analytics --remote --file=./schema.sql
+npx wrangler@latest secret put DASHBOARD_TOKEN
+npx wrangler@latest deploy
+```
+
+Then point the page at it, in `dist/index.html`:
+
+```js
+var ENDPOINT = "https://portfolio-analytics.<your-subdomain>.workers.dev/collect";
+```
+
+### Option B — Umami (nothing to run)
+
+If you would rather not operate anything yourself, hosted Umami needs one line.
+The **Hobby** plan is free — 100k events per month, one website. Sign up at
+<https://cloud.umami.is/signup>, add `tuankhongbietcode.github.io` as a website,
+then replace the beacon block with:
+
+```html
+<script defer src="https://cloud.umami.is/script.js"
+        data-website-id="YOUR-WEBSITE-ID"
+        data-domains="tuankhongbietcode.github.io"
+        data-do-not-track="true"
+        data-exclude-hash="true"></script>
+```
+
+Umami sets no cookies and never stores the IP, so it needs no privacy notice —
+but you do not get the raw IP either, and the dashboard is theirs, not yours.
+
+### What you get either way
 
 | Question | Answer |
 | --- | --- |
 | When | Every pageview, timestamped — live view plus daily and monthly trends |
-| Where | Country → region → city, derived from the request IP and then discarded |
+| Where | Country → region → city, derived from the IP at the edge |
 | Device | Browser, operating system, device class, screen size, language |
 | Source | Referrer — which site, search engine or profile sent the visit |
+| Network | ASN and organisation — self-hosted only |
+| Raw IP | Self-hosted only |
 
-### What it cannot record
+### What neither can record
 
-**It cannot tell you who visited.** A website has no way to identify a person.
+**You cannot find out who visited.** A website has no way to identify a person.
 You get an IP-derived city — not a name, not an email, not an address. Everyone
-on a shared network (an office, a university, a VPN) looks like one visitor, and
-Umami does not store the IP at all, so it cannot be looked up afterwards either.
-Identifying a visitor requires a login, and this site deliberately has none.
+on a shared network (an office, a university, a VPN) looks like a single
+visitor. Identifying a visitor requires a login, and this site deliberately has
+none.
 
-### Why Umami
+The self-hosted option *does* store the IP, which is personal data under the
+GDPR and under Vietnam's Decree 13. See the Privacy section of
+[`analytics/README.md`](analytics/README.md): retention is configurable and
+defaults to 90 days, and dropping the IP column is a one-line change if you
+change your mind.
 
-- No cookies, no fingerprinting, no personal data — GDPR and CCPA compliant, and
-  no cookie banner is required.
-- `data-domains` keeps localhost and forks out of the statistics.
-- `data-do-not-track` honours the browser setting for visitors who opt out.
-- `data-exclude-hash` matters here specifically: the site navigates by
-  `#work`-style anchors, which would otherwise be logged as separate pages.
+### Notes
 
-**GoatCounter** is the lighter alternative if you would rather not use Umami —
-one script tag, free under 10k pageviews per month, but country-level location
-only. Replace the analytics block with:
-
-```html
-<script data-goatcounter="https://MYCODE.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script>
-```
+- Both options respect Do Not Track — the beacon checks `navigator.doNotTrack`
+  before sending.
+- The site navigates by `#work`-style anchors. Umami needs `data-exclude-hash`
+  or a section jump is counted as a new page; the self-hosted beacon sends
+  `location.pathname` only, so it is unaffected.
+- The beacon uses `text/plain` so it stays a CORS *simple request* — one
+  request, no preflight.
+- Ad blockers stop roughly a third of real visitors from being counted at all.
+  That is normal and applies to every analytics tool, including this one.
 
 ## Notes
 
