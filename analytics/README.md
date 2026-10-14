@@ -50,6 +50,27 @@ count as bots.
 
 You need a Cloudflare account (the free one is enough) and Node installed.
 
+### The short way
+
+```bash
+cd analytics
+bash setup.sh
+```
+
+That logs you in, creates the database, applies the schema, generates and stores
+a dashboard token, deploys the Worker, and writes the endpoint into
+`../dist/index.html` for you.
+
+**Save the token it prints at the end.** It goes into a Worker secret and cannot
+be read back afterwards — if you lose it, set a new one.
+
+Re-running is safe: it reuses an existing `database_id` and leaves the token
+alone. To force a fresh token, run `ROTATE_TOKEN=1 bash setup.sh`.
+
+### The manual way
+
+If you would rather run each step yourself:
+
 ```bash
 cd analytics
 
@@ -160,7 +181,9 @@ npm test
 | `src/index.js` | The whole Worker: ingest, auth, queries, dashboard |
 | `schema.sql` | D1 table and indexes |
 | `wrangler.toml` | Worker name, D1 binding, allowed origin, retention |
+| `setup.sh` | One-shot deploy: login, database, schema, token, deploy, wire the site |
 | `test/helpers.test.mjs` | Unit tests for the pure helpers |
+| `test/worker.test.mjs` | Integration tests against a stubbed D1 binding |
 
 ## Design notes
 
