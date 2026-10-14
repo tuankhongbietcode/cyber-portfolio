@@ -14,6 +14,11 @@
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
 
+  /* The translation table lives in i18n.js, which is loaded before this file,
+     so window.t already exists by the time this runs. The fallback keeps the
+     shell usable if i18n.js is ever missing. */
+  const t = (s) => (typeof window.t === 'function' ? window.t(s) : String(s ?? ''));
+
   /* ═══════════════════════════════════════════════════════════════════════
      1 · Theme
      ═══════════════════════════════════════════════════════════════════════ */
@@ -110,7 +115,10 @@
   const dir = (children) => ({ type: 'dir', children });
   const file = (lines) => ({ type: 'file', lines: Array.isArray(lines) ? lines : [lines] });
 
-  const FS = dir({
+  /* English is the source of truth for the filesystem. The rendered tree is
+     derived from it and cached against the current language, so `cat` and
+     `tree` stay cheap while still picking up a language switch. */
+  const FS_EN = dir({
     'about.txt': file([
       'Võ Lê Anh Tuấn  ·  also written Anh Tuan Vo',
       'Cybersecurity student  ·  IT intern',
@@ -300,6 +308,27 @@
     }),
   });
 
+  let fsCache = null;
+  let fsLang = null;
+
+  /* Re-derive the tree in the active language. Only the file *contents* move —
+     the names stay English, because they are what `cat` and `ls` are typed
+     against, and because a Vietnamese filename in a shell prompt would be a
+     lie about what the command actually matches. */
+  function fs() {
+    const lang = window.i18n ? window.i18n.lang() : 'en';
+    if (!fsCache || fsLang !== lang) {
+      fsLang = lang;
+      fsCache = (function map(node) {
+        if (node.type === 'file') return file(node.lines.map(t));
+        const out = {};
+        for (const name in node.children) out[name] = map(node.children[name]);
+        return dir(out);
+      })(FS_EN);
+    }
+    return fsCache;
+  }
+
   const splitPath = (p) => p.split('/').filter((s) => s && s !== '.');
 
   function resolve(input) {
@@ -312,7 +341,7 @@
       else segs.push(part);
     }
 
-    let node = FS;
+    let node = fs();
     for (const seg of segs) {
       if (node.type !== 'dir' || !node.children[seg]) {
         return { ok: false, missing: seg, path: segs };
@@ -350,7 +379,7 @@
   if (!term || !termOut || !termInput) return; // page still works without the shell
 
   const MAX_LINES = 320;
-  const state = { cwd: [], history: [], hi: -1, draft: '', intro: false };
+  const state = { cwd: [], history: [], hi: -1, draft: '', intro: false, typed: false };
 
   /* ── Output helpers ──────────────────────────────────────────────────── */
   function push(entry) {
@@ -392,14 +421,17 @@
   function note(msg) { print([{ cls: 't-dim', text: msg }]); }
 
   /* ── Content blocks ──────────────────────────────────────────────────── */
-  /* Padding is computed, so the box-drawing frame always lines up. */
+  /* Padding is computed from the widest row, so a translation longer than the
+     English source still lines the frame up instead of shearing it. */
   function banner() {
-    const W = 30;
     const rows = [
       ['VÕ LÊ ANH TUẤN', 't-head'],
-      ['cybersecurity · HCMC', 't-dim'],
-      ['type `help` to begin', 't-dim'],
+      [t('cybersecurity · HCMC'), 't-dim'],
+      [t('type `help` to begin'), 't-dim'],
     ];
+    /* Widest row plus two, floored at the English width — a translation longer
+       than the source still lines the frame up instead of shearing it. */
+    const W = Math.max(30, ...rows.map(([text]) => text.length + 2));
     const out = [{ html: `<span class="t-accent">╭${'─'.repeat(W)}╮</span>` }];
     rows.forEach(([text, cls]) => {
       out.push({
@@ -432,7 +464,7 @@
   ];
 
   const helpHtml = () => `<div class="help">${
-    HELP.map(([c, d]) => `<div><code>${c}</code><span>${d}</span></div>`).join('')
+    HELP.map(([c, d]) => `<div><code>${c}</code><span>${t(d)}</span></div>`).join('')
   }</div>`;
 
   function showHelp(arg) {
@@ -440,15 +472,15 @@
       print([
         { html: helpHtml() },
         '',
-        { cls: 't-dim', text: 'files live under ~ — try  ls  then  cat about.txt' },
-        { cls: 't-dim', text: 'tab completes · ↑ recalls · ctrl+k goes fullscreen' },
+        { cls: 't-dim', text: t('files live under ~ — try  ls  then  cat about.txt') },
+        { cls: 't-dim', text: t('tab completes · ↑ recalls · ctrl+k goes fullscreen') },
       ]);
       return;
     }
     const hit = HELP.find(([c]) => c === arg);
-    if (!hit) { err(`help: no entry for '${arg}'`); return; }
+    if (!hit) { err(`${t('help: no entry for')} '${arg}'`); return; }
     print([
-      { html: `<span class="t-accent">${esc(hit[0])}</span>  <span class="t-dim">— ${esc(hit[1])}</span>` },
+      { html: `<span class="t-accent">${esc(hit[0])}</span>  <span class="t-dim">— ${esc(t(hit[1]))}</span>` },
     ]);
   }
 
@@ -477,17 +509,21 @@
       ['Track', 'CPTS / OffSec'],
       ['Status', 'open to internship'],
     ],
+    tips: ['avatar', 'cat about.txt', 'ls projects', 'open work'],
   };
 
   function neofetch() {
     const rows = NEOFETCH.rows.map(([k, v]) => (
-      `<p><span class="t-key">${k}</span>${v ? `<span class="t-dim">${v}</span>` : ''}</p>`
+      `<p><span class="t-key">${t(k)}</span>${v ? `<span class="t-dim">${t(v)}</span>` : ''}</p>`
     )).join('');
     const logo = NEOFETCH.logo.map(esc).join('\n');
+    const tips = NEOFETCH.tips
+      .map((c) => `<span class="t-accent">${c}</span>`)
+      .join(`<span class="t-dim">${t(' · ')}</span>`);
     print([
       { html: `<div class="nf"><pre class="nf__logo" aria-hidden="true">${logo}</pre><div class="nf__rows">${rows}</div></div>` },
       '',
-      { html: '<span class="t-dim">tip: </span><span class="t-accent">avatar</span><span class="t-dim"> · </span><span class="t-accent">cat about.txt</span><span class="t-dim"> · </span><span class="t-accent">ls projects</span><span class="t-dim"> · </span><span class="t-accent">open work</span>' },
+      { html: `<span class="t-dim">${t('tip:')}</span>${tips}` },
     ]);
   }
 
@@ -497,9 +533,9 @@
      worse version, so this just points at the real one. */
   function cmdAvatar() {
     print([
-      { html: '<span class="t-dim">→ </span><span class="t-head">Võ Lê Anh Tuấn</span><span class="t-dim"> · cybersecurity · Ho Chi Minh City</span>' },
+      { html: '<span class="t-dim">→ </span><span class="t-head">Võ Lê Anh Tuấn</span><span class="t-dim">' + t(' · cybersecurity · Ho Chi Minh City') + '</span>' },
       '',
-      { html: '<span class="t-dim">the portrait up top is a cloud of glyphs. hover it, or tap it, to push them around.</span>' },
+      { html: '<span class="t-dim">' + t('the portrait up top is a cloud of glyphs. hover it, or tap it, to push them around.') + '</span>' },
     ]);
     document.dispatchEvent(new CustomEvent('portrait:reveal'));
   }
@@ -509,7 +545,7 @@
 
   function jumpTo(id) {
     const el = document.getElementById(id);
-    if (!el) { err(`goto: no section named '${id}'`); return false; }
+    if (!el) { err(`${t('goto: no section named')} '${id}'`); return false; }
     el.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
     note(`→ ${id}`);
     return true;
@@ -526,12 +562,12 @@
   function openTarget(arg) {
     if (!arg) {
       print([
-        { cls: 't-dim', text: 'open what? case files:' },
+        { cls: 't-dim', text: t('open what? case files:') },
         { html: '<span class="t-accent">open projects/splunk-lab.md</span>' },
         { html: '<span class="t-accent">open projects/virtual-lab.md</span>' },
         { html: '<span class="t-accent">open projects/this-site.md</span>' },
         { html: '<span class="t-accent">open projects/cpts-casefiles.md</span>' },
-        { cls: 't-dim', text: 'or jump: open work · experience · toolkit · contact' },
+        { cls: 't-dim', text: t('or jump: open work · experience · toolkit · contact') },
       ]);
       return;
     }
@@ -550,7 +586,7 @@
       }
       return;
     }
-    err(`open: nothing called '${arg}'`);
+    err(`${t('open: nothing called')} '${arg}'`);
   }
 
   /* ── Commands ────────────────────────────────────────────────────────── */
@@ -559,11 +595,11 @@
     const showHidden = flags.some((f) => f.includes('a'));
     const target = args.filter((a) => !a.startsWith('-'))[0] ?? '';
     const res = resolve(target);
-    if (!res.ok) { err(`ls: cannot access '${target}': no such file or directory`); return; }
+    if (!res.ok) { err(`${t('ls: cannot access')} '${target}'${t(': no such file or directory')}`); return; }
     if (res.node.type === 'file') { print([res.path[res.path.length - 1]]); return; }
 
     const names = sortedNames(res.node, showHidden);
-    if (!names.length) { note('(empty)'); return; }
+    if (!names.length) { note(t('(empty)')); return; }
 
     print([{
       html: `<div class="ls">${names.map((n) => {
@@ -576,24 +612,24 @@
   function cmdCd(args) {
     const target = args[0] ?? '~';
     const res = resolve(target);
-    if (!res.ok) { err(`cd: no such file or directory: ${target}`); return; }
-    if (res.node.type !== 'dir') { err(`cd: not a directory: ${target}`); return; }
+    if (!res.ok) { err(`${t('cd: no such directory')}: ${target}`); return; }
+    if (res.node.type !== 'dir') { err(`${t('cd: not a directory')}: ${target}`); return; }
     state.cwd = res.path;
     syncPrompt();
   }
 
   function cmdCat(args) {
-    if (!args.length) { err('cat: missing file operand'); return; }
+    if (!args.length) { err(t('cat: missing file operand')); return; }
     const target = args[0];
     const res = resolve(target);
-    if (!res.ok) { err(`cat: ${target}: no such file or directory`); return; }
-    if (res.node.type === 'dir') { err(`cat: ${target}: is a directory`); return; }
+    if (!res.ok) { err(`cat: ${target}${t(': no such file or directory')}`); return; }
+    if (res.node.type === 'dir') { err(`cat: ${target}${t(': is a directory')}`); return; }
     print(res.node.lines.map((l) => (l === '' ? '' : { text: l })));
   }
 
   function cmdTree(args) {
     const res = resolve(args[0] ?? '');
-    if (!res.ok) { err(`tree: '${args[0]}': no such file or directory`); return; }
+    if (!res.ok) { err(`${t('tree')}: '${args[0]}'${t(': no such file or directory')}`); return; }
     const lines = [{ cls: 't-dim', text: prettyPath(res.path) }];
     let dirs = 0, files = 0;
 
@@ -615,24 +651,26 @@
     })(res.node, '');
 
     lines.push('');
-    lines.push({ cls: 't-dim', text: `${dirs} directories, ${files} files` });
+    /* Split around the counts: the whole sentence carries a variable, so the
+       words are translated individually and the numbers read straight through. */
+    lines.push({ cls: 't-dim', text: `${dirs} ${t('directories')}, ${files} ${t('files')}` });
     print(lines);
   }
 
   function cmdWhoami() {
     print([
       { cls: 't-head', text: 'Võ Lê Anh Tuấn' },
-      { cls: 't-dim', text: 'cybersecurity student · IT intern · Ho Chi Minh City' },
+      { cls: 't-dim', text: t('cybersecurity student · IT intern · Ho Chi Minh City') },
       '',
-      { html: '<span class="t-dim">currently   </span>Information Technology Intern @ Got It' },
-      { html: '<span class="t-dim">studying    </span>BCS Cyber Security, Swinburne (2023–2027)' },
-      { html: '<span class="t-dim">direction   </span>offensive security · CPTS track' },
-      { html: '<span class="t-dim">rule        </span>no claim I cannot back with evidence' },
+      { html: '<span class="t-dim">currently   </span>' + t('Information Technology Intern @ Got It') },
+      { html: '<span class="t-dim">studying    </span>' + t('BCS Cyber Security, Swinburne (2023–2027)') },
+      { html: '<span class="t-dim">direction   </span>' + t('offensive security · CPTS track') },
+      { html: '<span class="t-dim">rule        </span>' + t('no claim I cannot back with evidence') },
     ]);
   }
 
   function cmdHistory() {
-    if (!state.history.length) { note('no history yet'); return; }
+    if (!state.history.length) { note(t('no history yet')); return; }
     print(state.history.map((h, i) => ({ html: `<span class="t-dim">${String(i + 1).padStart(3, ' ')}</span>  ${esc(h)}` })));
   }
 
@@ -640,41 +678,41 @@
     print([
       { html: '<span class="t-dim">email     </span><a class="t-accent" href="mailto:anhtuanpm3939@gmail.com">anhtuanpm3939@gmail.com</a>' },
       { html: '<span class="t-dim">linkedin  </span><a class="t-accent" href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="me noopener">linkedin.com/in/vlat273</a>' },
-      { html: '<span class="t-dim">base      </span>Ho Chi Minh City, Vietnam' },
-      { html: '<span class="t-dim">status    </span>open to internship and junior security roles' },
+      { html: '<span class="t-dim">base      </span>' + t('Ho Chi Minh City, Vietnam') },
+      { html: '<span class="t-dim">status    </span>' + t('open to internship and junior security roles') },
     ]);
   }
 
   function cmdTheme(args) {
     const want = args[0];
     if (want !== 'dark' && want !== 'light') {
-      note(`theme is ${document.documentElement.dataset.theme} · usage: theme dark | theme light`);
+      note(`${t('theme is')} ${document.documentElement.dataset.theme}${t(' · usage: theme dark | theme light')}`);
       return;
     }
     applyTheme(want);
-    ok(`theme → ${want}`);
+    ok(`${t('theme →')} ${want}`);
   }
 
   function cmdClear() { termOut.replaceChildren(); }
 
   function cmdSudo() {
     print([
-      { cls: 't-err', text: 'guest is not in the sudoers file.' },
-      { cls: 't-dim', text: 'This incident has been logged. (It is a static site. Nothing was logged.)' },
+      { cls: 't-err', text: t('guest is not in the sudoers file.') },
+      { cls: 't-dim', text: t('This incident has been logged. (It is a static site. Nothing was logged.)') },
     ]);
   }
 
   function cmdRm() {
     print([
-      { cls: 't-warn', text: 'rm: destructive commands are not implemented here.' },
-      { cls: 't-dim', text: 'The filesystem is read-only, and honestly that is the right default.' },
+      { cls: 't-warn', text: t('rm: destructive commands are not implemented here.') },
+      { cls: 't-dim', text: t('The filesystem is read-only, and honestly that is the right default.') },
     ]);
   }
 
   function cmdExit() {
     print([
-      { cls: 't-dim', text: 'there is no exit — only scrolling.' },
-      { html: '<span class="t-dim">try </span><span class="t-accent">goto contact</span><span class="t-dim"> instead.</span>' },
+      { cls: 't-dim', text: t('there is no exit — only scrolling.') },
+      { html: '<span class="t-dim">' + t('try') + ' </span><span class="t-accent">goto contact</span><span class="t-dim">' + t('instead.') + '</span>' },
     ]);
   }
 
@@ -701,9 +739,9 @@
     rm: cmdRm,
     exit: cmdExit,
     quit: cmdExit,
-    coffee: () => print([{ cls: 't-warn', text: 'HTTP 418 — I am a teapot, not a barista.' }]),
-    hack: () => print([{ cls: 't-dim', text: 'nice. now try the part that takes notes.' }]),
-    flag: () => print([{ cls: 't-err', text: 'flags are sanitised before publishing. that is the rule.' }]),
+    coffee: () => print([{ cls: 't-warn', text: t('HTTP 418 — I am a teapot, not a barista.') }]),
+    hack: () => print([{ cls: 't-dim', text: t('nice. now try the part that takes notes.') }]),
+    flag: () => print([{ cls: 't-err', text: t('flags are sanitised before publishing. that is the rule.') }]),
   };
 
   const COMMAND_NAMES = Object.keys(COMMANDS).sort();
@@ -732,8 +770,8 @@
         err(`error: ${e.message}`);
       }
     } else {
-      err(`command not found: ${name}`);
-      note('type `help` for the list, or press tab to complete.');
+      err(`${t('command not found')}: ${name}`);
+      note(t('type `help` for the list, or press tab to complete.'));
     }
     termOut.scrollTop = termOut.scrollHeight;
   }
@@ -811,7 +849,7 @@
     term.classList.toggle('term--full', on);
     document.body.classList.toggle('term-open', on);
     if (termExpand) termExpand.setAttribute('aria-pressed', String(on));
-    if (termActText) termActText.textContent = on ? 'collapse' : 'expand';
+    if (termActText) termActText.textContent = t(on ? 'collapse' : 'expand');
   }
   const isFullscreen = () => term.classList.contains('term--full');
 
@@ -911,6 +949,7 @@
   termForm.addEventListener('submit', (e) => {
     e.preventDefault();
     state.intro = false;
+    state.typed = true;   // the transcript now holds commands the visitor chose
     const value = termInput.value;
     termInput.value = '';
     state.hi = -1;
@@ -950,41 +989,77 @@
   });
 
   /* ── Intro ───────────────────────────────────────────────────────────── */
+  let introRunning = false;
+  let introToken = 0;   // a newer intro supersedes the one still on screen
+
   async function intro() {
-    syncPrompt();
-    resizeInput();
+    const token = ++introToken;
+    if (introRunning) state.intro = false;   // stop the old typing loop
+    introRunning = true;
+    try {
+      syncPrompt();
+      resizeInput();
 
-    const live = termOut.getAttribute('aria-live');
-    termOut.setAttribute('aria-live', 'off');   // don't narrate the animation
-    state.intro = true;
+      termOut.setAttribute('aria-live', 'off');   // don't narrate the animation
+      state.intro = true;
 
-    banner();
-    print([{ html: '<span class="t-dim">[ session established ]</span> <span class="t-dim">·</span> <span class="t-accent">guest@vlat273</span>' }]);
+      banner();
+      print([{ html: '<span class="t-dim">[ ' + t('session established') + ' ]</span> <span class="t-dim">·</span> <span class="t-accent">guest@vlat273</span>' }]);
 
-    if (!reduced()) {
-      await sleep(420);
-      const cmd = 'neofetch';
-      for (let i = 1; i <= cmd.length; i++) {
-        if (!state.intro) break;
-        termInput.value = cmd.slice(0, i);
-        resizeInput();
-        renderGhost();
-        await sleep(62);
+      if (!reduced()) {
+        await sleep(420);
+        if (token !== introToken) return;
+        const cmd = 'neofetch';
+        for (let i = 1; i <= cmd.length; i++) {
+          if (!state.intro || token !== introToken) break;
+          termInput.value = cmd.slice(0, i);
+          resizeInput();
+          renderGhost();
+          await sleep(62);
+        }
+        if (state.intro && token === introToken) {
+          await sleep(240);
+          termInput.value = '';
+          resizeInput();
+          renderGhost();
+          run(cmd);
+        }
+      } else {
+        run('neofetch');
       }
-      if (state.intro) {
-        await sleep(240);
-        termInput.value = '';
-        resizeInput();
-        renderGhost();
-        run(cmd);
+
+      /* A superseded intro must not cancel the animation that replaced it. */
+      if (token === introToken) state.intro = false;
+    } finally {
+      /* Only the newest intro may hand the flags back — a superseded one returns
+         early and must not clobber the state of its replacement. */
+      if (token === introToken) {
+        termOut.setAttribute('aria-live', 'polite');
+        introRunning = false;
       }
-    } else {
-      run('neofetch');
     }
-
-    state.intro = false;
-    termOut.setAttribute('aria-live', live || 'polite');
   }
 
   intro();
+
+  /* ── Language switch ─────────────────────────────────────────────────────
+     Everything above is generated through t(), so a switch is just a matter of
+     invalidating the filesystem cache and redrawing. If the visitor has already
+     typed a command the transcript is a log of what actually happened, so it is
+     left in the language it was typed in — only the untitled prompt redraws. */
+  document.addEventListener('langchange', () => {
+    fsCache = null;
+    fsLang = null;
+    syncPrompt();
+    if (termActText) termActText.textContent = t(isFullscreen() ? 'collapse' : 'expand');
+    /* The intro's own neofetch lands in history, so history length alone says
+       nothing about whether the visitor typed anything. Only a real submission
+       protects the transcript. */
+    if (state.typed) {
+      note(t('language switched — type `banner` to see the shell again'));
+      return;
+    }
+    cmdClear();
+    intro();
+  });
 })();

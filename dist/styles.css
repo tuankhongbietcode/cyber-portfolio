@@ -230,6 +230,28 @@ code, kbd, pre { font-family: var(--mono); }
 .iconbtn:hover { color: var(--text); border-color: var(--line); background: var(--bg-3); }
 .iconbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 
+/* Language toggle. A two-letter code rather than a globe: it says which
+   language the page is in right now, and it is legible at a glance next to
+   the theme button. Vietnamese runs noticeably longer than English, so the
+   label is the only thing that changes width — the box does not reflow the
+   topbar. */
+.langbtn {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 7px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  color: var(--dim);
+  font: 600 .68rem var(--mono);
+  letter-spacing: .04em;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.langbtn:hover { color: var(--text); border-color: var(--line); background: var(--bg-3); }
+.langbtn[aria-pressed="true"] { color: var(--accent); border-color: var(--accent-2); }
+.langbtn__code { line-height: 1; }
+
 .kbd-hint {
   display: flex;
   align-items: center;

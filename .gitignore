@@ -8,6 +8,9 @@ preview-server.mjs
 # Wrangler local cache (login state, temp files)
 analytics/.wrangler/
 
+# Tool scratch output from the i18n tooling
+.strings.txt
+
 # OS noise
 .DS_Store
 Thumbs.db
