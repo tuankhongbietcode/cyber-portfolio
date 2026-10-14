@@ -5,6 +5,9 @@ preview-server.mjs
 # WorkBuddy/OpenAI hosting metadata — not part of the published site.
 .openai/
 
+# Wrangler local cache (login state, temp files)
+analytics/.wrangler/
+
 # OS noise
 .DS_Store
 Thumbs.db

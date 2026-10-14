@@ -10,7 +10,7 @@ compatibility_date = "2026-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "portfolio-analytics"
-database_id = "PASTE_YOUR_DATABASE_ID_HERE"
+database_id = "c8628cac-c18b-475c-acc3-fb9755d89025"
 
 [vars]
 # Only this origin may post beacons to /collect.
