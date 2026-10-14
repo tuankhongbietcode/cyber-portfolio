@@ -66,6 +66,13 @@ fi
 [ -n "$NPX" ] || die "Could not find npx. Install Node 18+ from https://nodejs.org and re-run."
 [ -n "$NODE" ] || NODE="${NPX%/*}/node"
 
+# npm and npx launch the installed package through cmd.exe on Windows, and that
+# child process looks for `node` on PATH. When node was only found by the
+# fallback above it is not on PATH yet, and the launch dies with
+#   '"node"' is not recognized as an internal or external command
+# Putting the resolved directory first fixes it for every child process.
+export PATH="$(dirname "$NODE"):$PATH"
+
 ok "node : $NODE"
 ok "npx  : $NPX"
 
