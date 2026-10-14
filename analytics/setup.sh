@@ -43,12 +43,23 @@ NODE="$(command -v node 2>/dev/null || true)"
 NPX="$(command -v npx 2>/dev/null || true)"
 
 if [ -z "$NPX" ]; then
-  for cand in "$HOME"/.workbuddy-ai/binaries/node/versions/*/npx; do
-    if [ -x "$cand" ]; then
-      NPX="$cand"
-      NODE="${cand%/*}/node"
-      break
-    fi
+  # Git Bash sets HOME itself, but do not depend on it being set.
+  for hd in "${HOME:-}" "${USERPROFILE:-}"; do
+    [ -n "$hd" ] || continue
+    hd="${hd//\\//}"                                          # C:\Users\Tuna -> C:/Users/Tuna
+    case "$hd" in
+      [A-Za-z]:/*)
+        _dl="${hd:0:1}"
+        hd="/${_dl,,}${hd:2}"                                 # C:/Users -> /c/Users
+        ;;
+    esac
+    for cand in "$hd"/.workbuddy-ai/binaries/node/versions/*/npx; do
+      if [ -x "$cand" ]; then
+        NPX="$cand"
+        NODE="${cand%/*}/node"
+        break 2
+      fi
+    done
   done
 fi
 
