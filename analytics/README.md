@@ -50,6 +50,12 @@ count as bots.
 
 You need a Cloudflare account (the free one is enough) and Node installed.
 
+If your account has never published a Worker, you also need a **`workers.dev`
+subdomain** — that is the domain the Worker gets published under. Cloudflare
+only lets you choose it in the dashboard, and the name becomes part of your
+public URL (`https://portfolio-analytics.<name>.workers.dev`). `setup.sh`
+detects this and links you straight to the right page if it is missing.
+
 ### The short way
 
 ```bash
@@ -61,11 +67,17 @@ That logs you in, creates the database, applies the schema, generates and stores
 a dashboard token, deploys the Worker, and writes the endpoint into
 `../dist/index.html` for you.
 
-**Save the token it prints at the end.** It goes into a Worker secret and cannot
-be read back afterwards — if you lose it, set a new one.
+**Save the token it prints.** It goes into a Worker secret and cannot be read
+back afterwards, so `setup.sh` prints it the moment it is created rather than
+waiting until the end — a later step can still fail. If you lose it, set a new
+one:
+
+```bash
+ROTATE_TOKEN=1 bash setup.sh
+```
 
 Re-running is safe: it reuses an existing `database_id` and leaves the token
-alone. To force a fresh token, run `ROTATE_TOKEN=1 bash setup.sh`.
+alone.
 
 The first run installs wrangler into `~/.wrangler-cli` (about 170 MB, once). It
 does **not** use `npx` — see [Why not npx](#why-not-npx) below.

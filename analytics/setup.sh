@@ -230,9 +230,17 @@ if [ -n "${ROTATE_TOKEN:-}" ] || ! wr secret list 2>/dev/null | grep -q "DASHBOA
   TOKEN="$("$NODE" -e 'console.log(require("crypto").randomBytes(32).toString("hex"))')"
   printf '%s' "$TOKEN" | wr secret put DASHBOARD_TOKEN >/dev/null
   ok "Generated and stored a new token."
+
+  # Print it here, not only in the summary at the end. A later step can still
+  # fail — a missing workers.dev subdomain, a network blip — and a Worker
+  # secret is write-only, so if the token were only printed on success you
+  # would lose it and have to rotate.
+  printf '\n  \033[1;33mYour dashboard token — save it now:\033[0m\n\n    %s\n' "$TOKEN"
 else
   TOKEN=""
   ok "DASHBOARD_TOKEN already exists — left untouched."
+  warn "Its value cannot be read back. If you no longer have it, re-run with:"
+  warn "  ROTATE_TOKEN=1 bash setup.sh"
 fi
 
 # ------------------------------------------------------------------- 5. deploy
@@ -240,6 +248,33 @@ fi
 say "5/6  Deploying"
 OUT="$(wr deploy 2>&1 || true)"
 printf '%s\n' "$OUT"
+
+# One-time account setup that only the dashboard can do. wrangler does offer to
+# register a workers.dev subdomain, but only when it has a real terminal; here
+# its output is captured, so it silently answers "no" and then errors out.
+if printf '%s' "$OUT" | grep -q "register a workers.dev subdomain"; then
+  ONBOARD="$(printf '%s' "$OUT" \
+    | grep -oE 'https://dash\.cloudflare\.com/[A-Za-z0-9]+/workers/onboarding' \
+    | head -1 || true)"
+
+  printf '\n\033[1;33m%s\033[0m\n' "================================================================"
+  printf '\033[1;33m  One-time step: choose your workers.dev subdomain\033[0m\n'
+  printf '\033[1;33m%s\033[0m\n' "================================================================"
+  printf '\n  Your Cloudflare account has no workers.dev subdomain yet, so there is\n'
+  printf '  nowhere to publish the Worker. Cloudflare only lets you pick this in the\n'
+  printf '  dashboard — wrangler has no command for it.\n\n'
+  if [ -n "$ONBOARD" ]; then
+    printf '  Open this and choose a name:\n\n    %s\n\n' "$ONBOARD"
+  fi
+  printf '  The name becomes part of your public URL:\n\n'
+  printf '    https://portfolio-analytics.<the-name-you-pick>.workers.dev\n\n'
+  printf '  Then run this script once more to finish:\n\n'
+  printf '    bash setup.sh\n\n'
+  printf '  It will skip the steps that are already done and just deploy. Keep the\n'
+  printf '  dashboard token printed above — you will need it.\n'
+  printf '  If you did not save it, use ROTATE_TOKEN=1 bash setup.sh instead.\n\n'
+  exit 1
+fi
 
 WORKER_URL="$(printf '%s' "$OUT" | grep -oE 'https://[a-zA-Z0-9._-]+\.workers\.dev' | head -1 || true)"
 [ -n "$WORKER_URL" ] || die "Could not read the Worker URL from the deploy output. Re-run this script, or deploy by hand:
