@@ -1,256 +1,866 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#06090d">
-  <meta name="description" content="Portfolio offensive security của Võ Lê Anh Tuấn theo định hướng CPTS — methodology, lab notes và báo cáo kỹ thuật.">
-  <title>Võ Lê Anh Tuấn // CPTS Path</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security Portfolio</title>
+<meta name="description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security. Method first, evidence always, no inflated claims.">
+<meta name="author" content="Võ Lê Anh Tuấn">
+<meta name="keywords" content="cybersecurity, offensive security, penetration testing, CPTS, SIEM, Splunk, network security, Ho Chi Minh City">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0b0c" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+
+<!-- Absolute URLs are derived from `location` by the inline script below, not
+     baked in: the hosting domain is not guaranteed to stay the same, and a
+     canonical tag pointing at a domain that no longer answers is worse than
+     none at all. The relative values here are the no-JS fallback. -->
+<link rel="canonical" href="./">
+<meta property="og:url" content="./">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:image" content="og-image.png">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
+<meta property="og:description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security.">
+<meta property="og:site_name" content="Võ Lê Anh Tuấn">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Võ Lê Anh Tuấn — I trace the attack path.">
+<meta property="profile:username" content="vlat273">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
+<meta name="twitter:description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<link rel="preload" href="fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+
+<script>
+  /* Scroll-reveal only hides content when this script actually ran, so the
+     page is fully readable with JavaScript disabled. The timer is a failsafe
+     in case app.js never loads: after 3s everything is shown regardless. */
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    window.__revealFailsafe = setTimeout(function () { root.classList.remove('js'); }, 3000);
+  })();
+
+  /* The site can be served from more than one host, so the absolute URLs that
+     have to name it — canonical, og:url, the social preview image — are built
+     from the address actually being used. Baked-in domains go stale the moment
+     the site moves, and a canonical pointing at a dead host is worse than none. */
+  (function () {
+    var here = location.origin + location.pathname;
+    var abs = function (p) { return new URL(p, here).href; };
+    var set = function (sel, attr, val) {
+      var el = document.querySelector(sel);
+      if (el) el.setAttribute(attr, val);
+    };
+    set('link[rel="canonical"]', 'href', here);
+    set('meta[property="og:url"]', 'content', here);
+    set('meta[property="og:image"]', 'content', abs('og-image.png'));
+    set('meta[name="twitter:image"]', 'content', abs('og-image.png'));
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "dateCreated": "2026-10-13",
+  "dateModified": "2026-10-13",
+  "inLanguage": "en",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Võ Lê Anh Tuấn",
+    "alternateName": ["Anh Tuan Vo", "vlat273"],
+    "jobTitle": "Information Technology Intern",
+    "description": "Cybersecurity student moving from network operations and SIEM into offensive security.",
+    "email": "mailto:anhtuanpm3939@gmail.com",
+    "sameAs": ["https://www.linkedin.com/in/vlat273/"],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Swinburne University of Technology"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ho Chi Minh City",
+      "addressCountry": "VN"
+    },
+    "award": "Best in Performance Award — TNE20002 Network Routing Principles",
+    "knowsAbout": [
+      "Offensive Security",
+      "Penetration Testing",
+      "Enumeration",
+      "Active Directory",
+      "Web Application Security",
+      "Privilege Escalation",
+      "SIEM",
+      "Splunk",
+      "Log Onboarding",
+      "Network Administration",
+      "Cisco Routing and Switching",
+      "Firewalls and VPN",
+      "VMware ESXi",
+      "Microsoft 365",
+      "Linux",
+      "Windows"
+    ],
+    "hasOccupation": [
+      {
+        "@type": "Occupation",
+        "name": "Information Technology Intern",
+        "hiringOrganization": { "@type": "Organization", "name": "Got It" }
+      },
+      {
+        "@type": "Occupation",
+        "name": "Security Consultant Intern",
+        "hiringOrganization": { "@type": "Organization", "name": "VNCS" }
+      },
+      {
+        "@type": "Occupation",
+        "name": "Network Administrator Intern",
+        "hiringOrganization": { "@type": "Organization", "name": "VNPRO" }
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Selected systems work",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Distributed Splunk & multi-source log onboarding",
+        "description": "Distributed Splunk Enterprise lab with a Deployment Server and universal forwarders, onboarding Windows Event, Sysmon, Linux, web application and firewall logs, with validation, dashboards and alerting.",
+        "about": ["SIEM", "Splunk", "Log Onboarding"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Virtual lab infrastructure operations",
+        "description": "Operating VMware ESXi and EVE-NG/UnetLab environments for technical training, supporting routing, switching, firewall, VPN and wireless labs.",
+        "about": ["Virtualization", "Networking", "Lab Operations"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Terminal-first portfolio site",
+        "description": "A hand-built single-page site with no framework and no build step: a working virtual filesystem shell with tab completion, and a portrait rendered as 2,473 animated glyph particles on a canvas.",
+        "about": ["Front End Development", "JavaScript", "Canvas", "Accessibility"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Offensive security case files",
+        "description": "In-progress CPTS write-ups covering enumeration, foothold, privilege escalation and pivoting, published only from authorized labs after sanitizing flags and credentials.",
+        "about": ["Offensive Security", "Penetration Testing", "Reporting"]
+      }
+    }
+  ]
+}
+</script>
 </head>
+
 <body>
-  <canvas id="matrix" aria-hidden="true"></canvas>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="cursor-glow" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-  <div class="boot" id="boot" aria-hidden="true">
-    <div class="boot__inner">
-      <p class="boot__label">INITIALIZING SECURE SESSION</p>
-      <div class="boot__track"><i></i></div>
-      <p class="boot__status">loading methodology<span class="blink">_</span></p>
-    </div>
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+
+<header class="topbar">
+  <a class="brand" href="#top">
+    <span class="brand__dot" aria-hidden="true"></span>
+    <span class="brand__name">vlat273</span>
+    <span class="brand__role">cybersecurity</span>
+  </a>
+
+  <nav class="nav" aria-label="Sections">
+    <a href="#terminal">Terminal</a>
+    <a href="#experience">Experience</a>
+    <a href="#work">Work</a>
+    <a href="#toolkit">Toolkit</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="topbar__end">
+    <button class="iconbtn" id="soundToggle" type="button" aria-pressed="false" aria-label="Turn ambient sound on" title="Ambient sound — off">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9.4h3.1L11 6v12l-3.9-3.4H4z"/>
+        <path class="snd-wave snd-wave--1" d="M14.4 9.7a3.5 3.5 0 0 1 0 4.6"/>
+        <path class="snd-wave snd-wave--2" d="M17 7.3a7 7 0 0 1 0 9.4"/>
+      </svg>
+    </button>
+    <button class="iconbtn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10 1.4 1.4m0-12.8-1.4 1.4m-10 10-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+    </button>
+    <button class="kbd-hint" id="focusTerminalTop" type="button" title="Focus the terminal">
+      <span class="kbd-hint__key" data-key="mod">Ctrl</span><span class="kbd-hint__plus">+</span><span class="kbd-hint__key">K</span>
+      <span class="kbd-hint__label">terminal</span>
+    </button>
   </div>
+</header>
 
-  <header class="topbar">
-    <a class="brand" href="#top" aria-label="Trang đầu">
-      <span class="brand__mark">//</span>
-      <span>CPTS.PATH</span>
-    </a>
-    <nav aria-label="Điều hướng chính">
-      <a href="#profile">Profile</a>
-      <a href="#method">Method</a>
-      <a href="#labs">Work</a>
-      <a href="#arsenal">Arsenal</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="status"><i></i> AVAILABLE TO LEARN</div>
-  </header>
+<main id="main">
 
-  <main id="top">
-    <section class="hero section-grid">
-      <div class="hero__copy reveal">
-        <p class="eyebrow"><span>01</span> VÕ LÊ ANH TUẤN // OFFENSIVE SECURITY PATH</p>
-        <h1>I trace the<br><span class="glitch" data-text="attack path.">attack path.</span></h1>
-        <p class="hero__lead">Cybersecurity student và IT intern đang chuyển từ nền tảng <strong>network + SIEM</strong> sang offensive security theo lộ trình CPTS — có phương pháp, có bằng chứng, không thổi phồng năng lực.</p>
-        <div class="hero__actions">
-          <a class="button magnetic" href="#labs"><span>EXPLORE LABS</span><b>↘</b></a>
-          <a class="text-link" href="#terminal">OPEN TERMINAL <span>⌁</span></a>
+  <!-- ══ HERO ══════════════════════════════════════════════════════ -->
+  <section class="hero" id="top">
+    <div class="hero__copy">
+      <div class="masthead">
+        <span class="avatar" role="img" aria-label="ASCII portrait of Võ Lê Anh Tuấn">
+          <canvas class="avatar__canvas" width="1" height="1" aria-hidden="true"></canvas>
+        </span>
+        <div class="masthead__id">
+          <p class="masthead__name">Võ Lê Anh Tuấn</p>
+          <p class="eyebrow">Cybersecurity <span aria-hidden="true">/</span> Ho Chi Minh City</p>
         </div>
       </div>
 
-      <div class="hero__visual reveal">
-        <canvas id="asciiPortrait" class="hero__portrait" width="398" height="368" role="img" aria-label="Chân dung ASCII tương tác của Võ Lê Anh Tuấn" data-src="avatar-ascii.png"></canvas>
+      <h1>I trace the <span class="accent">attack path</span>.</h1>
+
+      <p class="lead">
+        Cybersecurity student at Swinburne and IT intern at Got&nbsp;It. I came up through
+        network operations and SIEM before moving into offensive security — which means I read
+        an attack path from both sides. Method first, evidence always, no inflated claims.
+      </p>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="openTerminal" type="button">
+          <span class="btn__prompt" aria-hidden="true">&gt;_</span> Open the terminal
+        </button>
+        <a class="btn btn--ghost" href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="me noopener">LinkedIn <span aria-hidden="true">↗</span></a>
       </div>
 
-      <aside class="hero__meta reveal">
-        <div><span>CURRENT</span><strong>IT Intern @ Got It</strong></div>
-        <div><span>FOUNDATION</span><strong>Network &amp; SIEM</strong></div>
-        <div><span>DIRECTION</span><strong>CPTS / OffSec</strong></div>
-      </aside>
-      <div class="scroll-cue" aria-hidden="true"><span>SCROLL TO TRACE</span><i></i></div>
-    </section>
+      <dl class="facts">
+        <div><dt>Status</dt><dd><span class="pulse" aria-hidden="true"></span>Open to internship</dd></div>
+        <div><dt>Focus</dt><dd>Offensive security</dd></div>
+        <div><dt>Foundation</dt><dd>Network · SIEM</dd></div>
+        <div><dt>Study</dt><dd>Swinburne · 2023–2027</dd></div>
+      </dl>
+    </div>
 
-    <section class="marquee" aria-hidden="true">
-      <div>ENUMERATION <i>◆</i> WEB EXPLOITATION <i>◆</i> ACTIVE DIRECTORY <i>◆</i> PIVOTING <i>◆</i> PRIVILEGE ESCALATION <i>◆</i> REPORTING <i>◆</i>&nbsp;</div>
-      <div>ENUMERATION <i>◆</i> WEB EXPLOITATION <i>◆</i> ACTIVE DIRECTORY <i>◆</i> PIVOTING <i>◆</i> PRIVILEGE ESCALATION <i>◆</i> REPORTING <i>◆</i>&nbsp;</div>
-    </section>
+    <!-- ══ TERMINAL ═════════════════════════════════════════════════ -->
+    <div class="hero__term" id="terminal">
+      <div class="term" id="term">
+        <div class="term__bar">
+          <span class="term__lights" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="term__title">guest@vlat273: ~</span>
+          <button class="term__act" id="termExpand" type="button" aria-pressed="false" aria-label="Toggle terminal fullscreen">
+            <svg class="term__actIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 15v5h-5M15 4h5v5M9 20H4v-5"/></svg>
+            <span class="term__actText">expand</span>
+          </button>
+        </div>
 
-    <section class="profile section-pad" id="profile">
-      <header class="section-head reveal">
-        <div>
-          <p class="eyebrow"><span>02</span> OPERATOR PROFILE</p>
-          <h2>Built from systems.<br><em>Moving offensive.</em></h2>
+        <div class="term__body" id="termBody">
+          <div class="term__out" id="termOut" role="log" aria-live="polite" aria-label="Terminal output">
+            <noscript>
+              <div class="t-dim">This shell needs JavaScript.</div>
+              <div class="t-dim">Reach me directly: <a href="mailto:anhtuanpm3939@gmail.com">anhtuanpm3939@gmail.com</a></div>
+            </noscript>
+          </div>
+
+          <form class="term__line" id="termForm">
+            <label class="term__ps1" id="termPs1" for="termInput">guest@vlat273:~$</label>
+            <div class="term__field">
+              <span class="term__sizer" id="termSizer" aria-hidden="true"></span>
+              <input class="term__input" id="termInput" name="command" type="text"
+                     autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                     aria-label="Terminal command" aria-describedby="termHint">
+              <span class="term__ghost" id="termGhost" aria-hidden="true"></span>
+              <span class="term__caret" id="termCaret" aria-hidden="true"></span>
+            </div>
+          </form>
         </div>
-        <p>Mình xây nền từ vận hành mạng, lab ảo và SIEM trước khi đi sâu vào penetration testing. Lợi thế đó giúp mình nhìn attack path ở cả phía khai thác lẫn khả năng quan sát và khắc phục.</p>
-      </header>
-      <div class="profile__grid">
-        <div class="trajectory reveal">
-          <article><time>SEP 2026 — NOW</time><div><small>GOT IT</small><h3>Information Technology Intern</h3><p>Hỗ trợ kỹ thuật và môi trường Microsoft 365 trong vận hành thực tế.</p></div></article>
-          <article><time>MAY — AUG 2026</time><div><small>VNCS</small><h3>Security Consultant Intern</h3><p>Splunk Enterprise, SIEM, log onboarding, SPL, dashboard, alerting, troubleshooting và POC documentation.</p></div></article>
-          <article><time>NOV 2025 — APR 2026</time><div><small>VNPRO</small><h3>Network Administrator Intern</h3><p>Vận hành multi-VLAN, Cisco, firewall, VPN, VMware ESXi, EVE-NG và hạ tầng lab kỹ thuật.</p></div></article>
+
+        <p class="term__hint" id="termHint">
+          <kbd>Tab</kbd> completes · <kbd>↑</kbd> history · <kbd>Ctrl</kbd>+<kbd>K</kbd> fullscreen
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EXPERIENCE ════════════════════════════════════════════════ -->
+  <section class="sec" id="experience">
+    <header class="sec__head reveal">
+      <p class="sec__idx">01</p>
+      <h2>Experience</h2>
+      <p class="sec__note">Three internships and the degree running underneath them — each one a
+        layer: the physical network, then the logs that describe it, then the operator who breaks it.</p>
+    </header>
+
+    <p class="cmdline reveal"><span class="cmdline__ps">guest@vlat273:~$</span> cat experience.log</p>
+
+    <ol class="log">
+      <li class="log__item reveal">
+        <div class="log__when">
+          <time datetime="2026-09">2026.09 — now</time>
+          <span class="log__now"><i aria-hidden="true"></i>current</span>
         </div>
-        <aside class="identity-card reveal">
-          <p class="identity-card__id">ID // VLAT273</p>
-          <h3>Võ Lê<br>Anh Tuấn</h3>
-          <dl>
-            <div><dt>Education</dt><dd>Bachelor of Computer Science — Cyber Security</dd></div>
-            <div><dt>University</dt><dd>Swinburne University of Technology</dd></div>
-            <div><dt>Period</dt><dd>2023 — 2027</dd></div>
-            <div><dt>Base</dt><dd>Ho Chi Minh City, Vietnam</dd></div>
+        <div class="log__what">
+          <p class="log__co">Got It</p>
+          <h3>Information Technology Intern</h3>
+          <p class="log__sum">Day-to-day IT support inside a live Microsoft 365 environment — accounts,
+            devices and the tickets that sit between them. Where the theory meets an actual user at 9am.</p>
+          <dl class="log__facts">
+            <div><dt>Environment</dt><dd>Microsoft 365 tenant · live users, no sandbox</dd></div>
+            <div><dt>Owned</dt><dd>Account lifecycle, endpoint support, ticket triage</dd></div>
+            <div><dt>Output</dt><dd>Resolved tickets, working accounts and devices</dd></div>
           </dl>
-          <a href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="noreferrer">VERIFY ON LINKEDIN ↗</a>
-        </aside>
-      </div>
-      <div class="milestone reveal">
-        <span>ACADEMIC SIGNAL</span><strong>Best in Performance Award</strong><p>TNE20002 — Network Routing Principles · Swinburne University of Technology</p>
-      </div>
-    </section>
-
-    <section class="method section-pad" id="method">
-      <header class="section-head reveal">
-        <p class="eyebrow"><span>03</span> OPERATING METHOD</p>
-        <h2>Không đoán.<br><em>Đi theo bằng chứng.</em></h2>
-        <p>Mỗi bước tạo ra tín hiệu cho bước kế tiếp. Phạm vi, bằng chứng và khả năng tái hiện luôn được giữ xuyên suốt quá trình kiểm thử.</p>
-      </header>
-
-      <div class="method__rail">
-        <article class="method-card reveal" data-index="01">
-          <div class="method-card__icon">⌖</div>
-          <small>DISCOVERY</small>
-          <h3>Recon &amp; Enumeration</h3>
-          <p>Xác định bề mặt tấn công, dịch vụ, danh tính và giả thuyết — không bỏ qua những chi tiết nhỏ.</p>
-          <ul><li>Host &amp; service mapping</li><li>Web content discovery</li><li>Identity enumeration</li></ul>
-        </article>
-        <article class="method-card reveal" data-index="02">
-          <div class="method-card__icon">◉</div>
-          <small>ACCESS</small>
-          <h3>Foothold &amp; Exploitation</h3>
-          <p>Kiểm chứng đường vào trong lab được cho phép, ghi lại payload, điều kiện và tác động.</p>
-          <ul><li>Vulnerability validation</li><li>Controlled exploitation</li><li>Evidence capture</li></ul>
-        </article>
-        <article class="method-card reveal" data-index="03">
-          <div class="method-card__icon">⌁</div>
-          <small>DEPTH</small>
-          <h3>Post-Exploitation</h3>
-          <p>Mở rộng ngữ cảnh sau foothold: quyền hạn, credential, pivot và attack path trong mạng nội bộ.</p>
-          <ul><li>Privilege escalation</li><li>Pivoting &amp; tunnelling</li><li>AD attack paths</li></ul>
-        </article>
-        <article class="method-card reveal" data-index="04">
-          <div class="method-card__icon">▤</div>
-          <small>DELIVERY</small>
-          <h3>Reporting</h3>
-          <p>Chuyển kỹ thuật thành câu chuyện rủi ro: tái hiện được, ưu tiên được và có hướng khắc phục.</p>
-          <ul><li>Reproducible steps</li><li>Impact &amp; root cause</li><li>Actionable remediation</li></ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="labs section-pad" id="labs">
-      <header class="section-head section-head--row reveal">
-        <div>
-          <p class="eyebrow"><span>04</span> SELECTED SYSTEMS WORK</p>
-          <h2>Field files<span class="acid">_</span></h2>
+          <p class="log__take"><b>Takeaway</b> The fastest way to understand an organisation is to sit
+            where its users hit friction — every ticket is a map of a broken assumption.</p>
+          <ul class="tags"><li>Microsoft 365</li><li>Endpoint support</li><li>IT operations</li><li>Ticket triage</li></ul>
         </div>
-        <p>Hai dự án đầu được đối chiếu từ hồ sơ nghề nghiệp. CPTS case file được ghi rõ là đang xây dựng và chỉ xuất bản sau khi đã làm sạch dữ liệu lab.</p>
-      </header>
+      </li>
 
-      <div class="case-list">
-        <article class="case reveal">
-          <div class="case__num">CASE<br>001</div>
-          <div class="case__body">
-            <div class="case__tags"><span>SIEM / SPLUNK</span><span>VERIFIED PROFILE</span></div>
-            <h3>Distributed Splunk &amp; multi-source log onboarding</h3>
-            <p>Deployment Server, Windows/Linux forwarders, Sysmon, application và firewall logs; validation, dashboard và alert.</p>
-          </div>
-          <div class="case__metric"><small>DATA FLOW</small><strong>MULTI<span>source</span></strong></div>
-          <button class="case__open" type="button" data-case="0" aria-label="Mở case study 1">↗</button>
-        </article>
-        <article class="case reveal">
-          <div class="case__num">CASE<br>002</div>
-          <div class="case__body">
-            <div class="case__tags"><span>NETWORK / LAB</span><span>VERIFIED PROFILE</span></div>
-            <h3>Virtual lab infrastructure operations</h3>
-            <p>VMware ESXi, EVE-NG/UnetLab, Cisco routing, switching, firewall, VPN và hỗ trợ lab cho lớp kỹ thuật.</p>
-          </div>
-          <div class="case__metric"><small>MODE</small><strong>LIVE<span>ops</span></strong></div>
-          <button class="case__open" type="button" data-case="1" aria-label="Mở case study 2">↗</button>
-        </article>
-        <article class="case reveal">
-          <div class="case__num">CASE<br>003</div>
-          <div class="case__body">
-            <div class="case__tags"><span>CPTS</span><span>BUILDING NOW</span></div>
-            <h3>Offensive security case files</h3>
-            <p>Write-up về enumeration, foothold, privilege escalation và pivoting sẽ được thêm từ các lab được cho phép.</p>
-          </div>
-          <div class="case__metric"><small>STATE</small><strong>NEXT<span>phase</span></strong></div>
-          <button class="case__open" type="button" data-case="2" aria-label="Mở case study 3">↗</button>
-        </article>
-      </div>
-    </section>
-
-    <section class="arsenal section-pad" id="arsenal">
-      <header class="section-head reveal">
-        <p class="eyebrow"><span>05</span> LEARNING ARSENAL</p>
-        <h2>Tools are secondary.<br><em>Thinking is the skill.</em></h2>
-      </header>
-      <div class="arsenal__grid reveal">
-        <div class="skill-map" role="list">
-          <button class="skill active" data-skill="recon" type="button"><span>01</span> Enumeration</button>
-          <button class="skill" data-skill="web" type="button"><span>02</span> Web Testing</button>
-          <button class="skill" data-skill="ad" type="button"><span>03</span> Active Directory</button>
-          <button class="skill" data-skill="linux" type="button"><span>04</span> Linux / Windows</button>
-          <button class="skill" data-skill="report" type="button"><span>05</span> Reporting</button>
+      <li class="log__item reveal">
+        <div class="log__when"><time datetime="2026-05">2026.05 — 2026.08</time></div>
+        <div class="log__what">
+          <p class="log__co">VNCS</p>
+          <h3>Security Consultant Intern</h3>
+          <p class="log__sum">Built and operated a distributed Splunk Enterprise lab. Onboarded Windows
+            Event, Sysmon, Linux, web application and firewall logs; validated ingestion and field
+            extraction; shipped dashboards, reports and alerts; wrote the POC documentation.</p>
+          <dl class="log__facts">
+            <div><dt>Environment</dt><dd>Distributed Splunk Enterprise — Deployment Server pushing config to universal forwarders across mixed hosts</dd></div>
+            <div><dt>Owned</dt><dd>Log onboarding, field extraction, time normalisation, dashboards, alerting</dd></div>
+            <div><dt>Output</dt><dd>Five log families in one searchable surface, plus POC documentation</dd></div>
+          </dl>
+          <p class="log__take"><b>Takeaway</b> Ingestion is the easy half. A log nobody validated is a
+            log that will lie to you in the middle of an incident.</p>
+          <ul class="tags"><li>Splunk Enterprise</li><li>SPL</li><li>Log onboarding</li><li>Field extraction</li><li>Alerting</li><li>POC docs</li></ul>
         </div>
-        <div class="skill-display" id="skillDisplay" aria-live="polite">
-          <p class="skill-display__path">~/arsenal/<span>enumeration</span></p>
-          <h3>Build the map before choosing the path.</h3>
-          <p>Service discovery, banner analysis, content enumeration và liên kết từng tín hiệu thành giả thuyết có thể kiểm chứng.</p>
-          <div class="chips"><span>Nmap</span><span>ffuf</span><span>NetExec</span><span>BloodHound</span><span>Burp Suite</span></div>
-          <div class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </li>
+
+      <li class="log__item reveal">
+        <div class="log__when"><time datetime="2025-11">2025.11 — 2026.04</time></div>
+        <div class="log__what">
+          <p class="log__co">VNPRO</p>
+          <h3>Network Administrator Intern</h3>
+          <p class="log__sum">Ran multi-VLAN production segments and the lab behind them: Cisco routing
+            and switching, firewalls, VPN, VMware ESXi and EVE-NG, plus the documentation and backups
+            that keep it recoverable.</p>
+          <dl class="log__facts">
+            <div><dt>Environment</dt><dd>Multi-VLAN production segments and the training lab behind them</dd></div>
+            <div><dt>Owned</dt><dd>Routing and switching, firewall and VPN configuration, ESXi hosts, EVE-NG topologies</dd></div>
+            <div><dt>Output</dt><dd>Runbooks, backups, restores, lab availability</dd></div>
+          </dl>
+          <p class="log__take"><b>Takeaway</b> Availability is a habit, not an event — a backup you have
+            never restored from is just optimism with a timestamp.</p>
+          <ul class="tags"><li>VLAN</li><li>Cisco IOS</li><li>Firewall</li><li>VPN</li><li>VMware ESXi</li><li>EVE-NG</li></ul>
         </div>
-      </div>
-    </section>
+      </li>
 
-    <section class="terminal-wrap section-pad" id="terminal">
-      <div class="terminal-copy reveal">
-        <p class="eyebrow"><span>06</span> INTERACTIVE SHELL</p>
-        <h2>Query the operator.</h2>
-        <p>Thử các lệnh <code>help</code>, <code>about</code>, <code>method</code>, <code>labs</code>, <code>ethics</code> hoặc <code>contact</code>.</p>
-      </div>
-      <div class="terminal reveal" role="application" aria-label="Terminal portfolio tương tác">
-        <div class="terminal__bar"><span></span><span></span><span></span><b>guest@cpts-path:~</b></div>
-        <div class="terminal__screen" id="terminalOutput" aria-live="polite">
-          <p><span class="muted">[secure-session]</span> Portfolio shell v1.0</p>
-          <p>Type <strong>help</strong> to inspect available commands.</p>
+      <li class="log__item log__item--edu reveal">
+        <div class="log__when"><time datetime="2023">2023 — 2027</time><span class="log__len">expected</span></div>
+        <div class="log__what">
+          <p class="log__co">Swinburne University of Technology</p>
+          <h3>Bachelor of Computer Science — Cyber Security</h3>
+          <p class="log__sum">The degree runs underneath all three internships. Networking and routing
+            first, then systems and security fundamentals, with the offensive side as the specialisation
+            I am steering toward.</p>
+          <dl class="log__facts">
+            <div><dt>Recognition</dt><dd>Best in Performance Award — TNE20002 Network Routing Principles</dd></div>
+            <div><dt>Studying</dt><dd>Network routing, systems administration, security fundamentals</dd></div>
+          </dl>
+          <ul class="tags"><li>Swinburne</li><li>BCS Cyber Security</li><li>2023–2027</li></ul>
         </div>
-        <form class="terminal__form" id="terminalForm">
-          <label for="terminalInput">guest@cpts-path:~$</label>
-          <input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Nhập lệnh terminal">
-        </form>
+      </li>
+    </ol>
+
+    <div class="signals reveal">
+      <p class="signals__label">Signals</p>
+      <ul class="signals__list">
+        <li>
+          <b>Best in Performance Award</b>
+          <span>TNE20002 — Network Routing Principles · Swinburne University of Technology</span>
+        </li>
+        <li>
+          <b>CPTS track — in progress</b>
+          <span>Certified Penetration Testing Specialist · OffSec · nothing claimed until it is held</span>
+        </li>
+        <li>
+          <b>Three internships, one thread</b>
+          <span>Network → logs → the operator who breaks it. The whole point of the path.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ WORK ══════════════════════════════════════════════════════ -->
+  <section class="sec" id="work">
+    <header class="sec__head reveal">
+      <p class="sec__idx">02</p>
+      <h2>Work</h2>
+      <p class="sec__note">Two come straight from my professional record, one is the site you are
+        reading, and one is still being built. Each card says which it is.</p>
+    </header>
+
+    <div class="wstat reveal">
+      <div><b>04</b><span>case files</span></div>
+      <div><b>02</b><span>verified professional record</span></div>
+      <div><b>01</b><span>built and shipped</span></div>
+      <div><b>01</b><span>still being built</span></div>
+    </div>
+
+    <div class="cases">
+      <details class="case reveal">
+        <summary class="case__sum">
+          <span class="case__idx">001</span>
+          <span class="case__main">
+            <span class="case__title">Distributed Splunk &amp; multi-source log onboarding</span>
+            <span class="case__sub">One deployment, five log families, validated end to end — then dashboards and alerts someone would actually act on.</span>
+            <span class="case__tags"><i>SIEM</i><i>Splunk</i><i>Verified record</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>Stood up Splunk Enterprise as a distributed deployment — a Deployment Server pushing
+            config to universal forwarders across mixed hosts — then brought several log families
+            into one searchable surface: Windows Event Log, Sysmon, Linux syslog, web application
+            logs and firewall/syslog feeds.</p>
+          <p>The work that mattered was after ingestion: confirming events actually arrived, fixing
+            field extraction where sourcetypes mis-parsed, normalising time, and turning the result
+            into dashboards and alerts someone would actually act on.</p>
+          <figure class="case__fig">
+            <svg viewBox="0 0 760 246" role="img" aria-labelledby="fig-splunk">
+              <title id="fig-splunk">Five log sources feed universal forwarders across mixed hosts. The forwarders send events to a distributed Splunk Enterprise deployment — indexer and search head — which produces dashboards, alerts, reports and POC documentation. A deployment server pushes app and configuration to the forwarders.</title>
+              <defs>
+                <marker id="sp-ar" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                  <path class="fig-ar" d="M0 0 L8 4 L0 8 Z"/>
+                </marker>
+                <marker id="sp-ar-mute" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                  <path class="fig-ar-mute" d="M0 0 L8 4 L0 8 Z"/>
+                </marker>
+              </defs>
+
+              <text class="fig-stage" x="16" y="16">SOURCES</text>
+              <text class="fig-stage" x="216" y="16">FORWARDING</text>
+              <text class="fig-stage" x="396" y="16">SPLUNK ENTERPRISE</text>
+              <text class="fig-stage" x="636" y="16">OUTPUT</text>
+
+              <!-- control plane: config reaches every forwarder from one place -->
+              <rect class="fig-box" x="216" y="32" width="140" height="40" rx="6"/>
+              <text class="fig-label" x="286" y="50" text-anchor="middle">Deployment Server</text>
+              <text class="fig-sub" x="286" y="63" text-anchor="middle">app + config push</text>
+              <path class="fig-dash" d="M286 72 V120" marker-end="url(#sp-ar-mute)"/>
+
+              <!-- data plane: sources -->
+              <rect class="fig-chip" x="16" y="120" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="132.5">Windows Event Log</text>
+              <rect class="fig-chip" x="16" y="142" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="154.5">Sysmon</text>
+              <rect class="fig-chip" x="16" y="164" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="176.5">Linux syslog</text>
+              <rect class="fig-chip" x="16" y="186" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="198.5">Web application</text>
+              <rect class="fig-chip" x="16" y="208" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="220.5">Firewall / syslog</text>
+
+              <path class="fig-wire" d="M176 129 H186 M176 151 H186 M176 173 H186 M176 195 H186 M176 217 H186"/>
+              <path class="fig-wire" d="M186 129 V217"/>
+              <path class="fig-flow" d="M186 173 H216" marker-end="url(#sp-ar)"/>
+
+              <rect class="fig-box" x="216" y="120" width="140" height="106" rx="6"/>
+              <text class="fig-label" x="286" y="158" text-anchor="middle">Universal</text>
+              <text class="fig-label" x="286" y="172" text-anchor="middle">Forwarders</text>
+              <text class="fig-sub" x="286" y="192" text-anchor="middle">mixed OS hosts</text>
+
+              <path class="fig-flow" d="M356 173 H396" marker-end="url(#sp-ar)"/>
+
+              <rect class="fig-box fig-box--accent" x="396" y="120" width="200" height="106" rx="6"/>
+              <text class="fig-label" x="496" y="148" text-anchor="middle">Splunk Enterprise</text>
+              <path class="fig-wire" d="M412 160 H580"/>
+              <text class="fig-tick" x="496" y="178" text-anchor="middle">Indexer · Search Head</text>
+              <text class="fig-sub" x="496" y="194" text-anchor="middle">parse · index · normalise time</text>
+              <text class="fig-sub" x="496" y="208" text-anchor="middle">SPL · correlate across sources</text>
+
+              <path class="fig-flow" d="M596 173 H636" marker-end="url(#sp-ar)"/>
+
+              <rect class="fig-chip fig-chip--accent" x="636" y="131" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="143.5">Dashboards</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="153" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="165.5">Alerts</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="175" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="187.5">Reports</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="197" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="209.5">POC docs</text>
+            </svg>
+            <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
+            <figcaption>Five log families, one searchable surface. The Deployment Server is the control plane:
+              pushing app and config from one place is what keeps parsing consistent across hosts nobody
+              configured by hand.</figcaption>
+          </figure>
+
+          <ol class="flow"><li>Collect</li><li>Parse</li><li>Normalise</li><li>Validate</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Stack</dt><dd>Splunk Enterprise, Deployment Server, Universal Forwarders, SPL</dd></div>
+            <div><dt>Sources</dt><dd>Windows Event, Sysmon, Linux, web app, firewall</dd></div>
+            <div><dt>Output</dt><dd>Dashboards, reports, alerts, POC documentation</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> Detection is downstream of data quality.
+            The onboarding work — sourcetypes, extraction, time — is what decides whether the alert
+            fires on the right thing.</p>
+        </div>
+      </details>
+
+      <details class="case reveal">
+        <summary class="case__sum">
+          <span class="case__idx">002</span>
+          <span class="case__main">
+            <span class="case__title">Virtual lab infrastructure operations</span>
+            <span class="case__sub">ESXi hosts and EVE-NG topologies kept alive for routing, switching, firewall, VPN and wireless training.</span>
+            <span class="case__tags"><i>Network</i><i>Lab ops</i><i>Verified record</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>Kept the training labs alive: VMware ESXi hosts and EVE-NG/UnetLab topologies that
+            students and engineers depended on for routing, switching, firewall, VPN and wireless
+            exercises.</p>
+          <p>Provisioning was the easy half. The real work was monitoring, restoring from backup
+            when a topology got wrecked mid-session, and writing the documentation that let someone
+            else rebuild it without me.</p>
+          <figure class="case__fig">
+            <svg viewBox="0 0 760 290" role="img" aria-labelledby="fig-lab">
+              <title id="fig-lab">A VMware ESXi host runs an EVE-NG or UnetLab guest virtual machine, which runs the routing, switching, firewall, VPN, wireless and Cisco ISE topologies that students and engineers depend on. A four-step operations rail — provision, monitor, restore, document — runs alongside.</title>
+              <defs>
+                <marker id="lab-ar" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                  <path class="fig-ar" d="M0 0 L8 4 L0 8 Z"/>
+                </marker>
+              </defs>
+
+              <!-- the stack: hypervisor hosts the topology engine hosts the topologies -->
+              <rect class="fig-box" x="16" y="30" width="520" height="176" rx="8"/>
+              <text class="fig-stage" x="32" y="50">VMWARE ESXI</text>
+              <text class="fig-sub" x="520" y="50" text-anchor="end">hypervisor + guest VMs</text>
+
+              <rect class="fig-box fig-box--nest" x="36" y="64" width="480" height="122" rx="6"/>
+              <text class="fig-label" x="52" y="86">EVE-NG / UnetLab</text>
+              <text class="fig-sub" x="500" y="86" text-anchor="end">topology engine</text>
+
+              <rect class="fig-chip" x="52" y="100" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="122" y="120" text-anchor="middle">Routing</text>
+              <rect class="fig-chip" x="208" y="100" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="278" y="120" text-anchor="middle">Switching</text>
+              <rect class="fig-chip" x="364" y="100" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="434" y="120" text-anchor="middle">Firewall</text>
+
+              <rect class="fig-chip" x="52" y="140" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="122" y="160" text-anchor="middle">VPN</text>
+              <rect class="fig-chip" x="208" y="140" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="278" y="160" text-anchor="middle">Wireless</text>
+              <rect class="fig-chip" x="364" y="140" width="140" height="32" rx="4"/>
+              <text class="fig-tick" x="434" y="160" text-anchor="middle">Cisco ISE</text>
+
+              <path class="fig-flow" d="M276 206 V226" marker-end="url(#lab-ar)"/>
+
+              <rect class="fig-box" x="16" y="226" width="520" height="44" rx="6"/>
+              <text class="fig-label" x="32" y="253">Students &amp; engineers</text>
+              <text class="fig-sub" x="520" y="253" text-anchor="end">who needed it up at 9am</text>
+
+              <!-- the part that actually kept it alive -->
+              <text class="fig-stage" x="560" y="50">OPERATIONS</text>
+              <rect class="fig-box" x="560" y="64" width="184" height="38" rx="6"/>
+              <text class="fig-label" x="652" y="79" text-anchor="middle">Provision</text>
+              <text class="fig-sub" x="652" y="92" text-anchor="middle">stand up the topology</text>
+              <path class="fig-flow" d="M652 104 V118" marker-end="url(#lab-ar)"/>
+              <rect class="fig-box" x="560" y="120" width="184" height="38" rx="6"/>
+              <text class="fig-label" x="652" y="135" text-anchor="middle">Monitor</text>
+              <text class="fig-sub" x="652" y="148" text-anchor="middle">watch for breakage</text>
+              <path class="fig-flow" d="M652 160 V174" marker-end="url(#lab-ar)"/>
+              <rect class="fig-box" x="560" y="176" width="184" height="38" rx="6"/>
+              <text class="fig-label" x="652" y="191" text-anchor="middle">Restore</text>
+              <text class="fig-sub" x="652" y="204" text-anchor="middle">back up before it breaks</text>
+              <path class="fig-flow" d="M652 216 V230" marker-end="url(#lab-ar)"/>
+              <rect class="fig-box" x="560" y="232" width="184" height="38" rx="6"/>
+              <text class="fig-label" x="652" y="247" text-anchor="middle">Document</text>
+              <text class="fig-sub" x="652" y="260" text-anchor="middle">so anyone can rebuild</text>
+            </svg>
+            <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
+            <figcaption>The stack, and the loop that kept it running. ESXi hosts the EVE-NG guest; EVE-NG runs the
+              topologies; the topologies exist so people have something to break. Provisioning was the easy
+              column — the right-hand rail is where the job actually was.</figcaption>
+          </figure>
+
+          <ol class="flow"><li>Provision</li><li>Monitor</li><li>Restore</li><li>Document</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Platform</dt><dd>VMware ESXi, EVE-NG / UnetLab</dd></div>
+            <div><dt>Scope</dt><dd>Routing, switching, firewall, VPN, wireless, Cisco ISE</dd></div>
+            <div><dt>Output</dt><dd>Lab availability, backups, runbooks</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> That I can keep something running
+            that other people depend on — and hand it over in a state where they do not need me.</p>
+        </div>
+      </details>
+
+      <details class="case case--live reveal">
+        <summary class="case__sum">
+          <span class="case__idx">003</span>
+          <span class="case__main">
+            <span class="case__title">This site — a terminal you can actually use</span>
+            <span class="case__sub">No framework, no build step. A working virtual filesystem, tab completion, and a portrait drawn from 2,473 live glyph particles.</span>
+            <span class="case__tags"><i>Front end</i><i>Canvas</i><i>Shipped</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>The page you are reading is itself the case study. There is no framework and no build
+            step — it is plain HTML, one stylesheet, and hand-written JavaScript, which means it
+            loads fast and there is nothing between you and the source.</p>
+          <p>The shell in the hero is real: a virtual filesystem with <code>ls</code>,
+            <code>cd</code>, <code>cat</code> and <code>tree</code>, fish-style ghost completion on
+            <kbd>Tab</kbd>, command history, and a fullscreen mode on <kbd>Ctrl</kbd>+<kbd>K</kbd>.
+            The portrait above the fold is 2,473 individual glyphs on a canvas — hover it and they
+            are pushed aside and spring back to their exact home position.</p>
+          <p>The portrait was built the way a halftone is: the source artwork is decomposed into a
+            grid of cells, each cell gets one glyph chosen by how much ink it covers, and the ink
+            colour stays constant — so all the tone comes from density. A single-ink density field
+            reads as text; a per-cell colour palette reads as a washed-out photo. Getting that
+            wrong was the whole difference.</p>
+          <ol class="flow"><li>Decompose</li><li>Map</li><li>Render</li><li>Animate</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Stack</dt><dd>Vanilla HTML, CSS and JavaScript — no framework, no bundler</dd></div>
+            <div><dt>Engine</dt><dd>Canvas 2D glyph field, positional particle model, fixed backing store</dd></div>
+            <div><dt>Detail</dt><dd>JSON-LD, OG/Twitter cards, manifest, self-hosted subset fonts, full no-JS fallback</dd></div>
+            <div><dt>Verify</dt><dd>View source — every line of it is right there</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> Craft under constraint. Accessibility,
+            no-JS resilience and performance were treated as requirements, not clean-up work.</p>
+        </div>
+      </details>
+
+      <details class="case case--wip reveal">
+        <summary class="case__sum">
+          <span class="case__idx">004</span>
+          <span class="case__main">
+            <span class="case__title">Offensive security case files</span>
+            <span class="case__sub">Where the CPTS work will live — enumeration, foothold, escalation, pivoting, and the report that ties it together.</span>
+            <span class="case__tags"><i>CPTS</i><i>OffSec</i><i>In progress</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>Where the CPTS work will live. Nothing goes up here that I cannot reproduce from an
+            authorised lab with the evidence to back it — enumeration, foothold, privilege
+            escalation, pivoting, and the report that ties it together.</p>
+          <p>Every write-up gets sanitised first: no flags, no credentials, no client data. The
+            point is methodology and remediation, not a scoreboard.</p>
+          <ol class="flow"><li>Enumerate</li><li>Foothold</li><li>Escalate</li><li>Report</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Track</dt><dd>CPTS — Certified Penetration Testing Specialist</dd></div>
+            <div><dt>Rule</dt><dd>Authorised labs only, sanitised before publishing</dd></div>
+            <div><dt>Status</dt><dd>Building — first case files land as labs complete</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> Discipline about what I put my name on.
+            A case file with a flag in it is worth less than no case file at all.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ══ TOOLKIT ═══════════════════════════════════════════════════ -->
+  <section class="sec" id="toolkit">
+    <header class="sec__head reveal">
+      <p class="sec__idx">03</p>
+      <h2>Toolkit</h2>
+      <p class="sec__note">Tools are secondary — thinking is the skill. But a capability without the
+        tool that implements it is just a category, so every entry below names the tools and where I
+        actually used them.</p>
+    </header>
+
+    <p class="legend reveal">
+      <span><i class="lv lv--pro" aria-hidden="true"></i><b>professional</b> — used in a paid role</span>
+      <span><i class="lv lv--lab" aria-hidden="true"></i><b>lab</b> — used in practice, not yet in production</span>
+      <span><i class="lv lv--study" aria-hidden="true"></i><b>studying</b> — actively learning</span>
+    </p>
+
+    <div class="kit">
+      <div class="kit__col reveal">
+        <h3 class="kit__h">Offensive <span class="kit__badge">lab use</span></h3>
+        <ul class="kit__list">
+          <li>
+            <span>Enumeration</span>
+            <em>Service discovery, banner analysis, content discovery — finding the surface before touching it</em>
+            <ul class="kit__tools"><li>Nmap</li><li>ffuf</li><li>NetExec</li></ul>
+          </li>
+          <li>
+            <span>Web testing</span>
+            <em>Request and response inspection, logic flaws, authorisation boundaries</em>
+            <ul class="kit__tools"><li>Burp Suite</li><li>ffuf</li></ul>
+          </li>
+          <li>
+            <span>Active Directory</span>
+            <em>Trust relationships, credential exposure, delegation, attack-path mapping</em>
+            <ul class="kit__tools"><li>BloodHound</li><li>NetExec</li><li>Impacket</li><li>Kerbrute</li></ul>
+          </li>
+          <li>
+            <span>Post-exploitation</span>
+            <em>Privilege escalation, pivoting and tunnelling, maintaining a clean trail of evidence</em>
+            <ul class="kit__tools"><li>Impacket</li><li>NetExec</li><li>BloodHound</li></ul>
+          </li>
+          <li>
+            <span>Reporting</span>
+            <em>Reproducible steps, honest impact, severity that survives a second opinion</em>
+            <ul class="kit__tools"><li>Markdown</li><li>Evidence discipline</li></ul>
+          </li>
+          <li>
+            <span>Remediation</span>
+            <em>Ordering fixes by what actually reduces risk, not by what is easiest to fix</em>
+            <ul class="kit__tools"><li>Prioritisation</li><li>Defensive mapping</li></ul>
+          </li>
+        </ul>
       </div>
-    </section>
 
-    <section class="ethics section-pad reveal">
-      <p class="eyebrow"><span>07</span> RULES OF ENGAGEMENT</p>
-      <blockquote>“Chỉ kiểm thử khi có <span>phạm vi rõ ràng</span>, quyền cho phép rõ ràng và mục tiêu giảm rủi ro.”</blockquote>
-      <div class="ethics__line"><span>AUTHORIZED LABS</span><span>RESPONSIBLE DISCLOSURE</span><span>NO UNVERIFIED CLAIMS</span></div>
-    </section>
-
-    <section class="contact section-pad" id="contact">
-      <div class="contact__orb" aria-hidden="true"><i></i><i></i><span>@</span></div>
-      <div class="contact__copy reveal">
-        <p class="eyebrow"><span>08</span> ESTABLISH CONNECTION</p>
-        <h2>Let’s exchange<br><em>signals.</em></h2>
-        <p>Cybersecurity student tại Swinburne, IT Intern tại Got It và đang học theo lộ trình CPTS. Mở với lab collaboration, internship hoặc trao đổi về offensive security.</p>
-          <a class="button magnetic" href="mailto:anhtuanpm3939@gmail.com"><span>ANHTUANPM3939@GMAIL.COM</span><b>↗</b></a>
+      <div class="kit__col reveal">
+        <h3 class="kit__h">Foundations <span class="kit__badge">professional</span></h3>
+        <ul class="kit__list">
+          <li>
+            <span>Networking</span>
+            <em>VLAN design, routing and switching, firewall policy, VPN, wireless</em>
+            <ul class="kit__tools"><li>Cisco IOS</li><li>VLAN</li><li>Firewall</li><li>VPN</li></ul>
+          </li>
+          <li>
+            <span>SIEM &amp; detection</span>
+            <em>Splunk Enterprise, SPL, Deployment Server, universal forwarders, dashboards, alerting</em>
+            <ul class="kit__tools"><li>Splunk Enterprise</li><li>SPL</li><li>Sysmon</li></ul>
+          </li>
+          <li>
+            <span>Systems</span>
+            <em>Linux and Windows administration, virtualisation, lab topology building</em>
+            <ul class="kit__tools"><li>Linux</li><li>Windows Server</li><li>VMware ESXi</li><li>EVE-NG</li></ul>
+          </li>
+          <li>
+            <span>Identity &amp; cloud</span>
+            <em>Microsoft 365 environment support — accounts, devices, the lifecycle between them</em>
+            <ul class="kit__tools"><li>Microsoft 365</li><li>Endpoint support</li></ul>
+          </li>
+          <li>
+            <span>Scripting</span>
+            <em>Enough automation to stop repeating myself, and to read someone else's script before running it</em>
+            <ul class="kit__tools"><li>Bash</li><li>PowerShell</li><li>Python</li></ul>
+          </li>
+          <li>
+            <span>Practice</span>
+            <em>Documentation, backups and restores, troubleshooting when the clock is running</em>
+            <ul class="kit__tools"><li>Runbooks</li><li>Change notes</li></ul>
+          </li>
+        </ul>
       </div>
-      <footer>
-        <p>© <span id="year"></span> VÕ LÊ ANH TUẤN // CPTS PATH</p>
-        <div><a href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span>NO RED-TEAM CERT CLAIMS</span><a href="#top">BACK TO TOP ↑</a></div>
-      </footer>
-    </section>
-  </main>
+    </div>
 
-  <dialog class="case-modal" id="caseModal">
-    <button class="case-modal__close" type="button" aria-label="Đóng">×</button>
-    <p class="eyebrow"><span>CASE FILE</span> LAB TEMPLATE</p>
-    <h2 id="modalTitle">Case study</h2>
-    <p id="modalBody"></p>
-    <div class="modal-flow" id="modalFlow"></div>
-    <p class="modal-note">PLACEHOLDER // Hãy thay bằng bằng chứng từ lab thật trước khi xuất bản công khai.</p>
-  </dialog>
+    <div class="track reveal">
+      <div class="track__col">
+        <p class="track__label">Certification track</p>
+        <ul class="track__list">
+          <li class="is-now"><b>CPTS</b><span>Certified Penetration Testing Specialist · OffSec</span><i>in progress</i></li>
+          <li class="is-hold"><b>No certification claimed</b><span>If it is not held, it is not on this page. That is the rule.</span><i>by policy</i></li>
+        </ul>
+      </div>
+      <div class="track__col">
+        <p class="track__label">Currently studying</p>
+        <ul class="track__list">
+          <li class="is-now"><b>Active Directory attack paths</b><span>Delegation, trust abuse, credential exposure</span><i>deepest focus</i></li>
+          <li class="is-now"><b>Web application security</b><span>Authorisation logic, server-side flaws, request smuggling</span><i>ongoing</i></li>
+          <li class="is-now"><b>Detection engineering</b><span>Turning log sources into alerts worth waking up for</span><i>ongoing</i></li>
+        </ul>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
+    <div class="stack reveal">
+      <p class="stack__label">Working set</p>
+      <ul class="stack__items">
+        <li>Nmap</li><li>ffuf</li><li>Burp Suite</li><li>NetExec</li><li>BloodHound</li>
+        <li>Impacket</li><li>Kerbrute</li><li>Wireshark</li><li>SPL</li><li>Bash</li>
+        <li>PowerShell</li><li>Python</li><li>Linux</li><li>Windows Server</li><li>Cisco IOS</li>
+        <li>VMware ESXi</li><li>EVE-NG</li><li>Microsoft 365</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ═══════════════════════════════════════════════════ -->
+  <section class="sec sec--contact" id="contact">
+    <header class="sec__head reveal">
+      <p class="sec__idx">04</p>
+      <h2>Let&rsquo;s exchange signals.</h2>
+      <p class="sec__note">Open to internship and junior roles in security operations, SOC or
+        offensive security — and to lab collaboration with people who take notes.</p>
+    </header>
+
+    <div class="contact reveal">
+      <a class="contact__big" href="mailto:anhtuanpm3939@gmail.com">
+        <span class="contact__label">Email</span>
+        <span class="contact__value">anhtuanpm3939@gmail.com</span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="contact__big" href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="me noopener">
+        <span class="contact__label">LinkedIn</span>
+        <span class="contact__value">linkedin.com/in/vlat273</span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
+      <div class="contact__plain">
+        <span class="contact__label">Base</span>
+        <span class="contact__value">Ho Chi Minh City, Vietnam</span>
+      </div>
+    </div>
+
+    <p class="onrepeat reveal">
+      <span class="onrepeat__label">On repeat</span>
+      <a class="onrepeat__track" href="https://open.spotify.com/search/True%20Damage%20GIANTS" target="_blank" rel="noopener">
+        GIANTS
+        <span class="onrepeat__by">True Damage</span>
+        <span class="onrepeat__arrow" aria-hidden="true">↗</span>
+      </a>
+    </p>
+
+    <p class="rules reveal">
+      Authorised labs only <span aria-hidden="true">·</span> Responsible disclosure
+      <span aria-hidden="true">·</span> No unverified claims
+    </p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>© <span id="year">2026</span> Võ Lê Anh Tuấn</p>
+  <p class="foot__mid">Built by hand — no framework, no build step.</p>
+  <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+</footer>
+
+<noscript>
+  <div class="noscript">
+    <p><strong>JavaScript is off.</strong> Every section of this page is plain HTML and still
+      renders — only the interactive terminal needs JavaScript. Reach me directly at
+      <a href="mailto:anhtuanpm3939@gmail.com">anhtuanpm3939@gmail.com</a> or on
+      <a href="https://www.linkedin.com/in/vlat273/" target="_blank" rel="me noopener">LinkedIn</a>.</p>
+  </div>
+</noscript>
+
+<script src="app.js" defer></script>
+<script src="portrait-data.js" defer></script>
+<script src="portrait.js" defer></script>
+<script src="audio.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,3 @@
+# Keep line endings normalised to LF in the repository. This is plain text
+# served straight to browsers, so mixed endings only produce noisy diffs.
+* text=auto eol=lf

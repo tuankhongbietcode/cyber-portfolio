@@ -1,0 +1,6 @@
+# Single-page site — served from a host that is not guaranteed to be stable,
+# so no absolute URL is recorded here.
+User-agent: *
+Allow: /
+
+# Single-page site — no sitemap needed.
