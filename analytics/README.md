@@ -67,6 +67,9 @@ be read back afterwards — if you lose it, set a new one.
 Re-running is safe: it reuses an existing `database_id` and leaves the token
 alone. To force a fresh token, run `ROTATE_TOKEN=1 bash setup.sh`.
 
+The first run installs wrangler into `~/.wrangler-cli` (about 170 MB, once). It
+does **not** use `npx` — see [Why not npx](#why-not-npx) below.
+
 ### The manual way
 
 If you would rather run each step yourself:
@@ -74,22 +77,30 @@ If you would rather run each step yourself:
 ```bash
 cd analytics
 
+# 0. Install wrangler into its own directory, once. setup.sh does this for you;
+#    this is the same thing by hand.
+mkdir -p ~/.wrangler-cli && cd ~/.wrangler-cli
+npm install wrangler@latest --ignore-scripts --omit=dev
+cd - >/dev/null
+
+WR=~/.wrangler-cli/node_modules/.bin/wrangler
+
 # 1. Log in — opens a browser once.
-npx wrangler@latest login
+"$WR" login
 
 # 2. Create the database. This prints a database_id.
-npx wrangler@latest d1 create portfolio-analytics
+"$WR" d1 create portfolio-analytics
 
 # 3. Paste that id into wrangler.toml, replacing PASTE_YOUR_DATABASE_ID_HERE.
 
 # 4. Create the table.
-npx wrangler@latest d1 execute portfolio-analytics --remote --file=./schema.sql
+"$WR" d1 execute portfolio-analytics --remote --file=./schema.sql
 
 # 5. Set the dashboard password. Pick something long and random.
-npx wrangler@latest secret put DASHBOARD_TOKEN
+"$WR" secret put DASHBOARD_TOKEN
 
 # 6. Ship it. This prints your workers.dev URL.
-npx wrangler@latest deploy
+"$WR" deploy
 ```
 
 The deploy output gives you a URL like
@@ -157,13 +168,60 @@ specific number — it changes.
 
 ## Maintenance
 
+Every command below assumes the private install, which `setup.sh` creates:
+
+```bash
+WR=~/.wrangler-cli/node_modules/.bin/wrangler
+```
+
 | Task | Command |
 | --- | --- |
-| Tail live logs | `npx wrangler@latest tail` |
-| Re-apply schema | `npx wrangler@latest d1 execute portfolio-analytics --remote --file=./schema.sql` |
-| Query by hand | `npx wrangler@latest d1 execute portfolio-analytics --remote --command "SELECT * FROM visits ORDER BY ts DESC LIMIT 20"` |
-| Rotate the token | `npx wrangler@latest secret put DASHBOARD_TOKEN` |
-| Delete everything | `npx wrangler@latest d1 execute portfolio-analytics --remote --command "DELETE FROM visits"` |
+| Tail live logs | `"$WR" tail` |
+| Re-apply schema | `"$WR" d1 execute portfolio-analytics --remote --file=./schema.sql` |
+| Query by hand | `"$WR" d1 execute portfolio-analytics --remote --command "SELECT * FROM visits ORDER BY ts DESC LIMIT 20"` |
+| Rotate the token | `"$WR" secret put DASHBOARD_TOKEN` |
+| Delete everything | `"$WR" d1 execute portfolio-analytics --remote --command "DELETE FROM visits"` |
+
+## Why not npx
+
+`setup.sh` installs wrangler into `~/.wrangler-cli` instead of running
+`npx wrangler@latest`, and passes `--ignore-scripts`.
+
+On Windows, npx caches each install under `%LOCALAPPDATA%\npm-cache\_npx\<hash>`.
+If that install fails part-way through, the half-built entry stays on disk and
+every later `npx wrangler` **reuses it instead of retrying**, so the same error
+repeats forever:
+
+```
+Error: The package "@cloudflare/workerd-windows-64" could not be found,
+and is needed by workerd.
+```
+
+The half-built tree happens when a postinstall script fails and npm rolls the
+tree back but the rollback cannot complete — which leaves wrangler installed
+with its platform binaries stripped out. `esbuild`'s postinstall is the usual
+trigger.
+
+Two properties make the private install immune:
+
+- **Its own directory**, so no stale cache entry is ever reused.
+- **`--ignore-scripts`**, so no postinstall runs, so nothing fails and nothing
+  rolls back. This is safe because every platform binary (`workerd`, `esbuild`,
+  `sharp`) ships as an optional *dependency* rather than being downloaded by a
+  postinstall script.
+
+If you ever need to start over:
+
+```bash
+rm -rf ~/.wrangler-cli
+```
+
+The stale npx entry is then just dead weight — safe to remove, and it will be
+recreated if anything else uses npx:
+
+```bash
+rm -rf "$LOCALAPPDATA/npm-cache/_npx"
+```
 
 ## Tests
 
@@ -181,7 +239,7 @@ npm test
 | `src/index.js` | The whole Worker: ingest, auth, queries, dashboard |
 | `schema.sql` | D1 table and indexes |
 | `wrangler.toml` | Worker name, D1 binding, allowed origin, retention |
-| `setup.sh` | One-shot deploy: login, database, schema, token, deploy, wire the site |
+| `setup.sh` | One-shot deploy: installs wrangler, login, database, schema, token, deploy, wire the site |
 | `test/helpers.test.mjs` | Unit tests for the pure helpers |
 | `test/worker.test.mjs` | Integration tests against a stubbed D1 binding |
 

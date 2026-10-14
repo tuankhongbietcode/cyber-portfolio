@@ -15,6 +15,10 @@
 #
 # Safe to re-run: it reuses an existing database_id and never rotates the token
 # unless you delete it first.
+#
+# This script installs its own copy of wrangler under ~/.wrangler-cli and does
+# NOT use `npx`. Step 0 explains why — short version: the npx cache on Windows
+# can get stuck half-installed, and once it is, every retry reuses it.
 
 set -euo pipefail
 
@@ -33,16 +37,33 @@ die()  { printf '\n\033[1;31mERROR: %s\033[0m\n' "$1" >&2; exit 1; }
 
 # ------------------------------------------------------------------ 0. tools
 #
-# node and npx are not guaranteed to be on the PATH of a shell you open by
-# hand: WorkBuddy ships its own copy under ~/.workbuddy-ai and only some
-# processes see it. Look on the PATH first, then fall back to that copy.
+# Two things are needed: a `node` binary, and a working `wrangler`.
+#
+# We deliberately do NOT use `npx wrangler@latest`.
+#
+# On Windows, npx installs into a cache keyed by the package spec
+# (%LOCALAPPDATA%\npm-cache\_npx\<hash>). If that install fails part-way
+# through, the entry is left half-built, and every later `npx wrangler` reuses
+# it instead of retrying — so the same error repeats forever:
+#
+#   Error: The package "@cloudflare/workerd-windows-64" could not be found
+#
+# The half-built tree comes from a rollback that did not finish. esbuild's
+# postinstall script exits 1, so npm rolls the whole tree back; on Windows that
+# rollback can be blocked by a bulk-delete guard, which leaves wrangler
+# installed but with every platform-specific binary stripped back out.
+#
+# So instead: install wrangler once into its own directory, with
+# --ignore-scripts. All of the platform binaries (workerd, esbuild, sharp) are
+# optional *dependencies* rather than postinstall downloads, so they still
+# arrive — and with no postinstall script there is nothing to fail and nothing
+# to roll back.
 
-say "0/6  Finding node and npx"
+say "0/6  Finding node, then installing wrangler"
 
 NODE="$(command -v node 2>/dev/null || true)"
-NPX="$(command -v npx 2>/dev/null || true)"
 
-if [ -z "$NPX" ]; then
+if [ -z "$NODE" ]; then
   # Git Bash sets HOME itself, but do not depend on it being set.
   for hd in "${HOME:-}" "${USERPROFILE:-}"; do
     [ -n "$hd" ] || continue
@@ -53,39 +74,108 @@ if [ -z "$NPX" ]; then
         hd="/${_dl,,}${hd:2}"                                 # C:/Users -> /c/Users
         ;;
     esac
-    for cand in "$hd"/.workbuddy-ai/binaries/node/versions/*/npx; do
-      if [ -x "$cand" ]; then
-        NPX="$cand"
-        NODE="${cand%/*}/node"
-        break 2
-      fi
+    for cand in "$hd"/.workbuddy-ai/binaries/node/versions/*/node; do
+      if [ -x "$cand" ]; then NODE="$cand"; break 2; fi
     done
   done
 fi
 
-[ -n "$NPX" ] || die "Could not find npx. Install Node 18+ from https://nodejs.org and re-run."
-[ -n "$NODE" ] || NODE="${NPX%/*}/node"
+[ -n "$NODE" ] || die "Could not find node. Install Node 18+ from https://nodejs.org and re-run."
 
-# npm and npx launch the installed package through cmd.exe on Windows, and that
-# child process looks for `node` on PATH. When node was only found by the
-# fallback above it is not on PATH yet, and the launch dies with
+NPM_CLI="$(dirname "$NODE")/node_modules/npm/bin/npm-cli.js"
+[ -f "$NPM_CLI" ] || die "Could not find npm next to $NODE."
+
+# npm and wrangler spawn child processes that look for `node` on PATH. When
+# node was only found by the fallback above it is not on PATH yet, and the
+# launch dies with
 #   '"node"' is not recognized as an internal or external command
 # Putting the resolved directory first fixes it for every child process.
 export PATH="$(dirname "$NODE"):$PATH"
 
-ok "node : $NODE"
-ok "npx  : $NPX"
+# node.exe cannot resolve /c/... paths, so convert one when we hand it over.
+winpath() {
+  if command -v cygpath >/dev/null 2>&1; then cygpath -m "$1"; else printf '%s' "$1"; fi
+}
 
-# Every wrangler call goes through the npx we resolved.
-wr() { "$NPX" --yes wrangler@latest "$@"; }
+HOME_DIR="${HOME:-${USERPROFILE:-}}"
+[ -n "$HOME_DIR" ] || die "Could not work out your home directory."
+HOME_DIR="${HOME_DIR//\\//}"
+case "$HOME_DIR" in
+  [A-Za-z]:/*)
+    _dl="${HOME_DIR:0:1}"
+    HOME_DIR="/${_dl,,}${HOME_DIR:2}"
+    ;;
+esac
+
+WRANGLER_HOME="${WRANGLER_HOME:-$HOME_DIR/.wrangler-cli}"
+WRANGLER_JS="$WRANGLER_HOME/node_modules/wrangler/bin/wrangler.js"
+WRANGLER_WIN="$(winpath "$WRANGLER_JS")"
+
+# Every wrangler call runs through the private copy installed above.
+wr()       { "$NODE" "$WRANGLER_WIN" "$@"; }
+wr_ready() { [ -f "$WRANGLER_JS" ] && "$NODE" "$WRANGLER_WIN" --version >/dev/null 2>&1; }
+wr_ver()   { wr --version 2>/dev/null | tr -d '\r' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1; }
+
+# try_install [cache-dir] — "" uses npm's default cache.
+try_install() {
+  mkdir -p "$WRANGLER_HOME"
+  [ -f "$WRANGLER_HOME/package.json" ] || \
+    printf '{"name":"wrangler-cli","private":true}\n' > "$WRANGLER_HOME/package.json"
+  (
+    cd "$WRANGLER_HOME"
+    if [ -n "$1" ]; then
+      "$NODE" "$NPM_CLI" install wrangler@latest --ignore-scripts \
+        --no-audit --no-fund --omit=dev --cache "$1" --loglevel=error
+    else
+      "$NODE" "$NPM_CLI" install wrangler@latest --ignore-scripts \
+        --no-audit --no-fund --omit=dev --loglevel=error
+    fi
+  )
+}
+
+if wr_ready; then
+  ok "node     : $NODE"
+  ok "wrangler : $(wr_ver)  (already installed in $WRANGLER_HOME)"
+else
+  ok "node     : $NODE"
+  echo "    Installing wrangler into $WRANGLER_HOME (first run only, ~1 min)..."
+
+  if ! try_install "" || ! wr_ready; then
+    warn "That install did not produce a working wrangler. Retrying from scratch"
+    warn "with an isolated cache..."
+    rm -rf "$WRANGLER_HOME/node_modules" "$WRANGLER_HOME/package-lock.json" 2>/dev/null || true
+    try_install "$WRANGLER_HOME/.npm-cache" || true
+  fi
+
+  wr_ready || die "wrangler still will not start. Run these by hand and send me the output:
+       cd \"$WRANGLER_HOME\"
+       \"$NODE\" \"$NPM_CLI\" install wrangler@latest --ignore-scripts --omit=dev"
+
+  ok "wrangler : $(wr_ver)  (installed in $WRANGLER_HOME)"
+fi
 
 # ------------------------------------------------------------------ 1. login
 
 say "1/6  Cloudflare login"
-if wr whoami >/dev/null 2>&1; then
+
+# `wrangler whoami` exits 0 even when you are not logged in — it just prints
+# "You are not authenticated." So the exit code alone is not enough to tell
+# whether we already have credentials; we have to read the output too.
+if WHOAMI="$(wr whoami 2>&1)"; then
+  if printf '%s' "$WHOAMI" | grep -qi "not authenticated"; then
+    AUTHED=0
+  else
+    AUTHED=1
+  fi
+else
+  AUTHED=0
+fi
+
+if [ "$AUTHED" = 1 ]; then
   ok "Already logged in."
 else
   echo "    A browser window will open. Click Allow, then come back here."
+  echo "    If no browser opens, copy the URL printed below into one."
   wr login
 fi
 
@@ -107,7 +197,7 @@ else
   if [ -z "$DB_ID" ]; then
     warn "Could not read a database_id from that output."
     warn "If the database already exists, find its id with:"
-    warn "  npx wrangler@latest d1 list"
+    warn "  \"$NODE\" \"$WRANGLER_WIN\" d1 list"
     printf '    Paste the database_id here: '
     read -r DB_ID
   fi
@@ -152,7 +242,8 @@ OUT="$(wr deploy 2>&1 || true)"
 printf '%s\n' "$OUT"
 
 WORKER_URL="$(printf '%s' "$OUT" | grep -oE 'https://[a-zA-Z0-9._-]+\.workers\.dev' | head -1 || true)"
-[ -n "$WORKER_URL" ] || die "Could not read the Worker URL from the deploy output. Run 'npx wrangler@latest deploy' by hand."
+[ -n "$WORKER_URL" ] || die "Could not read the Worker URL from the deploy output. Re-run this script, or deploy by hand:
+       \"$NODE\" \"$WRANGLER_WIN\" deploy"
 
 ok "Worker is live at $WORKER_URL"
 
@@ -192,8 +283,11 @@ if [ -n "$TOKEN" ]; then
   printf '\n  \033[1;33mYour dashboard token (save it now):\033[0m\n\n    %s\n' "$TOKEN"
   printf '\n  The dashboard URL above exchanges it for a cookie and strips it from\n'
   printf '  the address bar. To change it later:\n'
-  printf '    npx wrangler@latest secret put DASHBOARD_TOKEN\n'
+  printf '    "%s" "%s" secret put DASHBOARD_TOKEN\n' "$NODE" "$WRANGLER_WIN"
 fi
+
+printf '\n  wrangler lives in %s\n' "$WRANGLER_HOME"
+printf '  (re-run this script any time; it reuses that install)\n'
 
 printf '\n  Next:\n'
 printf '    1. Open the dashboard URL and confirm you can see it.\n'

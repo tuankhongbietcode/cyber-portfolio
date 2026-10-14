@@ -88,12 +88,11 @@ short version:
 
 ```bash
 cd analytics
-npx wrangler@latest login
-npx wrangler@latest d1 create portfolio-analytics   # paste the id into wrangler.toml
-npx wrangler@latest d1 execute portfolio-analytics --remote --file=./schema.sql
-npx wrangler@latest secret put DASHBOARD_TOKEN
-npx wrangler@latest deploy
+bash setup.sh
 ```
+
+`setup.sh` installs its own copy of wrangler under `~/.wrangler-cli` rather than
+going through `npx` — see [why](analytics/README.md#why-not-npx).
 
 Then point the page at it, in `dist/index.html`:
 
