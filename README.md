@@ -63,9 +63,65 @@ one, change the other, or the terminal will start contradicting the page.
 Push to `main`. `.github/workflows/pages.yml` publishes `dist/` to GitHub Pages.
 
 To use a custom domain, add it under **Settings → Pages → Custom domain** and
-point the DNS at GitHub. The canonical URL, `og:url` and `og:image` are rewritten
-at runtime from `location.origin`, so the site works on any domain without
-editing the HTML.
+point the DNS at GitHub. Then update the absolute `canonical`, `og:url` and
+`og:image` values in `dist/index.html`. They are baked in rather than relative
+because LinkedIn and Slack do not run JavaScript, so a relative URL never
+resolves for them. The inline script re-derives the same values from `location`,
+so the page stays correct for browsers either way.
+
+## Visitor analytics
+
+The site ships with **no analytics and no third-party requests**. Nothing loads
+until you opt in by pasting a website ID into `dist/index.html`.
+
+### Turning it on
+
+1. Sign up at <https://cloud.umami.is/signup>. The **Hobby** plan is free —
+   100k events per month, one website, six months of history.
+2. **Add website** → any name, domain `tuankhongbietcode.github.io`.
+3. Copy the **website ID** (a UUID).
+4. Paste it into the analytics block near the bottom of `dist/index.html`:
+
+   ```js
+   var WEBSITE_ID = ""; // ← paste the Umami website ID here to switch it on
+   ```
+
+5. Commit and push. The next deploy starts collecting.
+
+### What it records
+
+| Question | Answer |
+| --- | --- |
+| When | Every pageview, timestamped — live view plus daily and monthly trends |
+| Where | Country → region → city, derived from the request IP and then discarded |
+| Device | Browser, operating system, device class, screen size, language |
+| Source | Referrer — which site, search engine or profile sent the visit |
+
+### What it cannot record
+
+**It cannot tell you who visited.** A website has no way to identify a person.
+You get an IP-derived city — not a name, not an email, not an address. Everyone
+on a shared network (an office, a university, a VPN) looks like one visitor, and
+Umami does not store the IP at all, so it cannot be looked up afterwards either.
+Identifying a visitor requires a login, and this site deliberately has none.
+
+### Why Umami
+
+- No cookies, no fingerprinting, no personal data — GDPR and CCPA compliant, and
+  no cookie banner is required.
+- `data-domains` keeps localhost and forks out of the statistics.
+- `data-do-not-track` honours the browser setting for visitors who opt out.
+- `data-exclude-hash` matters here specifically: the site navigates by
+  `#work`-style anchors, which would otherwise be logged as separate pages.
+
+**GoatCounter** is the lighter alternative if you would rather not use Umami —
+one script tag, free under 10k pageviews per month, but country-level location
+only. Replace the analytics block with:
+
+```html
+<script data-goatcounter="https://MYCODE.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+```
 
 ## Notes
 

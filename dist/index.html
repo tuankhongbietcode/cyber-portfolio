@@ -882,5 +882,28 @@
 <script src="app.js" defer></script>
 <script src="portrait-data.js" defer></script>
 <script src="portrait.js" defer></script>
+
+<!-- Anonymous visitor analytics. Off until an ID is pasted below, so the page
+     makes no third-party request at all by default. Umami sets no cookies,
+     stores no IP addresses and keeps no personal data, so no cookie banner is
+     required. What it does record — and what it deliberately cannot — is
+     documented in README.md under "Visitor analytics". -->
+<script>
+  (function () {
+    var WEBSITE_ID = ""; // ← paste the Umami website ID here to switch it on
+
+    if (!WEBSITE_ID) return; // not configured: load nothing, send nothing
+
+    var s = document.createElement("script");
+    s.defer = true;
+    s.src = "https://cloud.umami.is/script.js";
+    s.setAttribute("data-website-id", WEBSITE_ID);
+    s.setAttribute("data-domains", "tuankhongbietcode.github.io"); // ignore localhost and forks
+    s.setAttribute("data-do-not-track", "true");                   // honour the browser setting
+    s.setAttribute("data-exclude-hash", "true");                   // #work is a section, not a page
+    s.setAttribute("data-exclude-search", "true");                 // no query strings leave the page
+    document.head.appendChild(s);
+  })();
+</script>
 </body>
 </html>
