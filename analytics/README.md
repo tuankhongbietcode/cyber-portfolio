@@ -51,10 +51,15 @@ count as bots.
 You need a Cloudflare account (the free one is enough) and Node installed.
 
 If your account has never published a Worker, you also need a **`workers.dev`
-subdomain** — that is the domain the Worker gets published under. Cloudflare
-only lets you choose it in the dashboard, and the name becomes part of your
-public URL (`https://portfolio-analytics.<name>.workers.dev`). `setup.sh`
-detects this and links you straight to the right page if it is missing.
+subdomain** — that is the domain the Worker gets published under. It is a
+one-time setting per account, and the name becomes part of your public URL
+(`https://portfolio-analytics.<name>.workers.dev`).
+
+`setup.sh` detects when it is missing and tells you how to set it. Note that
+wrangler's own onboarding link sometimes 404s; the reliable routes are:
+
+- run `wrangler deploy` yourself in a normal terminal and answer its prompt, or
+- **Compute → Workers & Pages → Set up a subdomain** in the dashboard.
 
 ### The short way
 

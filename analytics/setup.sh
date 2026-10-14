@@ -97,6 +97,10 @@ winpath() {
   if command -v cygpath >/dev/null 2>&1; then cygpath -m "$1"; else printf '%s' "$1"; fi
 }
 
+# Same binary, Windows spelling — used in the copy-paste commands we print,
+# since those get pasted into a normal terminal rather than into this script.
+NODE_WIN="$(winpath "$NODE")"
+
 HOME_DIR="${HOME:-${USERPROFILE:-}}"
 [ -n "$HOME_DIR" ] || die "Could not work out your home directory."
 HOME_DIR="${HOME_DIR//\\//}"
@@ -249,30 +253,34 @@ say "5/6  Deploying"
 OUT="$(wr deploy 2>&1 || true)"
 printf '%s\n' "$OUT"
 
-# One-time account setup that only the dashboard can do. wrangler does offer to
-# register a workers.dev subdomain, but only when it has a real terminal; here
-# its output is captured, so it silently answers "no" and then errors out.
+# One-time account setup. A brand-new Cloudflare account has no workers.dev
+# subdomain, so there is nowhere to publish the Worker. wrangler has no command
+# for registering one — the only hook is an interactive prompt during `deploy`,
+# and it only appears when wrangler has a real terminal. Here its output is
+# captured, so it saw a pipe, silently answered "no" and errored out.
 if printf '%s' "$OUT" | grep -q "register a workers.dev subdomain"; then
-  ONBOARD="$(printf '%s' "$OUT" \
-    | grep -oE 'https://dash\.cloudflare\.com/[A-Za-z0-9]+/workers/onboarding' \
-    | head -1 || true)"
-
   printf '\n\033[1;33m%s\033[0m\n' "================================================================"
   printf '\033[1;33m  One-time step: choose your workers.dev subdomain\033[0m\n'
   printf '\033[1;33m%s\033[0m\n' "================================================================"
   printf '\n  Your Cloudflare account has no workers.dev subdomain yet, so there is\n'
-  printf '  nowhere to publish the Worker. Cloudflare only lets you pick this in the\n'
-  printf '  dashboard — wrangler has no command for it.\n\n'
-  if [ -n "$ONBOARD" ]; then
-    printf '  Open this and choose a name:\n\n    %s\n\n' "$ONBOARD"
-  fi
-  printf '  The name becomes part of your public URL:\n\n'
+  printf '  nowhere to publish the Worker. This is a one-time setting per account.\n\n'
+
+  printf '  \033[1mOption 1 — let wrangler ask you.\033[0m Run this in a normal terminal\n'
+  printf '  (not through this script, so it gets a real console and can prompt):\n\n'
+  printf '    & "%s" "%s" deploy\n\n' "$NODE_WIN" "$WRANGLER_WIN"
+  printf '  Answer \033[1my\033[0m, then type the name you want. Lowercase, and it becomes\n'
+  printf '  part of your public URL:\n\n'
   printf '    https://portfolio-analytics.<the-name-you-pick>.workers.dev\n\n'
-  printf '  Then run this script once more to finish:\n\n'
-  printf '    bash setup.sh\n\n'
-  printf '  It will skip the steps that are already done and just deploy. Keep the\n'
-  printf '  dashboard token printed above — you will need it.\n'
-  printf '  If you did not save it, use ROTATE_TOKEN=1 bash setup.sh instead.\n\n'
+
+  printf '  \033[1mOption 2 — do it in the dashboard.\033[0m\n\n'
+  printf '    Compute  ->  Workers & Pages  ->  Set up a subdomain\n\n'
+  printf '  (The onboarding link wrangler prints above 404s on some accounts.\n'
+  printf '  Ignore it and use one of these instead.)\n\n'
+
+  printf '  Then run this script once more to finish — it skips everything that is\n'
+  printf '  already done and only deploys:\n\n'
+  printf '    ROTATE_TOKEN=1 bash setup.sh\n\n'
+  printf '  Keep the dashboard token printed above; you will need it.\n\n'
   exit 1
 fi
 
