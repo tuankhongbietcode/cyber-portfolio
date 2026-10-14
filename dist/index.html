@@ -355,15 +355,17 @@
           <h3>Network Administrator Intern</h3>
           <p class="log__sum">Ran multi-VLAN production segments and the lab behind them: Cisco routing
             and switching, firewalls, VPN, VMware ESXi and EVE-NG, plus the documentation and backups
-            that keep it recoverable.</p>
+            that keep it recoverable. Alongside that, I asked for and received approval to assess an
+            internal web application — then fixed what I found.</p>
           <dl class="log__facts">
             <div><dt>Environment</dt><dd>Multi-VLAN production segments and the training lab behind them</dd></div>
             <div><dt>Owned</dt><dd>Routing and switching, firewall and VPN configuration, ESXi hosts, EVE-NG topologies</dd></div>
-            <div><dt>Output</dt><dd>Runbooks, backups, restores, lab availability</dd></div>
+            <div><dt>Also</dt><dd>Authorised web application security assessment and code remediation — see case 003</dd></div>
+            <div><dt>Output</dt><dd>Runbooks, backups, restores, lab availability, remediation report</dd></div>
           </dl>
           <p class="log__take"><b>Takeaway</b> Availability is a habit, not an event — a backup you have
             never restored from is just optimism with a timestamp.</p>
-          <ul class="tags"><li>VLAN</li><li>Cisco IOS</li><li>Firewall</li><li>VPN</li><li>VMware ESXi</li><li>EVE-NG</li></ul>
+          <ul class="tags"><li>VLAN</li><li>Cisco IOS</li><li>Firewall</li><li>VPN</li><li>VMware ESXi</li><li>EVE-NG</li><li>Web app security</li></ul>
         </div>
       </li>
 
@@ -408,13 +410,13 @@
     <header class="sec__head reveal">
       <p class="sec__idx">02</p>
       <h2>Work</h2>
-      <p class="sec__note">Two come straight from my professional record, one is the site you are
+      <p class="sec__note">Three come straight from my professional record, one is the site you are
         reading, and one is still being built. Each card says which it is.</p>
     </header>
 
     <div class="wstat reveal">
-      <div><b>04</b><span>case files</span></div>
-      <div><b>02</b><span>verified professional record</span></div>
+      <div><b>05</b><span>case files</span></div>
+      <div><b>03</b><span>verified professional record</span></div>
       <div><b>01</b><span>built and shipped</span></div>
       <div><b>01</b><span>still being built</span></div>
     </div>
@@ -610,9 +612,44 @@
         </div>
       </details>
 
-      <details class="case case--live reveal">
+      <details class="case reveal">
         <summary class="case__sum">
           <span class="case__idx">003</span>
+          <span class="case__main">
+            <span class="case__title">Authorised web application assessment — and the fixes</span>
+            <span class="case__sub">Reproduced, root-caused and remediated three vulnerabilities in a production PHP CMS — including one the original report missed.</span>
+            <span class="case__tags"><i>AppSec</i><i>Web</i><i>Verified record</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>I was interning on the network side, not in security. When an external bug hunter reported
+            two serious flaws in an internal admin panel, I asked the company for permission to work on
+            it, got approval, and only then started testing.</p>
+          <p>The first two were a SQL injection that bypassed admin login outright, and an HTTP verb
+            tampering flaw that escalated privileges — the authorisation check was written against
+            <code>GET</code> while the application read its parameters from <code>$_REQUEST</code>, so
+            changing the request method walked straight past it. The third I found myself: the dashboard
+            echoed the raw username back into the page instead of reading it from the database, which
+            turned a logic mistake into a reflected XSS vector.</p>
+          <p>I also worked out that a far smaller payload than the original report used was enough to get
+            in, and documented why — the login logic depended entirely on what the user typed, with
+            nothing behind it.</p>
+          <ol class="flow"><li>Reproduce</li><li>Root cause</li><li>Fix</li><li>Re-test</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Found</dt><dd>SQL injection (auth bypass) · HTTP verb tampering (privilege escalation) · reflected XSS</dd></div>
+            <div><dt>Fixed</dt><dd>Input sanitisation, removal of legacy default-password logic, explicit role checks, output encoding, method-pinned parameters, <code>.htaccess</code> hardening</dd></div>
+            <div><dt>Verified</dt><dd>Re-tested after deploying to production — 3 of 4 items closed, the remainder documented rather than dropped</dd></div>
+            <div><dt>Rule</dt><dd>Written authorisation before testing, sanitised before publishing</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> That I can read the code that caused the
+            flaw, not just run the tool that found it — and that I know to ask permission first.</p>
+        </div>
+      </details>
+
+      <details class="case case--live reveal">
+        <summary class="case__sum">
+          <span class="case__idx">004</span>
           <span class="case__main">
             <span class="case__title">This site — a terminal you can actually use</span>
             <span class="case__sub">No framework, no build step. A working virtual filesystem, tab completion, and a portrait drawn from 2,473 live glyph particles.</span>
@@ -648,7 +685,7 @@
 
       <details class="case case--wip reveal">
         <summary class="case__sum">
-          <span class="case__idx">004</span>
+          <span class="case__idx">005</span>
           <span class="case__main">
             <span class="case__title">Offensive security case files</span>
             <span class="case__sub">Where the CPTS work will live — enumeration, foothold, escalation, pivoting, and the report that ties it together.</span>
