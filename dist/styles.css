@@ -1019,34 +1019,6 @@ body.term-open { overflow: hidden; }
   color: var(--mute);
 }
 
-/* Image slot. Empty until a redacted capture is dropped in: a labelled frame
-   reads as deliberate, where a bare dashed box reads as a broken image. */
-.case__shot { margin: 6px 0 24px; }
-.case__shotbox {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-sm);
-  background:
-    repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--text) 3%, transparent) 10px 20px),
-    var(--bg-2);
-}
-.case__shotbox span {
-  font: 400 .62rem var(--mono);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-.case__shot figcaption {
-  margin-top: 10px;
-  padding-left: 12px;
-  border-left: 1px solid var(--line);
-  color: var(--mute);
-  font-size: .78rem;
-  line-height: 1.6;
-}
-
 /* ── Case-file diagrams ──────────────────────────────────────────────────── */
 /* Inline SVG rather than <img>: the theme toggle is manual, so a diagram has to
    read the same CSS variables the page does. An <img> would only ever see

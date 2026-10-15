@@ -126,10 +126,6 @@
     "What it demonstrates": "Điều này chứng minh",
     "From my VNCS internship — full role summary in Experience.": "Từ kỳ thực tập ở VNCS — tóm tắt đầy đủ ở mục Kinh nghiệm.",
     "From my VNPRO internship — full role summary in Experience.": "Từ kỳ thực tập ở VNPRO — tóm tắt đầy đủ ở mục Kinh nghiệm.",
-    "Add a redacted screenshot here": "Thêm ảnh chụp đã che thông tin ở đây",
-    "Redacted Splunk dashboard — replace with a real capture before publishing.": "Dashboard Splunk đã che thông tin — thay bằng ảnh chụp thật trước khi công bố.",
-    "Redacted web application finding — replace with a real capture before publishing.": "Phát hiện trên ứng dụng web đã che thông tin — thay bằng ảnh chụp thật trước khi công bố.",
-    "Lab screenshot — add a capture from an authorised engagement.": "Ảnh chụp lab — thêm ảnh từ một engagement có cho phép.",
 
     /* case 001 — splunk */
     "Distributed Splunk & multi-source log onboarding": "Onboarding log đa nguồn trên Splunk phân tán",
