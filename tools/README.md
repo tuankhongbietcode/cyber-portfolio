@@ -10,6 +10,13 @@ node tools/extract-strings.mjs  # list every translatable string in index.html
 node tools/fs-i18n-gen.mjs      # regenerate the filesystem dictionary in i18n.js
 ```
 
+`i18n-coverage.mjs` reads the page live — it imports the extractor rather than
+reading a cached list, so it can never report on a stale copy. Add
+`--orphans` to also list dictionary keys nothing asks for any more; both
+sides are whitespace-normalised before comparing, because the page wraps its
+lines and uses HTML entities while `app.js` uses double spaces inside its
+literals.
+
 Browser checks drive real Chrome over the DevTools Protocol, so they catch what a
 syntax check cannot — actual rendering, actual clicks:
 

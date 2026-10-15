@@ -2,7 +2,6 @@
    The frame is '─'.repeat(W) and the rows are padEnd(W), so a row one wider
    than the frame cannot come from the same call — this finds out what did. */
 import { spawn } from 'node:child_process';
-import { rmSync } from 'node:fs';
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const PAGE = 'file:///C:/Users/Tuna/Documents/Codex/2026-10-13/new-chat/work/cyber-portfolio/dist/index.html';
@@ -14,6 +13,7 @@ const chrome = spawn(CHROME, [
   '--user-data-dir=' + process.env.TEMP + '/cdp-' + PORT + '-' + process.pid,
   `--remote-debugging-port=${PORT}`, 'about:blank',
 ], { stdio: 'ignore' });
+chrome.unref();
 
 let ws;
 try {
@@ -76,8 +76,11 @@ try {
     }
   }
 } finally {
-  if (ws) ws.close();
-  chrome.kill();
-  try { rmSync(process.env.TEMP + '/cdp-' + PORT + '-' + process.pid, { recursive: true, force: true }); } catch {}
-  try { rmSync(process.env.TEMP + '/cdp-profile-' + PORT + '-' + process.pid, { recursive: true, force: true }); } catch {}
+  try { if (ws) ws.close(); } catch {}
+  try { chrome.kill(); } catch {}
+  for (const suffix of ['cdp', 'cdp-profile']) {
+    const dir = process.env.TEMP + '/' + suffix + '-' + PORT + '-' + process.pid;
+    try { spawn('cmd', ['/c', 'rmdir', '/s', '/q', dir], { detached: true, stdio: 'ignore' }).unref(); } catch {}
+  }
+  process.exit(process.exitCode || 0);
 }

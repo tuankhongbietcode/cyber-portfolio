@@ -330,8 +330,6 @@
             <div><dt>Owned</dt><dd>Account lifecycle, endpoint support, ticket triage</dd></div>
             <div><dt>Output</dt><dd>Resolved tickets, working accounts and devices</dd></div>
           </dl>
-          <p class="log__take"><b>Takeaway</b> The fastest way to understand an organisation is to sit
-            where its users hit friction — every ticket is a map of a broken assumption.</p>
           <ul class="tags"><li>Microsoft 365</li><li>Endpoint support</li><li>IT operations</li><li>Ticket triage</li></ul>
         </div>
       </li>
@@ -341,9 +339,8 @@
         <div class="log__what">
           <p class="log__co">VNCS</p>
           <h3>Security Consultant Intern</h3>
-          <p class="log__sum">Built and operated a distributed Splunk Enterprise lab. Onboarded Windows
-            Event, Sysmon, Linux, web application and firewall logs; validated ingestion and field
-            extraction; shipped dashboards, reports and alerts; wrote the POC documentation.</p>
+          <p class="log__sum">Built and ran a distributed Splunk Enterprise lab — five log families
+            onboarded and validated, then dashboards and alerts. Breakdown in case 001.</p>
           <dl class="log__facts">
             <div><dt>Environment</dt><dd>Distributed Splunk Enterprise — Deployment Server pushing config to universal forwarders across mixed hosts</dd></div>
             <div><dt>Owned</dt><dd>Log onboarding, field extraction, time normalisation, dashboards, alerting</dd></div>
@@ -360,10 +357,10 @@
         <div class="log__what">
           <p class="log__co">VNPRO</p>
           <h3>Network Administrator Intern</h3>
-          <p class="log__sum">Ran multi-VLAN production segments and the lab behind them: Cisco routing
-            and switching, firewalls, VPN, VMware ESXi and EVE-NG, plus the documentation and backups
-            that keep it recoverable. Alongside that, I asked for and received approval to assess an
-            internal web application — then fixed what I found.</p>
+          <p class="log__sum">Ran multi-VLAN production segments and the training lab behind them —
+            routing, firewalls, VPN, ESXi, EVE-NG — with the runbooks and backups that keep it
+            recoverable. Alongside that, asked for and received written approval to assess an internal
+            web application: case 003.</p>
           <dl class="log__facts">
             <div><dt>Environment</dt><dd>Multi-VLAN production segments and the training lab behind them</dd></div>
             <div><dt>Owned</dt><dd>Routing and switching, firewall and VPN configuration, ESXi hosts, EVE-NG topologies</dd></div>
@@ -397,16 +394,8 @@
       <p class="signals__label">Signals</p>
       <ul class="signals__list">
         <li>
-          <b>Best in Performance Award</b>
-          <span>TNE20002 — Network Routing Principles · Swinburne University of Technology</span>
-        </li>
-        <li>
           <b>CPTS track — in progress</b>
           <span>Certified Penetration Testing Specialist · OffSec · nothing claimed until it is held</span>
-        </li>
-        <li>
-          <b>Three internships, one thread</b>
-          <span>Network → logs → the operator who breaks it. The whole point of the path.</span>
         </li>
       </ul>
     </div>
@@ -417,8 +406,8 @@
     <header class="sec__head reveal">
       <p class="sec__idx">02</p>
       <h2>Work</h2>
-      <p class="sec__note">Three come straight from my professional record, one is the site you are
-        reading, and one is still being built. Each card says which it is.</p>
+      <p class="sec__note">Three come from my professional record, one is this site, and one is still
+        being built.</p>
     </header>
 
     <div class="wstat reveal">
@@ -445,8 +434,8 @@
             into one searchable surface: Windows Event Log, Sysmon, Linux syslog, web application
             logs and firewall/syslog feeds.</p>
           <p>The work that mattered was after ingestion: confirming events actually arrived, fixing
-            field extraction where sourcetypes mis-parsed, normalising time, and turning the result
-            into dashboards and alerts someone would actually act on.</p>
+            field extraction where sourcetypes mis-parsed, and normalising time before anything was
+            trusted.</p>
           <figure class="case__fig">
             <svg viewBox="0 0 760 246" role="img" aria-labelledby="fig-splunk">
               <title id="fig-splunk">Five log sources feed universal forwarders across mixed hosts. The forwarders send events to a distributed Splunk Enterprise deployment — indexer and search head — which produces dashboards, alerts, reports and POC documentation. A deployment server pushes app and configuration to the forwarders.</title>
@@ -673,11 +662,8 @@
             <kbd>Tab</kbd>, command history, and a fullscreen mode on <kbd>Ctrl</kbd>+<kbd>K</kbd>.
             The portrait above the fold is 2,473 individual glyphs on a canvas — hover it and they
             are pushed aside and spring back to their exact home position.</p>
-          <p>The portrait was built the way a halftone is: the source artwork is decomposed into a
-            grid of cells, each cell gets one glyph chosen by how much ink it covers, and the ink
-            colour stays constant — so all the tone comes from density. A single-ink density field
-            reads as text; a per-cell colour palette reads as a washed-out photo. Getting that
-            wrong was the whole difference.</p>
+          <p>The portrait is a halftone: the artwork is decomposed into cells, one glyph per cell,
+            tone carried by density rather than colour.</p>
           <ol class="flow"><li>Decompose</li><li>Map</li><li>Render</li><li>Animate</li></ol>
           <dl class="facts facts--inline">
             <div><dt>Stack</dt><dd>Vanilla HTML, CSS and JavaScript — no framework, no bundler</dd></div>
@@ -701,11 +687,8 @@
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
         <div class="case__panel">
-          <p>Where the CPTS work will live. Nothing goes up here that I cannot reproduce from an
-            authorised lab with the evidence to back it — enumeration, foothold, privilege
-            escalation, pivoting, and the report that ties it together.</p>
-          <p>Every write-up gets sanitised first: no flags, no credentials, no client data. The
-            point is methodology and remediation, not a scoreboard.</p>
+          <p>Nothing goes up here that I cannot reproduce from an authorised lab. Every write-up is
+            sanitised first — no flags, no credentials, no client data.</p>
           <ol class="flow"><li>Enumerate</li><li>Foothold</li><li>Escalate</li><li>Report</li></ol>
           <dl class="facts facts--inline">
             <div><dt>Track</dt><dd>CPTS — Certified Penetration Testing Specialist</dd></div>

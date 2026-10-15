@@ -1,7 +1,6 @@
 /* A returning visitor who chose Vietnamese must get Vietnamese on a fresh load,
    before any click. Run: node tools/seed-lang-test.mjs */
 import { spawn } from 'node:child_process';
-import { rmSync } from 'node:fs';
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const URL_ = 'file:///C:/Users/Tuna/Documents/Codex/2026-10-13/new-chat/work/cyber-portfolio/dist/index.html';
@@ -13,6 +12,7 @@ const chrome = spawn(CHROME, [
   '--user-data-dir=' + process.env.TEMP + '/cdp-profile-' + PORT + '-' + process.pid,
   `--remote-debugging-port=${PORT}`, 'about:blank',
 ], { stdio: 'ignore' });
+chrome.unref();
 
 let ws;
 try {
@@ -75,7 +75,9 @@ try {
   if (fail.length) { console.error('\nFAILED:/n' + fail.map((f) => '  - ' + f).join('\n')); process.exitCode = 1; }
   else console.log('\nReturning Vietnamese visitor: translated on first paint, banner aligned.');
 } finally {
-  if (ws) ws.close();
-  chrome.kill();
-  try { rmSync(process.env.TEMP + '/cdp-profile-' + PORT + '-' + process.pid, { recursive: true, force: true }); } catch {}
+  try { if (ws) ws.close(); } catch {}
+  try { chrome.kill(); } catch {}
+  const dir = process.env.TEMP + '/cdp-profile-' + PORT + '-' + process.pid;
+  try { spawn('cmd', ['/c', 'rmdir', '/s', '/q', dir], { detached: true, stdio: 'ignore' }).unref(); } catch {}
+  process.exit(process.exitCode || 0);
 }

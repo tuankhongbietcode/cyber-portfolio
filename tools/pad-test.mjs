@@ -1,7 +1,6 @@
 /* Measure the banner rows in a real browser to confirm the box-drawing frame
    still lines up once the copy is Vietnamese. Run: node tools/pad-test.mjs */
 import { spawn } from 'node:child_process';
-import { rmSync } from 'node:fs';
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const PAGE = 'file:///C:/Users/Tuna/Documents/Codex/2026-10-13/new-chat/work/cyber-portfolio/dist/index.html';
@@ -15,6 +14,7 @@ const chrome = spawn(CHROME, [
   '--user-data-dir=' + process.env.TEMP + '/cdp-' + PORT + '-' + process.pid,
   `--remote-debugging-port=${PORT}`, 'about:blank',
 ], { stdio: 'ignore' });
+chrome.unref();
 
 let ws;
 try {
@@ -81,8 +81,13 @@ try {
   console.log(`Vietnamese frame aligned: ${viAligned}`);
   if (!enAligned || !viAligned) process.exitCode = 1;
 } finally {
-  if (ws) ws.close();
-  chrome.kill();
-  try { rmSync(process.env.TEMP + '/cdp-' + PORT + '-' + process.pid, { recursive: true, force: true }); } catch {}
-  try { rmSync(process.env.TEMP + '/cdp-profile-' + PORT + '-' + process.pid, { recursive: true, force: true }); } catch {}
+  try { if (ws) ws.close(); } catch {}
+  try { chrome.kill(); } catch {}
+  // Best-effort, non-blocking cleanup: hand the deletion to a detached shell
+  // that outlives this process, so we never block on files Chrome still locks.
+  for (const suffix of ['cdp', 'cdp-profile']) {
+    const dir = process.env.TEMP + '/' + suffix + '-' + PORT + '-' + process.pid;
+    try { spawn('cmd', ['/c', 'rmdir', '/s', '/q', dir], { detached: true, stdio: 'ignore' }).unref(); } catch {}
+  }
+  process.exit(process.exitCode || 0);
 }
