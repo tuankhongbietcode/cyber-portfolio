@@ -171,7 +171,7 @@ const samples = [
   ['Let’s exchange signals.', 'Hãy trao đổi tín hiệu.'],
   ['guest is not in the sudoers file.', 'guest không có trong sudoers file.'],
   ['cd: no such directory', 'cd: không có thư mục này'],
-  ['2026.09 — now Got It Information Technology Intern', '2026.09 — nay'],
+  ['2026.09 — now Got It Systems & Security Intern', '2026.09 — nay'],
 ];
 for (const [en, expect] of samples) {
   assert.ok(t(en).startsWith(expect), `${JSON.stringify(en)} -> ${JSON.stringify(t(en))}`);

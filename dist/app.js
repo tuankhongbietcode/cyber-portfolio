@@ -121,7 +121,7 @@
   const FS_EN = dir({
     'about.txt': file([
       'Võ Lê Anh Tuấn  ·  also written Anh Tuan Vo',
-      'Cybersecurity student  ·  IT intern',
+      'Cybersecurity student  ·  system & security',
       '',
       'EDUCATION',
       '  Bachelor of Computer Science — Cyber Security',
@@ -129,7 +129,7 @@
       '  Best in Performance Award — TNE20002 Network Routing Principles',
       '',
       'CURRENT',
-      '  Information Technology Intern @ Got It',
+      '  Systems & Security Intern @ Got It',
       '  Ho Chi Minh City, Vietnam',
       '',
       'HOW I GOT HERE',
@@ -142,7 +142,7 @@
     ]),
 
     'experience.log': file([
-      '2026.09 — now      Got It    Information Technology Intern',
+      '2026.09 — now      Got It    Systems & Security Intern',
       '                             Microsoft 365 tenant, live users, no sandbox.',
       '                             System administration, security and access',
       '                             control, plus user accounts. Production — no',
@@ -663,9 +663,9 @@
   function cmdWhoami() {
     print([
       { cls: 't-head', text: 'Võ Lê Anh Tuấn' },
-      { cls: 't-dim', text: t('cybersecurity student · IT intern · Ho Chi Minh City') },
+      { cls: 't-dim', text: t('cybersecurity student · system & security · Ho Chi Minh City') },
       '',
-      { html: '<span class="t-dim">currently   </span>' + t('Information Technology Intern @ Got It') },
+      { html: '<span class="t-dim">currently   </span>' + t('System administration & security @ Got It') },
       { html: '<span class="t-dim">studying    </span>' + t('BCS Cyber Security, Swinburne (2023–2027)') },
       { html: '<span class="t-dim">direction   </span>' + t('offensive security · CPTS track') },
       { html: '<span class="t-dim">rule        </span>' + t('no claim I cannot back with evidence') },

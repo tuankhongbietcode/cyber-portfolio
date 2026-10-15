@@ -13,7 +13,7 @@ const PAD = (n) => ' '.repeat(n);
    own leading whitespace back in front, so a padded value would double it. */
 const MAP = [
   ['Võ Lê Anh Tuấn  ·  also written Anh Tuan Vo', 'Võ Lê Anh Tuấn  ·  cũng viết là Anh Tuan Vo'],
-  ['Cybersecurity student  ·  IT intern', 'Sinh viên an ninh mạng  ·  thực tập sinh IT'],
+  ['Cybersecurity student  ·  system & security', 'Sinh viên an ninh mạng  ·  quản trị hệ thống & bảo mật'],
   ['EDUCATION', 'HỌC VẤN'],
   ['CURRENT', 'HIỆN TẠI'],
   ['HOW I GOT HERE', 'TÔI ĐẾN ĐÂY BẰNG CÁCH NÀO'],
@@ -23,7 +23,7 @@ const MAP = [
   ['  sides is the entire point.', '  hai phía là toàn bộ ý nghĩa.'],
   ['  No certification is claimed here that I do not hold.', '  Không chứng chỉ nào được tuyên bố ở đây mà tôi chưa có.'],
 
-  ['2026.09 — now      Got It    Information Technology Intern', '2026.09 — nay      Got It    Thực tập sinh CNTT'],
+  ['2026.09 — now      Got It    Systems & Security Intern', '2026.09 — nay      Got It    Thực tập sinh Quản trị & Bảo mật'],
   [`${PAD(29)}Microsoft 365 tenant, live users, no sandbox.`, `${PAD(29)}Tenant Microsoft 365 · người dùng thật, không sandbox.`],
   [`${PAD(29)}Account lifecycle, endpoint support, ticket`, `${PAD(29)}Vòng đời tài khoản, hỗ trợ thiết bị đầu cuối,`],
   [`${PAD(29)}triage. Production — no rollback button.`, `${PAD(29)}phân loại ticket. Production — không có nút rollback.`],
@@ -183,7 +183,7 @@ for (const [k, v] of MAP) {
 for (const k of real) {
   const key = norm(k);
   /* already covered by an entry written into i18n.js by hand — e.g.
-     "Information Technology Intern @ Got It", which loses its two-space
+     "Systems & Security Intern @ Got It", which loses its two-space
      indent on the way through t(). */
   if (!mapped.has(key) && !KEEP.has(k) && !jsKeys.has(key)) {
     console.error(`MISSING key: ${JSON.stringify(k)}`); bad++;
