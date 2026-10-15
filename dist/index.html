@@ -417,7 +417,7 @@
           <span class="case__main">
             <span class="case__title">Distributed Splunk &amp; multi-source log onboarding</span>
             <span class="case__sub">One deployment, five log families, validated end to end — then dashboards and alerts someone would actually act on.</span>
-            <span class="case__tags"><i>SIEM</i><i>Splunk</i><i>Verified record</i></span>
+            <span class="case__tags"><i>SIEM</i><i>Splunk</i><i>CIM</i><i>Verified record</i></span>
           </span>
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
@@ -427,9 +427,15 @@
             config to universal forwarders across mixed hosts — then brought several log families
             into one searchable surface: Windows Event Log, Sysmon, Linux syslog, web application
             logs and firewall/syslog feeds.</p>
-          <p>The work that mattered was after ingestion: confirming events actually arrived, fixing
-            field extraction where sourcetypes mis-parsed, and normalising time before anything was
-            trusted.</p>
+          <p>Onboarding the data was the bulk of it: field extraction written by hand in
+            <code>transforms.conf</code> with regex where the shipped add-ons mis-parsed, custom
+            sourcetypes for the feeds no add-on covered, and everything normalised against the
+            Splunk Common Information Model so a field means the same thing no matter which host it
+            came from.</p>
+          <p>Then the work that made it useful: confirming events actually arrived, correcting
+            extraction where sourcetypes mis-parsed, normalising time before anything was trusted,
+            and building the reports, dashboards and alerts — routed to email and chat — that
+            somebody would actually act on.</p>
           <figure class="case__fig">
             <svg viewBox="0 0 760 246" role="img" aria-labelledby="fig-splunk">
               <title id="fig-splunk">Five log sources feed universal forwarders across mixed hosts. The forwarders send events to a distributed Splunk Enterprise deployment — indexer and search head — which produces dashboards, alerts, reports and POC documentation. A deployment server pushes app and configuration to the forwarders.</title>
@@ -481,34 +487,37 @@
               <path class="fig-wire" d="M412 160 H580"/>
               <text class="fig-tick" x="496" y="178" text-anchor="middle">Indexer · Search Head</text>
               <text class="fig-sub" x="496" y="194" text-anchor="middle">parse · index · normalise time</text>
-              <text class="fig-sub" x="496" y="208" text-anchor="middle">SPL · correlate across sources</text>
+              <text class="fig-sub" x="496" y="208" text-anchor="middle">CIM · correlate across sources</text>
 
               <path class="fig-flow" d="M596 173 H636" marker-end="url(#sp-ar)"/>
 
               <rect class="fig-chip fig-chip--accent" x="636" y="131" width="108" height="18" rx="4"/>
               <text class="fig-tick" x="648" y="143.5">Dashboards</text>
               <rect class="fig-chip fig-chip--accent" x="636" y="153" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="165.5">Alerts</text>
+              <text class="fig-tick" x="648" y="165.5">Reports</text>
               <rect class="fig-chip fig-chip--accent" x="636" y="175" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="187.5">Reports</text>
+              <text class="fig-tick" x="648" y="187.5">Alerts</text>
               <rect class="fig-chip fig-chip--accent" x="636" y="197" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="209.5">POC docs</text>
+              <text class="fig-tick" x="648" y="209.5">Email · chat</text>
             </svg>
             <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
             <figcaption>Five log families, one searchable surface. The Deployment Server is the control plane:
               pushing app and config from one place is what keeps parsing consistent across hosts nobody
-              configured by hand.</figcaption>
+              configured by hand. Everything lands normalised to the Common Information Model, so a
+              field means the same thing on every host.</figcaption>
           </figure>
 
           <ol class="flow"><li>Collect</li><li>Parse</li><li>Normalise</li><li>Validate</li></ol>
           <dl class="facts facts--inline">
-            <div><dt>Stack</dt><dd>Splunk Enterprise, Deployment Server, Universal Forwarders, SPL</dd></div>
-            <div><dt>Sources</dt><dd>Windows Event, Sysmon, Linux, web app, firewall</dd></div>
-            <div><dt>Output</dt><dd>Dashboards, reports, alerts, POC documentation</dd></div>
+            <div><dt>Stack</dt><dd>Splunk Enterprise, Deployment Server, Forwarder Management, Universal Forwarders</dd></div>
+            <div><dt>Parsing</dt><dd>Hand-written <code>transforms.conf</code> extraction, regex, custom sourcetypes, Splunk CIM</dd></div>
+            <div><dt>Sources</dt><dd>Windows Event, Sysmon, Linux, Oracle, firewall</dd></div>
+            <div><dt>Output</dt><dd>Dashboards, reports, alerts routed to email and chat</dd></div>
           </dl>
           <p class="case__proof"><b>What it demonstrates</b> Detection is downstream of data quality.
             The onboarding work — sourcetypes, extraction, time — is what decides whether the alert
-            fires on the right thing.</p>
+            fires on the right thing. Normalising to CIM is what makes a search written once keep
+            working when the next log source lands.</p>
         </div>
       </details>
 

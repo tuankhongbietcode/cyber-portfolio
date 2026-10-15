@@ -26,6 +26,7 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
   'VMware ESXi', 'EVE-NG', 'EVE-NG / UnetLab', 'Microsoft 365', 'SIEM', 'Splunk', 'Splunk Enterprise',
   'Sysmon', 'Windows Event Log', 'Windows Event, Sysmon, Linux, web app, firewall', 'Linux syslog',
   'Firewall / syslog', 'Universal', 'Forwarders', 'Indexer · Search Head', 'SPLUNK ENTERPRISE',
+  'Oracle', 'CIM', 'Splunk CIM', 'Email · chat', 'Hand-written', 'Forwarder Management', 'transforms.conf',
   'VMWARE ESXI', 'Splunk Enterprise, Deployment Server, Universal Forwarders, SPL',
   'VMware ESXi, EVE-NG / UnetLab', 'Routing', 'Switching', 'Firewall', 'VPN', 'Wireless', 'Cisco ISE',
   'Routing, switching, firewall, VPN, wireless, Cisco ISE', 'SIEM & detection', 'Scripting',
