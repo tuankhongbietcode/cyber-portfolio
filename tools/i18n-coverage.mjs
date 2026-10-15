@@ -43,6 +43,7 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
   /* The CV row label, a bare arrow glyph, and the footer's date stamp are
      language-neutral — an abbreviation, a symbol, and an ISO month. */
   'CV', '↓', '2026-10',
+  'Access control',
 ]);
 
 /* Read the live page, not a cached copy of it — a stale list hides every
