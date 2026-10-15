@@ -11,6 +11,9 @@ analytics/.wrangler/
 # Tool scratch output from the i18n tooling
 .strings.txt
 
+# One-off screenshot capture scripts — diagnostics, not part of the test suite
+tools/shot*.mjs
+
 # OS noise
 .DS_Store
 Thumbs.db

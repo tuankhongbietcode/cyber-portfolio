@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security Portfolio</title>
-<meta name="description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security. Method first, evidence always, no inflated claims.">
+<meta name="description" content="Cybersecurity student at Swinburne and IT intern at Got It. Started in IT support, moved through networks and SIEM, now training toward offensive security. Method first, evidence always, no inflated claims.">
 <meta name="author" content="Võ Lê Anh Tuấn">
 <meta name="keywords" content="cybersecurity, offensive security, penetration testing, CPTS, SIEM, Splunk, network security, Ho Chi Minh City">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -25,7 +25,7 @@
 
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
-<meta property="og:description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security.">
+<meta property="og:description" content="Cybersecurity student at Swinburne and IT intern at Got It. Started in IT support, moved through networks and SIEM, now training toward offensive security.">
 <meta property="og:site_name" content="Võ Lê Anh Tuấn">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
@@ -35,7 +35,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
-<meta name="twitter:description" content="Cybersecurity student at Swinburne and IT intern at Got It, moving from network operations and SIEM into offensive security.">
+<meta name="twitter:description" content="Cybersecurity student at Swinburne and IT intern at Got It. Started in IT support, moved through networks and SIEM, now training toward offensive security.">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -77,14 +77,14 @@
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "dateCreated": "2026-10-13",
-  "dateModified": "2026-10-13",
+  "dateModified": "2026-10-15",
   "inLanguage": "en",
   "mainEntity": {
     "@type": "Person",
     "name": "Võ Lê Anh Tuấn",
     "alternateName": ["Anh Tuan Vo", "vlat273"],
     "jobTitle": "Information Technology Intern",
-    "description": "Cybersecurity student moving from network operations and SIEM into offensive security.",
+    "description": "Cybersecurity student who started in IT support, moved through networks and SIEM, and now trains toward offensive security.",
     "email": "mailto:anhtuanpm3939@gmail.com",
     "sameAs": ["https://www.linkedin.com/in/vlat273/"],
     "alumniOf": {
@@ -157,9 +157,9 @@
       "position": 2,
       "item": {
         "@type": "CreativeWork",
-        "name": "Virtual lab infrastructure operations",
-        "description": "Operating VMware ESXi and EVE-NG/UnetLab environments for technical training, supporting routing, switching, firewall, VPN and wireless labs.",
-        "about": ["Virtualization", "Networking", "Lab Operations"]
+        "name": "Authorised web application assessment",
+        "description": "Reproduced, root-caused and remediated three vulnerabilities in a production PHP CMS, including one the original report missed, under written authorisation.",
+        "about": ["Web Application Security", "AppSec", "Remediation"]
       }
     },
     {
@@ -239,8 +239,8 @@
       <h1>I trace the <span class="accent">attack path</span>.</h1>
 
       <p class="lead">
-        Cybersecurity student at Swinburne and IT intern at Got&nbsp;It. I came up through
-        network operations and SIEM before moving into offensive security — which means I read
+        Cybersecurity student at Swinburne and IT intern at Got&nbsp;It. I started in IT support,
+        moved through networks and SIEM, and now train toward offensive security — which means I read
         an attack path from both sides. Method first, evidence always, no inflated claims.
       </p>
 
@@ -390,15 +390,6 @@
       </li>
     </ol>
 
-    <div class="signals reveal">
-      <p class="signals__label">Signals</p>
-      <ul class="signals__list">
-        <li>
-          <b>CPTS track — in progress</b>
-          <span>Certified Penetration Testing Specialist · OffSec · nothing claimed until it is held</span>
-        </li>
-      </ul>
-    </div>
   </section>
 
   <!-- ══ WORK ══════════════════════════════════════════════════════ -->
@@ -406,19 +397,19 @@
     <header class="sec__head reveal">
       <p class="sec__idx">02</p>
       <h2>Work</h2>
-      <p class="sec__note">Three come from my professional record, one is this site, and one is still
-        being built.</p>
+      <p class="sec__note">Five case files. Three expand on an internship above; two are new. Open one
+        to see the evidence, not just the headline.</p>
     </header>
 
     <div class="wstat reveal">
-      <div><b>05</b><span>case files</span></div>
-      <div><b>03</b><span>verified professional record</span></div>
+      <div><b>04</b><span>case files</span></div>
+      <div><b>02</b><span>verified professional record</span></div>
       <div><b>01</b><span>built and shipped</span></div>
       <div><b>01</b><span>still being built</span></div>
     </div>
 
     <div class="cases">
-      <details class="case reveal">
+      <details class="case reveal" open>
         <summary class="case__sum">
           <span class="case__idx">001</span>
           <span class="case__main">
@@ -429,6 +420,7 @@
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
         <div class="case__panel">
+          <p class="case__ctx">From my VNCS internship — full role summary in Experience.</p>
           <p>Stood up Splunk Enterprise as a distributed deployment — a Deployment Server pushing
             config to universal forwarders across mixed hosts — then brought several log families
             into one searchable surface: Windows Event Log, Sysmon, Linux syslog, web application
@@ -506,6 +498,11 @@
               configured by hand.</figcaption>
           </figure>
 
+          <figure class="case__shot">
+            <div class="case__shotbox"><span>Add a redacted screenshot here</span></div>
+            <figcaption>Redacted Splunk dashboard — replace with a real capture before publishing.</figcaption>
+          </figure>
+
           <ol class="flow"><li>Collect</li><li>Parse</li><li>Normalise</li><li>Validate</li></ol>
           <dl class="facts facts--inline">
             <div><dt>Stack</dt><dd>Splunk Enterprise, Deployment Server, Universal Forwarders, SPL</dd></div>
@@ -518,95 +515,6 @@
         </div>
       </details>
 
-      <details class="case reveal">
-        <summary class="case__sum">
-          <span class="case__idx">002</span>
-          <span class="case__main">
-            <span class="case__title">Virtual lab infrastructure operations</span>
-            <span class="case__sub">ESXi hosts and EVE-NG topologies kept alive for routing, switching, firewall, VPN and wireless training.</span>
-            <span class="case__tags"><i>Network</i><i>Lab ops</i><i>Verified record</i></span>
-          </span>
-          <span class="case__chev" aria-hidden="true"></span>
-        </summary>
-        <div class="case__panel">
-          <p>Kept the training labs alive: VMware ESXi hosts and EVE-NG/UnetLab topologies that
-            students and engineers depended on for routing, switching, firewall, VPN and wireless
-            exercises.</p>
-          <p>Provisioning was the easy half. The real work was monitoring, restoring from backup
-            when a topology got wrecked mid-session, and writing the documentation that let someone
-            else rebuild it without me.</p>
-          <figure class="case__fig">
-            <svg viewBox="0 0 760 290" role="img" aria-labelledby="fig-lab">
-              <title id="fig-lab">A VMware ESXi host runs an EVE-NG or UnetLab guest virtual machine, which runs the routing, switching, firewall, VPN, wireless and Cisco ISE topologies that students and engineers depend on. A four-step operations rail — provision, monitor, restore, document — runs alongside.</title>
-              <defs>
-                <marker id="lab-ar" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
-                  <path class="fig-ar" d="M0 0 L8 4 L0 8 Z"/>
-                </marker>
-              </defs>
-
-              <!-- the stack: hypervisor hosts the topology engine hosts the topologies -->
-              <rect class="fig-box" x="16" y="30" width="520" height="176" rx="8"/>
-              <text class="fig-stage" x="32" y="50">VMWARE ESXI</text>
-              <text class="fig-sub" x="520" y="50" text-anchor="end">hypervisor + guest VMs</text>
-
-              <rect class="fig-box fig-box--nest" x="36" y="64" width="480" height="122" rx="6"/>
-              <text class="fig-label" x="52" y="86">EVE-NG / UnetLab</text>
-              <text class="fig-sub" x="500" y="86" text-anchor="end">topology engine</text>
-
-              <rect class="fig-chip" x="52" y="100" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="122" y="120" text-anchor="middle">Routing</text>
-              <rect class="fig-chip" x="208" y="100" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="278" y="120" text-anchor="middle">Switching</text>
-              <rect class="fig-chip" x="364" y="100" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="434" y="120" text-anchor="middle">Firewall</text>
-
-              <rect class="fig-chip" x="52" y="140" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="122" y="160" text-anchor="middle">VPN</text>
-              <rect class="fig-chip" x="208" y="140" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="278" y="160" text-anchor="middle">Wireless</text>
-              <rect class="fig-chip" x="364" y="140" width="140" height="32" rx="4"/>
-              <text class="fig-tick" x="434" y="160" text-anchor="middle">Cisco ISE</text>
-
-              <path class="fig-flow" d="M276 206 V226" marker-end="url(#lab-ar)"/>
-
-              <rect class="fig-box" x="16" y="226" width="520" height="44" rx="6"/>
-              <text class="fig-label" x="32" y="253">Students &amp; engineers</text>
-              <text class="fig-sub" x="520" y="253" text-anchor="end">who needed it up at 9am</text>
-
-              <!-- the part that actually kept it alive -->
-              <text class="fig-stage" x="560" y="50">OPERATIONS</text>
-              <rect class="fig-box" x="560" y="64" width="184" height="38" rx="6"/>
-              <text class="fig-label" x="652" y="79" text-anchor="middle">Provision</text>
-              <text class="fig-sub" x="652" y="92" text-anchor="middle">stand up the topology</text>
-              <path class="fig-flow" d="M652 104 V118" marker-end="url(#lab-ar)"/>
-              <rect class="fig-box" x="560" y="120" width="184" height="38" rx="6"/>
-              <text class="fig-label" x="652" y="135" text-anchor="middle">Monitor</text>
-              <text class="fig-sub" x="652" y="148" text-anchor="middle">watch for breakage</text>
-              <path class="fig-flow" d="M652 160 V174" marker-end="url(#lab-ar)"/>
-              <rect class="fig-box" x="560" y="176" width="184" height="38" rx="6"/>
-              <text class="fig-label" x="652" y="191" text-anchor="middle">Restore</text>
-              <text class="fig-sub" x="652" y="204" text-anchor="middle">back up before it breaks</text>
-              <path class="fig-flow" d="M652 216 V230" marker-end="url(#lab-ar)"/>
-              <rect class="fig-box" x="560" y="232" width="184" height="38" rx="6"/>
-              <text class="fig-label" x="652" y="247" text-anchor="middle">Document</text>
-              <text class="fig-sub" x="652" y="260" text-anchor="middle">so anyone can rebuild</text>
-            </svg>
-            <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
-            <figcaption>The stack, and the loop that kept it running. ESXi hosts the EVE-NG guest; EVE-NG runs the
-              topologies; the topologies exist so people have something to break. Provisioning was the easy
-              column — the right-hand rail is where the job actually was.</figcaption>
-          </figure>
-
-          <ol class="flow"><li>Provision</li><li>Monitor</li><li>Restore</li><li>Document</li></ol>
-          <dl class="facts facts--inline">
-            <div><dt>Platform</dt><dd>VMware ESXi, EVE-NG / UnetLab</dd></div>
-            <div><dt>Scope</dt><dd>Routing, switching, firewall, VPN, wireless, Cisco ISE</dd></div>
-            <div><dt>Output</dt><dd>Lab availability, backups, runbooks</dd></div>
-          </dl>
-          <p class="case__proof"><b>What it demonstrates</b> That I can keep something running
-            that other people depend on — and hand it over in a state where they do not need me.</p>
-        </div>
-      </details>
 
       <details class="case reveal">
         <summary class="case__sum">
@@ -619,6 +527,11 @@
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
         <div class="case__panel">
+          <p class="case__ctx">From my VNPRO internship — full role summary in Experience.</p>
+          <figure class="case__shot">
+            <div class="case__shotbox"><span>Add a redacted screenshot here</span></div>
+            <figcaption>Redacted web application finding — replace with a real capture before publishing.</figcaption>
+          </figure>
           <p>I was interning on the network side, not in security. When an external bug hunter reported
             two serious flaws in an internal admin panel, I asked the company for permission to work on
             it, got approval, and only then started testing.</p>
@@ -687,6 +600,10 @@
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
         <div class="case__panel">
+          <figure class="case__shot">
+            <div class="case__shotbox"><span>Add a redacted screenshot here</span></div>
+            <figcaption>Lab screenshot — add a capture from an authorised engagement.</figcaption>
+          </figure>
           <p>Nothing goes up here that I cannot reproduce from an authorised lab. Every write-up is
             sanitised first — no flags, no credentials, no client data.</p>
           <ol class="flow"><li>Enumerate</li><li>Foothold</li><li>Escalate</li><li>Report</li></ol>
@@ -845,6 +762,11 @@
         <span class="contact__label">Base</span>
         <span class="contact__value">Ho Chi Minh City, Vietnam</span>
       </div>
+      <a class="contact__big contact__big--cv" href="cv.html">
+        <span class="contact__label">CV</span>
+        <span class="contact__value">Download CV <span aria-hidden="true">↓</span></span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
 
     <p class="rules reveal">
@@ -856,7 +778,7 @@
 
 <footer class="foot">
   <p>© <span id="year">2026</span> Võ Lê Anh Tuấn</p>
-  <p class="foot__mid">Built by hand — no framework, no build step.</p>
+  <p class="foot__mid">Built by hand — no framework, no build step. Last updated <time datetime="2026-10-15">2026-10</time>.</p>
   <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
 </footer>
 

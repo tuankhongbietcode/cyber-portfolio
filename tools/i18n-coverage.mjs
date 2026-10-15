@@ -36,10 +36,13 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
   'cat experience.log', 'VLAN', '2023 — 2027',
   'Dashboard', 'JSON-LD, OG/Twitter cards, manifest, self-hosted subset fonts, full no-JS fallback',
   'Stack', 'Engine', 'Detail', 'Track', 'Verify', 'Focus', 'Status', 'Output', 'Environment', 'Owned',
-  'Also', 'Studying', 'Recognition', 'Signals', 'Sources', 'Stack', 'Platform', 'Scope', 'Found',
+  'Also', 'Studying', 'Recognition', 'Sources', 'Platform', 'Scope', 'Found',
   'Fixed', 'Verified', 'Rule', 'Practice', 'Remediation', 'Reporting', 'Enumeration', 'Systems',
   'Networking', 'Contact', 'Email', 'Base', 'Terminal', 'Work', 'Toolkit', 'Experience',
   'Expected', 'Deployment Server', 'Universal Forwarders', 'eve-ng', 'nmap',
+  /* The CV row label, a bare arrow glyph, and the footer's date stamp are
+     language-neutral — an abbreviation, a symbol, and an ISO month. */
+  'CV', '↓', '2026-10',
 ]);
 
 /* Read the live page, not a cached copy of it — a stale list hides every

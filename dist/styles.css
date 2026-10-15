@@ -1010,6 +1010,43 @@ body.term-open { overflow: hidden; }
   color: var(--accent);
 }
 
+/* A cross-reference back to the Experience entry this case expands on. Kept
+   quiet — it is a signpost, not a claim of its own. */
+.case__ctx {
+  margin: 0 0 16px;
+  font: 400 .72rem var(--mono);
+  letter-spacing: .02em;
+  color: var(--mute);
+}
+
+/* Image slot. Empty until a redacted capture is dropped in: a labelled frame
+   reads as deliberate, where a bare dashed box reads as a broken image. */
+.case__shot { margin: 6px 0 24px; }
+.case__shotbox {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  background:
+    repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--text) 3%, transparent) 10px 20px),
+    var(--bg-2);
+}
+.case__shotbox span {
+  font: 400 .62rem var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.case__shot figcaption {
+  margin-top: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+  color: var(--mute);
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
 /* ── Case-file diagrams ──────────────────────────────────────────────────── */
 /* Inline SVG rather than <img>: the theme toggle is manual, so a diagram has to
    read the same CSS variables the page does. An <img> would only ever see
@@ -1282,6 +1319,14 @@ body.term-open { overflow: hidden; }
 .contact__plain { grid-template-columns: 110px minmax(0, 1fr); }
 a.contact__big:hover { background: var(--bg-3); padding-left: clamp(24px, 4vw, 42px); }
 
+/* The CV is the one row a recruiter skims for — tint it so it reads as the
+   download, and let its own arrow sit visible rather than hover-only. */
+a.contact__big--cv { background: var(--accent-2); }
+a.contact__big--cv .contact__value { color: var(--accent); }
+a.contact__big--cv .contact__arrow { opacity: .55; }
+a.contact__big--cv:hover { background: color-mix(in srgb, var(--accent) 16%, var(--bg-2)); }
+a.contact__big--cv:hover .contact__arrow { opacity: 1; }
+
 .contact__label {
   font: 500 .64rem var(--mono);
   letter-spacing: .14em;
@@ -1394,13 +1439,19 @@ html.js .reveal:not(.is-in) {
 
   .term__hint { display: none; }
   .term__title { font-size: .66rem; }
+  /* The hero terminal is the one place a phone visitor is asked to type. Give
+     it a touch more size and leading so it is comfortable, not just legible. */
+  .term__out { font-size: .84rem; line-height: 1.72; }
+  .term__line { font-size: .84rem; }
+  .term__input { font-size: .84rem; }
 }
 
 @media (max-width: 400px) {
   .facts { grid-template-columns: 1fr; }
   .term__body { padding-inline: 13px; }
-  .term__line { font-size: .74rem; }
-  .term__out { font-size: .74rem; }
+  .term__line { font-size: .8rem; }
+  .term__out { font-size: .8rem; }
+  .term__input { font-size: .8rem; }
 }
 
 /* ── Reduced motion ──────────────────────────────────────────────────────── */
