@@ -463,9 +463,9 @@
     /* ── engagement: Quỹ Nuôi Em (case 002 + experience) ────────────────── */
     /* experience entry (HTML) */
     "2026.10 — now": "2026.10 — nay",
-    "engagement under way": "đang thực hiện",
+    "phase 1 complete": "giai đoạn 1 hoàn tất",
     "Authorised Security Assessment — Engagement Design": "Đánh giá an ninh có cho phép — Thiết kế giao kèo",
-    "Designed and launched the engagement: scope, rules of engagement, safety limits, and what I do the moment something goes wrong — now running phases 1–3 against the production site. Breakdown in case 002.": "Thiết kế và triển khai giao kèo: phạm vi, quy tắc giao chiến, giới hạn an toàn, và những việc tôi làm ngay khi có sự cố — hiện đang chạy các giai đoạn 1–3 trên site production. Chi tiết ở case 002.",
+    "Designed and launched the engagement: scope, rules of engagement, safety limits, and what I do the moment something goes wrong. Phase 1 is complete — the report is with the client and stays private until remediation. Breakdown in case 002.": "Thiết kế và triển khai giao kèo: phạm vi, quy tắc giao chiến, giới hạn an toàn, và những việc tôi làm ngay khi có sự cố. Giai đoạn 1 đã hoàn tất — báo cáo đang ở chỗ khách hàng và giữ kín cho tới khi khắc phục xong. Chi tiết ở case 002.",
     "quynuoiem.com — a Next.js donation platform with live donors, real money, and children's profiles on it": "quynuoiem.com — nền tảng quyên góp Next.js có người quyên góp thật, tiền thật, và hồ sơ trẻ em bên trong",
     "Scope definition, rules of engagement, rate limits, data-handling obligations, stop conditions, reporting structure": "Định nghĩa phạm vi, quy tắc giao chiến, giới hạn tốc độ, nghĩa vụ xử lý dữ liệu, điều kiện dừng, cấu trúc báo cáo",
     "An 18-page statement of work and rules of engagement, plus a two-page plain-language test plan for the non-technical signer": "Một bản ghi nhớ công việc 18 trang và quy tắc giao chiến, cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân cho người ký không chuyên kỹ thuật",
@@ -478,9 +478,9 @@
 
     /* case 002 — shell (HTML) */
     "Engagement design for an authorised charity assessment": "Thiết kế giao kèo cho đánh giá từ thiện có cho phép",
-    "Scope, rules of engagement and safety limits for testing a children's charity donation platform — NDA signed, phases 1–3 now running.": "Phạm vi, quy tắc giao chiến và giới hạn an toàn để test nền tảng quyên góp của một tổ chức từ thiện trẻ em — đã ký NDA, các giai đoạn 1–3 đang chạy.",
+    "Scope, rules of engagement and safety limits for testing a children's charity donation platform — NDA signed, phase 1 complete, report private until remediation.": "Phạm vi, quy tắc giao chiến và giới hạn an toàn để test nền tảng quyên góp của một tổ chức từ thiện trẻ em — đã ký NDA, giai đoạn 1 hoàn tất, báo cáo giữ kín tới khi khắc phục.",
     "A COS40005 engagement — full role context in Experience.": "Một giao kèo COS40005 — bối cảnh đầy đủ ở mục Kinh nghiệm.",
-    "Quỹ Nuôi Em runs a Next.js donation platform that holds donor records and children's profiles. I designed and wrote the document that governs the engagement: an 18-page statement of work and rules of engagement in two parts — the part a non-technical signer reads to decide, and the technical part that binds me — plus a two-page plain-language test plan so nobody signs something they cannot follow. The NDA is now signed and phases 1–3 are running against the production site.": "Quỹ Nuôi Em vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và hồ sơ trẻ em. Tôi thiết kế và viết tài liệu quản lý giao kèo: một bản ghi nhớ công việc và quy tắc giao chiến 18 trang gồm hai phần — phần người ký không chuyên đọc để quyết định, và phần kỹ thuật ràng buộc tôi — cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân để không ai ký thứ họ không hiểu. NDA đã ký và các giai đoạn 1–3 đang chạy trên site production.",
+    "Quỹ Nuôi Em runs a Next.js donation platform that holds donor records and children's profiles. I designed and wrote the document that governs the engagement: an 18-page statement of work and rules of engagement in two parts — the part a non-technical signer reads to decide, and the technical part that binds me — plus a two-page plain-language test plan so nobody signs something they cannot follow. The NDA is now signed and phase 1 is complete; the report is with the client and stays private until remediation.": "Quỹ Nuôi Em vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và hồ sơ trẻ em. Tôi thiết kế và viết tài liệu quản lý giao kèo: một bản ghi nhớ công việc và quy tắc giao chiến 18 trang gồm hai phần — phần người ký không chuyên đọc để quyết định, và phần kỹ thuật ràng buộc tôi — cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân để không ai ký thứ họ không hiểu. NDA đã ký và giai đoạn 1 đã hoàn tất; báo cáo đang ở chỗ khách hàng và giữ kín cho tới khi khắc phục xong.",
     "The scope is deliberately narrow. Seven asset classes are listed with the reason each is in; thirteen exclusions are numbered with the reason each is out. Assets on a look-alike domain are out even if they carry the charity's name, because a signature for a domain the signer does not own is worth nothing. Public data sources holding donor information are excluded by default — they add risk to the people in them and no value to the charity.": "Phạm vi cố tình hẹp. Bảy lớp tài sản được liệt kê kèm lý do đưa vào; mười ba mục loại trừ được đánh số kèm lý do loại ra. Tài sản trên tên miền giống mạo danh bị loại dù có mang tên tổ chức, vì chữ ký cho tên miền người ký không sở hữu chẳng giá trị gì. Các nguồn dữ liệu công cộng chứa thông tin người quyên góp bị loại trừ mặc định — chúng chỉ thêm rủi ro cho những người trong đó mà không thêm giá trị cho tổ chức.",
     "Four gates control six phases, and no gate can be passed while its conditions are still blank. Two of the eleven prerequisites belong to me: declaring a single static source IP so the charity can tell my traffic from a real attack, and clearing the academic ethics review, which matters more than usual here because children's data is involved.": "Bốn cổng kiểm soát sáu giai đoạn, và không cổng nào được qua khi điều kiện còn trống. Hai trong mười một điều kiện tiên quyết thuộc về tôi: khai báo một IP nguồn tĩnh duy nhất để tổ chức phân biệt lưu lượng của tôi với một cuộc tấn công thật, và qua được duyệt đạo đức học thuật — điều quan trọng hơn bình thường ở đây vì có dữ liệu trẻ em.",
     "Gates are the control, not the phases. A gate cannot be passed while any of its conditions is still blank, and exploitation never reaches production — the ceiling is drawn in deliberately.": "Cổng là sự kiểm soát, không phải giai đoạn. Cổng không thể qua khi bất kỳ điều kiện nào còn trống, và khai thác không bao giờ chạm tới production — trần đó được vẽ có chủ ý.",
@@ -497,7 +497,7 @@
     "PTES, OWASP WSTG v4.2, OWASP Top 10 (2021), CVSS v3.1, safe harbour modelled on the HackerOne Gold Standard": "PTES, OWASP WSTG v4.2, OWASP Top 10 (2021), CVSS v3.1, safe harbour theo chuẩn vàng HackerOne",
     "No copying child or donor records · redacted screenshots · 30-day deletion · notify within 1 h for user impact, 24 h for exposed personal data": "Không sao chép hồ sơ trẻ em hay người quyên góp · ảnh chụp màn hình đã tẩy · xóa sau 30 ngày · báo trong 1 h nếu ảnh hưởng người dùng, 24 h nếu lộ dữ liệu cá nhân",
     "Seven named conditions halt everything, including finding an unauthenticated internal resource": "Bảy điều kiện đặt tên dừng mọi thứ, gồm cả việc phát hiện một tài nguyên nội bộ không cần xác thực",
-    "NDA signed, engagement under way — phases 1–3 active, no findings reported yet": "Đã ký NDA, giao kèo đang thực hiện — các giai đoạn 1–3 hoạt động, chưa báo cáo phát hiện nào",
+    "NDA signed — phase 1 complete, report delivered to the client, details held private until remediation": "Đã ký NDA — giai đoạn 1 hoàn tất, báo cáo đã giao khách hàng, chi tiết giữ kín cho tới khi khắc phục",
 
     /* case 002 — diagram (HTML svg text) */
     "GATES — nothing starts while a condition is still blank": "CỔNG — không gì bắt đầu khi điều kiện còn trống",
@@ -549,8 +549,8 @@
     "30-day deletion · 1 h notify on user impact, 24 h on exposure": "xóa sau 30 ngày · báo 1 h nếu ảnh hưởng người dùng, 24 h nếu lộ",
     "BASIS PTES · OWASP WSTG v4.2 · OWASP Top 10 2021 · CVSS v3.1 ·": "CƠ SỞ PTES · OWASP WSTG v4.2 · OWASP Top 10 2021 · CVSS v3.1 ·",
     "safe harbour modelled on the HackerOne Gold Standard ·": "safe harbour theo chuẩn vàng HackerOne ·",
-    "STATUS NDA signed — engagement under way, phases 1–3 active,": "TRẠNG THÁI đã ký NDA — giao kèo đang thực hiện, giai đoạn 1–3 hoạt động,",
-    "no findings reported yet": "chưa báo cáo phát hiện nào",
+    "STATUS NDA signed — phase 1 complete, report delivered to the": "TRẠNG THÁI đã ký NDA — giai đoạn 1 hoàn tất, báo cáo đã giao",
+    "client, details private until remediation": "khách hàng, chi tiết giữ kín tới khi khắc phục",
 
     /* ── engagement: experience.log (terminal) ─────────────────────────── */
     "2026.10 — now Quỹ Nuôi Em · COS40005": "2026.10 — nay   Quỹ Nuôi Em · COS40005",
@@ -559,9 +559,9 @@
     "platform holding donor records and children": "nền tảng lưu hồ sơ người quyên góp và hồ sơ trẻ em",
     "profiles. Wrote the 18-page statement of work": "trẻ em. Viết bản ghi nhớ công việc 18 trang",
     "and rules of engagement plus a plain-language": "và quy tắc giao chiến cộng thêm kế hoạch test",
-    "test plan. NDA signed — engagement under way,": "bằng ngôn ngữ bình dân. Đã ký NDA — giao kèo đang thực hiện,",
-    "phases 1–3 running. No findings reported yet.": "các giai đoạn 1–3 đang chạy. Chưa báo cáo phát hiện nào.",
-    "See projects/quynuoiem-engagement.md.": "Xem projects/quynuoiem-engagement.md.",
+    "test plan. NDA signed — phase 1 complete.": "bằng ngôn ngữ bình dân. Đã ký NDA — giai đoạn 1 hoàn tất.",
+    "The report is with the client and stays": "Báo cáo đang ở chỗ khách hàng và được",
+    "private until remediation. See": "giữ kín tới khi khắc phục. Xem",
     "takeaway The hard part of a pentest is not the exploit —": "bài học Phần khó của pentest không phải là khai thác —",
     "it is writing down, before you start, what you": "mà là ghi rõ trước khi bắt đầu, chính xác những gì",
     "may touch and what you do when it breaks.": "được phép chạm vào và sẽ làm gì khi có sự cố.",
