@@ -150,6 +150,19 @@
       '  takeaway                   The fastest way to understand an organisation is',
       '                             to sit where its users hit friction.',
       '',
+      '2026.10 — now      Quỹ Nuôi Em · COS40005',
+      '                             Authorised Security Assessment — Engagement',
+      '                             Design. quynuoiem.com, a Next.js donation',
+      '                             platform holding donor records and children',
+      '                             profiles. Wrote the 18-page statement of work',
+      '                             and rules of engagement plus a plain-language',
+      '                             test plan. Awaiting signature — all eleven',
+      '                             prerequisites still read "not yet". See',
+      '                             projects/quynuoiem-engagement.md.',
+      '  takeaway                   The hard part of a pentest is not the exploit —',
+      '                             it is writing down, before you start, what you',
+      '                             may touch and what you do when it breaks.',
+      '',
       '2026.05 — 2026.08  VNCS      Security Consultant Intern',
       '                             Distributed Splunk Enterprise — Deployment',
       '                             Server pushing config to universal forwarders.',
@@ -246,6 +259,38 @@
         'PARSING  transforms.conf, regex, custom sourcetypes, CIM',
         'OUTPUT   dashboards, reports, alerts to email and chat',
         'STATUS   verified professional record',
+      ]),
+      'quynuoiem-engagement.md': file([
+        '# Engagement design for an authorised charity assessment',
+        '',
+        'Quỹ Nuôi Em runs a Next.js donation platform holding donor records and',
+        'children profiles. Before testing anything, I wrote the document that has',
+        'to be signed: an 18-page statement of work and rules of engagement in two',
+        'parts — the part a non-technical signer reads to decide, and the technical',
+        'part that binds me — plus a two-page plain-language test plan so nobody',
+        'signs something they cannot follow.',
+        '',
+        'SCOPE    7 asset classes listed with the reason each is in; 13 numbered',
+        '         exclusions with the reason each is out. Assets on a look-alike',
+        '         domain are out even if they carry the charity name — a signature',
+        '         for a domain the signer does not own is worth nothing. Public',
+        '         sources holding donor data are excluded by default.',
+        'MODEL    grey box — two lowest-privilege test accounts, no source access',
+        'GATES    G1 NDA + signed + assets · G2 + contact, blackout, IP ·',
+        '         G3 + ethics review, staging data · G4 remediation confirmed',
+        'PHASES   1 recon · 2 scan · 3 analyse · 4 exploit (staging only) ·',
+        '         5 retest · 6 report. Production stops after phase 3.',
+        'LIMITS   ≤ 5,000 req/day · ≤ 5 req/s · ≤ 3 h/session · one declared',
+        '         static IP · payload ≤ 10 KB · no brute force, load testing,',
+        '         social engineering or automated exploitation',
+        'STOPS    seven named conditions halt everything, including finding an',
+        '         unauthenticated internal resource',
+        'DATA     no copying child or donor records · redacted screenshots ·',
+        '         30-day deletion · 1 h notify on user impact, 24 h on exposure',
+        'BASIS    PTES · OWASP WSTG v4.2 · OWASP Top 10 2021 · CVSS v3.1 ·',
+        '         safe harbour modelled on the HackerOne Gold Standard ·',
+        '         Luật 91/2025/QH15 · Luật Trẻ em 2016 · Điều 289 BLHS 2015',
+        'STATUS   prepared, awaiting signature — no testing performed',
       ]),
       'web-assessment.md': file([
         '# Authorised web application assessment — and the fixes',
@@ -567,6 +612,7 @@
       print([
         { cls: 't-dim', text: t('open what? case files:') },
         { html: '<span class="t-accent">open projects/splunk-lab.md</span>' },
+        { html: '<span class="t-accent">open projects/quynuoiem-engagement.md</span>' },
         { html: '<span class="t-accent">open projects/web-assessment.md</span>' },
         { html: '<span class="t-accent">open projects/this-site.md</span>' },
         { html: '<span class="t-accent">open projects/cpts-casefiles.md</span>' },
@@ -580,7 +626,7 @@
     if (res.ok && res.node.type === 'file') { cmdCat([arg]); return; }
 
     const idx = Number(arg);
-    if (Number.isInteger(idx) && idx >= 1 && idx <= 4) {
+    if (Number.isInteger(idx) && idx >= 1 && idx <= 5) {
       const card = $$('.case')[idx - 1];
       if (card) {
         card.open = true;
