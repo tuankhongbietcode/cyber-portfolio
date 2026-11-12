@@ -465,13 +465,13 @@
     "flags, credentials and client data are sanitised before anything": "flag, credential và dữ liệu khách hàng được làm sạch trước khi",
     "gets published here. that is the whole rule.": "được công bố ở đây. đó là toàn bộ nguyên tắc.",
 
-    /* ── engagement: Quỹ Nuôi Em (case 002 + experience) ────────────────── */
+    /* ── engagement: confidential charity client (case 002 + experience) ────────────────── */
     /* experience entry (HTML) */
     "2026.10 — now": "2026.10 — nay",
     "phase 1 complete": "giai đoạn 1 hoàn tất",
     "Authorised Security Assessment — Engagement Design": "Đánh giá an ninh có cho phép — Thiết kế giao kèo",
     "Designed and launched the engagement: scope, rules of engagement, safety limits, and what I do the moment something goes wrong. Phase 1 is complete — the report is with the client and stays private until remediation. Breakdown in case 002.": "Thiết kế và triển khai giao kèo: phạm vi, quy tắc giao chiến, giới hạn an toàn, và những việc tôi làm ngay khi có sự cố. Giai đoạn 1 đã hoàn tất — báo cáo đang ở chỗ khách hàng và giữ kín cho tới khi khắc phục xong. Chi tiết ở case 002.",
-    "quynuoiem.com — a Next.js donation platform with live donors, real money, and children's profiles on it": "quynuoiem.com — nền tảng quyên góp Next.js có người quyên góp thật, tiền thật, và hồ sơ trẻ em bên trong",
+    "A charity's Next.js donation platform with live donors, real money, and children's profiles on it": "Nền tảng quyên góp Next.js của một tổ chức từ thiện, có người quyên góp thật, tiền thật, và hồ sơ trẻ em bên trong",
     "Scope definition, rules of engagement, rate limits, data-handling obligations, stop conditions, reporting structure": "Định nghĩa phạm vi, quy tắc giao chiến, giới hạn tốc độ, nghĩa vụ xử lý dữ liệu, điều kiện dừng, cấu trúc báo cáo",
     "An 18-page statement of work and rules of engagement, plus a two-page plain-language test plan for the non-technical signer": "Một bản ghi nhớ công việc 18 trang và quy tắc giao chiến, cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân cho người ký không chuyên kỹ thuật",
     "The hard part of a pentest is not the exploit — it is writing down, before you start, exactly what you may touch and what you will do when something breaks.": "Phần khó của pentest không phải là khai thác — mà là ghi rõ trước khi bắt đầu chính xác những gì được phép chạm vào và sẽ làm gì khi có sự cố.",
@@ -485,7 +485,7 @@
     "Engagement design for an authorised charity assessment": "Thiết kế giao kèo cho đánh giá từ thiện có cho phép",
     "Scope, rules of engagement and safety limits for testing a children's charity donation platform — NDA signed, phase 1 complete, report private until remediation.": "Phạm vi, quy tắc giao chiến và giới hạn an toàn để test nền tảng quyên góp của một tổ chức từ thiện trẻ em — đã ký NDA, giai đoạn 1 hoàn tất, báo cáo giữ kín tới khi khắc phục.",
     "A COS40005 engagement — full role context in Experience.": "Một giao kèo COS40005 — bối cảnh đầy đủ ở mục Kinh nghiệm.",
-    "Quỹ Nuôi Em runs a Next.js donation platform that holds donor records and children's profiles. I designed and wrote the document that governs the engagement: an 18-page statement of work and rules of engagement in two parts — the part a non-technical signer reads to decide, and the technical part that binds me — plus a two-page plain-language test plan so nobody signs something they cannot follow. The NDA is now signed and phase 1 is complete; the report is with the client and stays private until remediation.": "Quỹ Nuôi Em vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và hồ sơ trẻ em. Tôi thiết kế và viết tài liệu quản lý giao kèo: một bản ghi nhớ công việc và quy tắc giao chiến 18 trang gồm hai phần — phần người ký không chuyên đọc để quyết định, và phần kỹ thuật ràng buộc tôi — cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân để không ai ký thứ họ không hiểu. NDA đã ký và giai đoạn 1 đã hoàn tất; báo cáo đang ở chỗ khách hàng và giữ kín cho tới khi khắc phục xong.",
+    "A charity client runs a Next.js donation platform that holds donor records and children's profiles. I designed and wrote the document that governs the engagement: an 18-page statement of work and rules of engagement in two parts — the part a non-technical signer reads to decide, and the technical part that binds me — plus a two-page plain-language test plan so nobody signs something they cannot follow. The NDA is now signed and phase 1 is complete; the report is with the client and stays private until remediation.": "Một khách hàng từ thiện vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và hồ sơ trẻ em. Tôi thiết kế và viết tài liệu quản lý giao kèo: một bản ghi nhớ công việc và quy tắc giao chiến 18 trang gồm hai phần — phần người ký không chuyên đọc để quyết định, và phần kỹ thuật ràng buộc tôi — cộng thêm kế hoạch test 2 trang viết bằng ngôn ngữ bình dân để không ai ký thứ họ không hiểu. NDA đã ký và giai đoạn 1 đã hoàn tất; báo cáo đang ở chỗ khách hàng và giữ kín cho tới khi khắc phục xong.",
     "The scope is deliberately narrow. Seven asset classes are listed with the reason each is in; thirteen exclusions are numbered with the reason each is out. Assets on a look-alike domain are out even if they carry the charity's name, because a signature for a domain the signer does not own is worth nothing. Public data sources holding donor information are excluded by default — they add risk to the people in them and no value to the charity.": "Phạm vi cố tình hẹp. Bảy lớp tài sản được liệt kê kèm lý do đưa vào; mười ba mục loại trừ được đánh số kèm lý do loại ra. Tài sản trên tên miền giống mạo danh bị loại dù có mang tên tổ chức, vì chữ ký cho tên miền người ký không sở hữu chẳng giá trị gì. Các nguồn dữ liệu công cộng chứa thông tin người quyên góp bị loại trừ mặc định — chúng chỉ thêm rủi ro cho những người trong đó mà không thêm giá trị cho tổ chức.",
     "Four gates control six phases, and no gate can be passed while its conditions are still blank. Two of the eleven prerequisites belong to me: declaring a single static source IP so the charity can tell my traffic from a real attack, and clearing the academic ethics review, which matters more than usual here because children's data is involved.": "Bốn cổng kiểm soát sáu giai đoạn, và không cổng nào được qua khi điều kiện còn trống. Hai trong mười một điều kiện tiên quyết thuộc về tôi: khai báo một IP nguồn tĩnh duy nhất để tổ chức phân biệt lưu lượng của tôi với một cuộc tấn công thật, và qua được duyệt đạo đức học thuật — điều quan trọng hơn bình thường ở đây vì có dữ liệu trẻ em.",
     "Gates are the control, not the phases. A gate cannot be passed while any of its conditions is still blank, and exploitation never reaches production — the ceiling is drawn in deliberately.": "Cổng là sự kiểm soát, không phải giai đoạn. Cổng không thể qua khi bất kỳ điều kiện nào còn trống, và khai thác không bao giờ chạm tới production — trần đó được vẽ có chủ ý.",
@@ -529,7 +529,7 @@
 
     /* ── engagement: VFS (terminal `cat`) ──────────────────────────────── */
     "# Engagement design for an authorised charity assessment": "# Thiết kế giao kèo cho đánh giá từ thiện có cho phép",
-    "Quỹ Nuôi Em runs a Next.js donation platform holding donor records and": "Quỹ Nuôi Em vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và",
+    "A charity client runs a Next.js donation platform holding donor records and": "Một khách hàng từ thiện vận hành nền tảng quyên góp Next.js lưu hồ sơ người quyên góp và",
     "children profiles. Before testing anything, I wrote the document that has": "hồ sơ trẻ em. Trước khi test bất cứ thứ gì, tôi viết tài liệu phải được ký:",
     "to be signed: an 18-page statement of work and rules of engagement in two": "một bản ghi nhớ công việc và quy tắc giao chiến 18 trang gồm hai",
     "parts — the part a non-technical signer reads to decide, and the technical": "phần — phần người ký không chuyên đọc để quyết định, và phần kỹ thuật",
@@ -558,9 +558,9 @@
     "client, details private until remediation": "khách hàng, chi tiết giữ kín tới khi khắc phục",
 
     /* ── engagement: experience.log (terminal) ─────────────────────────── */
-    "2026.10 — now Quỹ Nuôi Em · COS40005": "2026.10 — nay   Quỹ Nuôi Em · COS40005",
+    "2026.10 — now Confidential charity client · COS40005": "2026.10 — nay   Khách hàng từ thiện bảo mật · COS40005",
     "Authorised Security Assessment — Engagement": "Thiết kế giao kèo cho đánh giá an ninh có cho phép",
-    "Design. quynuoiem.com, a Next.js donation": "Thiết kế. quynuoiem.com, một nền tảng quyên góp Next.js",
+    "Design. A charity's Next.js donation": "Thiết kế. Nền tảng quyên góp Next.js của một quỹ từ thiện",
     "platform holding donor records and children": "nền tảng lưu hồ sơ người quyên góp và hồ sơ trẻ em",
     "profiles. Wrote the 18-page statement of work": "trẻ em. Viết bản ghi nhớ công việc 18 trang",
     "and rules of engagement plus a plain-language": "và quy tắc giao chiến cộng thêm kế hoạch test",
