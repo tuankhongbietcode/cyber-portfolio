@@ -45,32 +45,21 @@
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 
-<script>
-  /* Scroll-reveal only hides content when this script actually ran, so the
-     page is fully readable with JavaScript disabled. The timer is a failsafe
-     in case app.js never loads: after 3s everything is shown regardless. */
-  (function () {
-    var root = document.documentElement;
-    root.classList.add('js');
-    window.__revealFailsafe = setTimeout(function () { root.classList.remove('js'); }, 3000);
-  })();
+<!-- Kept in its own file, not inline, so the CSP below can pin script-src to
+     'self' instead of trusting inline script content. Must still run
+     synchronously here (no defer) — it sets the 'js' class and the no-JS
+     failsafe timer before the page paints. -->
+<script src="bootstrap.js"></script>
 
-  /* Re-derive the absolute URLs from the address actually being used, so the
-     baked-in GitHub Pages values in the head stay correct if the site is ever
-     served from another host. */
-  (function () {
-    var here = location.origin + location.pathname;
-    var abs = function (p) { return new URL(p, here).href; };
-    var set = function (sel, attr, val) {
-      var el = document.querySelector(sel);
-      if (el) el.setAttribute(attr, val);
-    };
-    set('link[rel="canonical"]', 'href', here);
-    set('meta[property="og:url"]', 'content', here);
-    set('meta[property="og:image"]', 'content', abs('og-image.png'));
-    set('meta[name="twitter:image"]', 'content', abs('og-image.png'));
-  })();
-</script>
+<!-- A strict CSP for a static, no-framework site: every script is a known
+     local file (script-src 'self', no inline, no eval), styles are the one
+     local stylesheet, and the only cross-origin network call the page makes
+     is the opt-in analytics beacon below. GitHub Pages serves static files
+     only, so this has to be a <meta> tag rather than a real response header —
+     which means frame-ancestors is not enforceable from here (that directive
+     is header-only); there's no inline frame on this page, so the exposure
+     is limited to being embedded elsewhere, not to code execution. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://portfolio-analytics.tunah.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self'">
 
 <script type="application/ld+json">
 {
@@ -148,7 +137,7 @@
       "item": {
         "@type": "CreativeWork",
         "name": "Distributed Splunk & multi-source log onboarding",
-        "description": "Distributed Splunk Enterprise lab with a Deployment Server and universal forwarders, onboarding Windows Event, Sysmon, Linux, web application and firewall logs, with validation, dashboards and alerting.",
+        "description": "Distributed Splunk Enterprise lab with a Deployment Server and universal forwarders, onboarding Windows Event, Sysmon, Linux, Oracle, web application and firewall logs, with validation, dashboards and alerting.",
         "about": ["SIEM", "Splunk", "Log Onboarding"]
       }
     },
@@ -449,8 +438,8 @@
           <p class="case__ctx">From my VNCS internship — full role summary in Experience.</p>
           <p>Stood up Splunk Enterprise as a distributed deployment — a Deployment Server pushing
             config to universal forwarders across mixed hosts — then brought several log families
-            into one searchable surface: Windows Event Log, Sysmon, Linux syslog, web application
-            logs and firewall/syslog feeds.</p>
+            into one searchable surface: Windows Event Log, Sysmon, Linux syslog, Oracle audit,
+            web application logs and firewall/syslog feeds.</p>
           <p>Onboarding the data was the bulk of it: field extraction written by hand in
             <code>transforms.conf</code> with regex where the shipped add-ons mis-parsed, custom
             sourcetypes for the feeds no add-on covered, and everything normalised against the
@@ -461,8 +450,8 @@
             and building the reports, dashboards and alerts — routed to email and chat — that
             somebody would actually act on.</p>
           <figure class="case__fig">
-            <svg viewBox="0 0 760 246" role="img" aria-labelledby="fig-splunk">
-              <title id="fig-splunk">Five log sources feed universal forwarders across mixed hosts. The forwarders send events to a distributed Splunk Enterprise deployment — indexer and search head — which produces dashboards, alerts, reports and POC documentation. A deployment server pushes app and configuration to the forwarders.</title>
+            <svg viewBox="0 0 760 268" role="img" aria-labelledby="fig-splunk">
+              <title id="fig-splunk">Six log sources feed universal forwarders across mixed hosts. The forwarders send events to a distributed Splunk Enterprise deployment — indexer and search head — which produces dashboards, alerts, reports and POC documentation. A deployment server pushes app and configuration to the forwarders.</title>
               <defs>
                 <marker id="sp-ar" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
                   <path class="fig-ar" d="M0 0 L8 4 L0 8 Z"/>
@@ -491,41 +480,43 @@
               <rect class="fig-chip" x="16" y="164" width="160" height="18" rx="4"/>
               <text class="fig-tick" x="28" y="176.5">Linux syslog</text>
               <rect class="fig-chip" x="16" y="186" width="160" height="18" rx="4"/>
-              <text class="fig-tick" x="28" y="198.5">Web application</text>
+              <text class="fig-tick" x="28" y="198.5">Oracle audit</text>
               <rect class="fig-chip" x="16" y="208" width="160" height="18" rx="4"/>
-              <text class="fig-tick" x="28" y="220.5">Firewall / syslog</text>
+              <text class="fig-tick" x="28" y="220.5">Web application</text>
+              <rect class="fig-chip" x="16" y="230" width="160" height="18" rx="4"/>
+              <text class="fig-tick" x="28" y="242.5">Firewall / syslog</text>
 
-              <path class="fig-wire" d="M176 129 H186 M176 151 H186 M176 173 H186 M176 195 H186 M176 217 H186"/>
-              <path class="fig-wire" d="M186 129 V217"/>
-              <path class="fig-flow" d="M186 173 H216" marker-end="url(#sp-ar)"/>
+              <path class="fig-wire" d="M176 129 H186 M176 151 H186 M176 173 H186 M176 195 H186 M176 217 H186 M176 239 H186"/>
+              <path class="fig-wire" d="M186 129 V239"/>
+              <path class="fig-flow" d="M186 184 H216" marker-end="url(#sp-ar)"/>
 
-              <rect class="fig-box" x="216" y="120" width="140" height="106" rx="6"/>
-              <text class="fig-label" x="286" y="158" text-anchor="middle">Universal</text>
-              <text class="fig-label" x="286" y="172" text-anchor="middle">Forwarders</text>
-              <text class="fig-sub" x="286" y="192" text-anchor="middle">mixed OS hosts</text>
+              <rect class="fig-box" x="216" y="120" width="140" height="128" rx="6"/>
+              <text class="fig-label" x="286" y="169" text-anchor="middle">Universal</text>
+              <text class="fig-label" x="286" y="183" text-anchor="middle">Forwarders</text>
+              <text class="fig-sub" x="286" y="203" text-anchor="middle">mixed OS hosts</text>
 
-              <path class="fig-flow" d="M356 173 H396" marker-end="url(#sp-ar)"/>
+              <path class="fig-flow" d="M356 184 H396" marker-end="url(#sp-ar)"/>
 
-              <rect class="fig-box fig-box--accent" x="396" y="120" width="200" height="106" rx="6"/>
+              <rect class="fig-box fig-box--accent" x="396" y="120" width="200" height="128" rx="6"/>
               <text class="fig-label" x="496" y="148" text-anchor="middle">Splunk Enterprise</text>
               <path class="fig-wire" d="M412 160 H580"/>
-              <text class="fig-tick" x="496" y="178" text-anchor="middle">Indexer · Search Head</text>
-              <text class="fig-sub" x="496" y="194" text-anchor="middle">parse · index · normalise time</text>
-              <text class="fig-sub" x="496" y="208" text-anchor="middle">CIM · correlate across sources</text>
+              <text class="fig-tick" x="496" y="186" text-anchor="middle">Indexer · Search Head</text>
+              <text class="fig-sub" x="496" y="204" text-anchor="middle">parse · index · normalise time</text>
+              <text class="fig-sub" x="496" y="220" text-anchor="middle">CIM · correlate across sources</text>
 
-              <path class="fig-flow" d="M596 173 H636" marker-end="url(#sp-ar)"/>
+              <path class="fig-flow" d="M596 184 H636" marker-end="url(#sp-ar)"/>
 
-              <rect class="fig-chip fig-chip--accent" x="636" y="131" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="143.5">Dashboards</text>
-              <rect class="fig-chip fig-chip--accent" x="636" y="153" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="165.5">Reports</text>
-              <rect class="fig-chip fig-chip--accent" x="636" y="175" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="187.5">Alerts</text>
-              <rect class="fig-chip fig-chip--accent" x="636" y="197" width="108" height="18" rx="4"/>
-              <text class="fig-tick" x="648" y="209.5">Email · chat</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="139" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="151.5">Dashboards</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="163" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="175.5">Reports</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="187" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="199.5">Alerts</text>
+              <rect class="fig-chip fig-chip--accent" x="636" y="211" width="108" height="18" rx="4"/>
+              <text class="fig-tick" x="648" y="223.5">Email · chat</text>
             </svg>
             <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
-            <figcaption>Five log families, one searchable surface. The Deployment Server is the control plane:
+            <figcaption>Six log families, one searchable surface. The Deployment Server is the control plane:
               pushing app and config from one place is what keeps parsing consistent across hosts nobody
               configured by hand. Everything lands normalised to the Common Information Model, so a
               field means the same thing on every host.</figcaption>
@@ -535,7 +526,7 @@
           <dl class="facts facts--inline">
             <div><dt>Stack</dt><dd>Splunk Enterprise, Deployment Server, Forwarder Management, Universal Forwarders</dd></div>
             <div><dt>Parsing</dt><dd>Hand-written <code>transforms.conf</code> extraction, regex, custom sourcetypes, Splunk CIM</dd></div>
-            <div><dt>Sources</dt><dd>Windows Event, Sysmon, Linux, Oracle, firewall</dd></div>
+            <div><dt>Sources</dt><dd>Windows Event, Sysmon, Linux, Oracle, web application, firewall</dd></div>
             <div><dt>Output</dt><dd>Dashboards, reports, alerts routed to email and chat</dd></div>
           </dl>
           <p class="case__proof"><b>What it demonstrates</b> Detection is downstream of data quality.
@@ -950,37 +941,10 @@
      the page makes no third-party request at all by default. The endpoint is
      your own Cloudflare Worker, which writes the visit into your own D1
      database; no analytics vendor sits in the path. Setup and the privacy
-     trade-offs: analytics/README.md -->
-<script>
-  (function () {
-    var ENDPOINT = "https://portfolio-analytics.tunah.workers.dev/collect"; // ← e.g. "https://portfolio-analytics.you.workers.dev/collect"
-
-    if (!ENDPOINT) return; // not configured: send nothing
-
-    // Honour the browser's opt-out rather than counting anyway.
-    if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
-
-    var payload = JSON.stringify({
-      path: location.pathname,
-      referrer: document.referrer || "",
-      screen: screen.width + "x" + screen.height,
-      lang: navigator.language || ""
-    });
-
-    // text/plain keeps this a CORS "simple request", so no preflight is sent
-    // and the beacon costs one request instead of two.
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: "text/plain" }));
-    } else {
-      fetch(ENDPOINT, {
-        method: "POST",
-        body: payload,
-        headers: { "Content-Type": "text/plain" },
-        mode: "no-cors",
-        keepalive: true
-      }).catch(function () {});
-    }
-  })();
-</script>
+     trade-offs: analytics/README.md
+     Kept in its own file (analytics-beacon.js), not inline, for the same CSP
+     reason as bootstrap.js above: script-src 'self' trusts local files, not
+     inline content. setup.sh rewrites the ENDPOINT line inside that file. -->
+<script src="analytics-beacon.js"></script>
 </body>
 </html>
