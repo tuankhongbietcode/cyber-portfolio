@@ -66,6 +66,7 @@
     "expand": "mở rộng",
     "Switch colour theme": "Đổi màu giao diện",
     "Switch language": "Đổi ngôn ngữ",
+    "Menu": "Menu",
     "Focus the terminal": "Focus vào terminal",
     "Toggle terminal fullscreen": "Bật/tắt toàn màn hình terminal",
     "Terminal command": "Lệnh terminal",

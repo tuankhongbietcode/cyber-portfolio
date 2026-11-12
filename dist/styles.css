@@ -210,6 +210,9 @@ code, kbd, pre { font-family: var(--mono); }
 .nav a:hover { color: var(--text); background: var(--bg-3); }
 .nav a.is-active { color: var(--accent); }
 
+/* Only shown when the inline nav is hidden (see the 900px rule). */
+.iconbtn.menubtn { display: none; }
+
 .topbar__end {
   display: flex;
   align-items: center;
@@ -1371,7 +1374,21 @@ html.js .reveal:not(.is-in) {
 }
 
 @media (max-width: 900px) {
-  .nav { display: none; }
+  .iconbtn.menubtn { display: inline-flex; }
+  .nav {
+    display: none;
+    position: absolute;
+    inset: 100% 0 auto 0;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 8px var(--pad) 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav a { padding: 13px 4px; font-size: .84rem; border-radius: 0; border-bottom: 1px solid var(--line); }
+  .nav a:last-child { border-bottom: 0; }
+  .topbar.menu-open .nav { display: flex; }
   .sec__head { grid-template-columns: 1fr; }
   .sec__note { grid-column: 1; grid-row: auto; }
   .log__item,

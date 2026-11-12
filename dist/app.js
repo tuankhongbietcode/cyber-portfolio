@@ -94,6 +94,20 @@
   /* app.js is alive, so the no-JS failsafe is no longer needed */
   clearTimeout(window.__revealFailsafe);
 
+  /* Phone menu — the inline nav is hidden below 900px, so this button opens
+     it as a dropdown. Closes on a link tap, Escape, or when the viewport grows. */
+  const menuBtn = $('#menuToggle');
+  if (menuBtn && topbar) {
+    const setMenu = (open) => {
+      topbar.classList.toggle('menu-open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+    };
+    menuBtn.addEventListener('click', () => setMenu(!topbar.classList.contains('menu-open')));
+    $$('.nav a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+    matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  }
+
   /* Active nav link */
   const navLinks = $$('.nav a');
   const sections = navLinks
