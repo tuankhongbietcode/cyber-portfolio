@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Self-hosted Cloudflare Worker that logs portfolio visits into D1",
   "scripts": {
-    "test": "node --test",
+    "test": "node --test \"test/*.test.mjs\"",
     "dev": "npx wrangler@latest dev",
     "deploy": "npx wrangler@latest deploy"
   }

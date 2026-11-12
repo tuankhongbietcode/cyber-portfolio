@@ -70,7 +70,7 @@ bash setup.sh
 
 That logs you in, creates the database, applies the schema, generates and stores
 a dashboard token, deploys the Worker, and writes the endpoint into
-`../dist/index.html` for you.
+`../dist/analytics-beacon.js` for you.
 
 **Save the token it prints.** It goes into a Worker secret and cannot be read
 back afterwards, so `setup.sh` prints it the moment it is created rather than
@@ -123,12 +123,16 @@ WR=~/.wrangler-cli/node_modules/.bin/wrangler
 The deploy output gives you a URL like
 `https://portfolio-analytics.<your-subdomain>.workers.dev`.
 
-**Then turn the site on:** open `dist/index.html`, find the analytics block near
-the bottom, and set the endpoint to that URL plus `/collect`:
+**Then turn the site on:** open `dist/analytics-beacon.js` and set the endpoint
+to that URL plus `/collect`:
 
 ```js
 var ENDPOINT = "https://portfolio-analytics.<your-subdomain>.workers.dev/collect";
 ```
+
+It lives in its own file rather than inline in `index.html` so the page's
+Content-Security-Policy can pin `script-src` to `'self'` instead of trusting
+inline script content — editing a separate file doesn't invalidate anything.
 
 Commit and push. The next deploy starts collecting.
 

@@ -27,3 +27,6 @@ CREATE INDEX IF NOT EXISTS idx_visits_ts ON visits (ts DESC);
 
 -- Used by the retention sweep.
 CREATE INDEX IF NOT EXISTS idx_visits_ts_asc ON visits (ts ASC);
+
+-- Used by the per-IP rate limit on /collect (COUNT(*) WHERE ip = ? AND ts >= ?).
+CREATE INDEX IF NOT EXISTS idx_visits_ip_ts ON visits (ip, ts);
