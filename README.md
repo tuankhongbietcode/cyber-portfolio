@@ -7,8 +7,10 @@ step: everything in `dist/` is exactly what ships.
 
 | Path | What it is |
 | --- | --- |
-| `dist/index.html` | The page — markup, structured data, theme bootstrap |
+| `dist/index.html` | The page — markup, structured data, CSP |
 | `dist/styles.css` | All styling: both themes, the diagram type scale, print rules |
+| `dist/bootstrap.js` | Theme class + no-JS failsafe, OG/canonical URL correction |
+| `dist/analytics-beacon.js` | The opt-in visitor beacon — `ENDPOINT` lives here |
 | `dist/app.js` | Page chrome, the virtual filesystem, the terminal |
 | `dist/portrait.js` | The halftone portrait canvas |
 | `dist/portrait-data.js` | Generated glyph grid, base64 |
@@ -67,13 +69,13 @@ To use a custom domain, add it under **Settings → Pages → Custom domain** an
 point the DNS at GitHub. Then update the absolute `canonical`, `og:url` and
 `og:image` values in `dist/index.html`. They are baked in rather than relative
 because LinkedIn and Slack do not run JavaScript, so a relative URL never
-resolves for them. The inline script re-derives the same values from `location`,
-so the page stays correct for browsers either way.
+resolves for them. `dist/bootstrap.js` re-derives the same values from
+`location`, so the page stays correct for browsers either way.
 
 ## Visitor analytics
 
 The site ships with **no analytics and no third-party requests**. Nothing is sent
-anywhere until you opt in by setting an endpoint in `dist/index.html`.
+anywhere until you opt in by setting an endpoint in `dist/analytics-beacon.js`.
 
 There are two ways to switch it on. Pick one.
 
@@ -94,7 +96,7 @@ bash setup.sh
 `setup.sh` installs its own copy of wrangler under `~/.wrangler-cli` rather than
 going through `npx` — see [why](analytics/README.md#why-not-npx).
 
-Then point the page at it, in `dist/index.html`:
+Then point the page at it, in `dist/analytics-beacon.js`:
 
 ```js
 var ENDPOINT = "https://portfolio-analytics.<your-subdomain>.workers.dev/collect";

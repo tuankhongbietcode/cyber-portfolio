@@ -11,7 +11,8 @@
 #   bash setup.sh
 #
 # It logs you in, creates the D1 database, applies the schema, sets a dashboard
-# token, deploys the Worker, and wires the resulting URL into ../dist/index.html.
+# token, deploys the Worker, and wires the resulting URL into
+# ../dist/analytics-beacon.js.
 #
 # Safe to re-run: it reuses an existing database_id and never rotates the token
 # unless you delete it first.
@@ -24,7 +25,10 @@ set -euo pipefail
 
 DB_NAME="portfolio-analytics"
 TOML="wrangler.toml"
-SITE_HTML="../dist/index.html"
+# The page loads this as an external file (not an inline <script>) so the
+# site's CSP can pin script-src to 'self' without a content hash that this
+# rewrite would otherwise break on every run.
+SITE_HTML="../dist/analytics-beacon.js"
 PLACEHOLDER="PASTE_YOUR_DATABASE_ID_HERE"
 
 say()  { printf '\n\033[1;36m==> %s\033[0m\n' "$1"; }

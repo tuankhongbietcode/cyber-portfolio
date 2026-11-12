@@ -10,7 +10,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import worker from "../src/index.js";
+import worker, { RATE_LIMIT_MAX_REQUESTS } from "../src/index.js";
 
 /* ------------------------------------------------------------- harness */
 
@@ -54,13 +54,17 @@ function resultFor(sql) {
   return [];
 }
 
-function firstFor(sql) {
+// `rateLimitCount` stands in for "how many rows this IP already has in the
+// window" — the real query the /collect rate limit runs. 0 unless a test
+// overrides it, so every existing test is implicitly "this IP is fresh".
+function firstFor(sql, rateLimitCount) {
   if (sql.includes("COUNT(DISTINCT substr")) return CANNED.totals;
   if (sql.includes("substr(?1, 1, 10)")) return CANNED.today;
+  if (sql.includes("COUNT(*) AS n FROM visits WHERE ip")) return { n: rateLimitCount };
   return null;
 }
 
-function makeDB() {
+function makeDB({ rateLimitCount = 0 } = {}) {
   const calls = [];
   const prepared = (sql) => {
     const norm = sql.replace(/\s+/g, " ").trim();
@@ -75,7 +79,7 @@ function makeDB() {
       },
       async first() {
         calls.push({ sql: norm, args: [] });
-        return firstFor(norm);
+        return firstFor(norm, rateLimitCount);
       },
       bind(...args) {
         calls.push({ sql: norm, args });
@@ -87,7 +91,7 @@ function makeDB() {
             return { results: resultFor(norm) };
           },
           async first() {
-            return firstFor(norm);
+            return firstFor(norm, rateLimitCount);
           },
         };
       },
@@ -99,9 +103,9 @@ function makeDB() {
 
 const CTX = { waitUntil: () => {} };
 
-function makeEnv(overrides = {}) {
+function makeEnv({ rateLimitCount, ...overrides } = {}) {
   return {
-    DB: makeDB(),
+    DB: makeDB({ rateLimitCount }),
     ALLOWED_ORIGIN: "https://tuankhongbietcode.github.io",
     DASHBOARD_TOKEN: "correct-horse-battery-staple",
     RETENTION_DAYS: "90",
@@ -249,6 +253,31 @@ test("collect rejects a body larger than the cap outright", async () => {
 
   assert.equal(res.status, 413);
   assert.equal(env.DB.calls.length, 0, "an oversized body must not reach the database");
+});
+
+test("collect throttles an IP once it hits the per-window limit", async () => {
+  const env = makeEnv({ rateLimitCount: RATE_LIMIT_MAX_REQUESTS });
+  const res = await worker.fetch(beacon(), env, CTX);
+
+  // Same discard-quietly response as a filtered bot — the throttle doesn't
+  // announce itself either.
+  assert.equal(res.status, 202);
+  assert.equal(
+    env.DB.calls.some((c) => c.sql.startsWith("INSERT INTO visits")),
+    false,
+    "a throttled request must not be stored"
+  );
+});
+
+test("collect still stores a visit just under the per-window limit", async () => {
+  const env = makeEnv({ rateLimitCount: RATE_LIMIT_MAX_REQUESTS - 1 });
+  const res = await worker.fetch(beacon(), env, CTX);
+
+  assert.equal(res.status, 202);
+  assert.ok(
+    env.DB.calls.some((c) => c.sql.startsWith("INSERT INTO visits")),
+    "a request below the limit must still be stored"
+  );
 });
 
 /* ------------------------------------------------------------- dashboard */

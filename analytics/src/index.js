@@ -27,6 +27,15 @@ const MAX_BODY_BYTES = 2048;
 const DEFAULT_RETENTION_DAYS = 90;
 const COOKIE_NAME = "pa_token";
 
+// A crude per-IP throttle: nothing fancy (no KV, no Durable Object — stays on
+// the free plan), just a count of this IP's own rows in the last window. The
+// bot filter and Origin check are about *who* is allowed to post; this is
+// about *how often* — a scripted client with a convincing UA and no Origin
+// sails through both of those, so without this it could grow the D1 table (or
+// the request count) without limit.
+export const RATE_LIMIT_WINDOW_SECONDS = 60;
+export const RATE_LIMIT_MAX_REQUESTS = 20;
+
 /* ------------------------------------------------------------------ *
  * Pure helpers — exported so they can be unit tested without Workers
  * ------------------------------------------------------------------ */
@@ -132,13 +141,37 @@ async function collect(request, env, ctx) {
     return json({ ok: false }, 400, env);
   }
 
+  const clientIp = clamp(request.headers.get("CF-Connecting-IP"), 64);
+
+  // Neither check above stops a scripted client that sends a convincing UA
+  // and no Origin — that's exactly the request Cloudflare's edge DDoS
+  // protection doesn't see as abuse, since it's one request, not a flood.
+  // So throttle per IP directly against what's already in the table. This
+  // runs last, after every free local check, so a malformed or oversized
+  // request never costs a D1 read; it costs one indexed COUNT query only for
+  // a request that would otherwise be stored — well within D1's free-tier
+  // read allowance for a personal portfolio's traffic.
+  if (clientIp) {
+    const since = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
+    const recent = await env.DB.prepare(
+      "SELECT COUNT(*) AS n FROM visits WHERE ip = ?1 AND ts >= ?2"
+    )
+      .bind(clientIp, since)
+      .first();
+    if ((recent?.n ?? 0) >= RATE_LIMIT_MAX_REQUESTS) {
+      // Same discard-quietly posture as the bot filter above: say nothing
+      // that would help the caller tune around the limit.
+      return json({ ok: true }, 202, env);
+    }
+  }
+
   const cf = request.cf || {};
 
   const row = {
     ts: new Date().toISOString(),
     path: clamp(payload.path, 200),
     referrer: clamp(payload.referrer, 300),
-    ip: clamp(request.headers.get("CF-Connecting-IP"), 64),
+    ip: clientIp,
     country: clamp(cf.country, 8),
     region: clamp(cf.region, 80),
     city: clamp(cf.city, 80),
@@ -475,10 +508,27 @@ function corsHeaders(env) {
   };
 }
 
+// Shared by every response: /api/stats carries the same visitor-level data
+// (IP, city, UA...) as the HTML dashboard and sits behind the same token, so
+// it gets the same no-store/no-sniff/no-referrer treatment — not just the
+// dashboard page.
+function baseHeaders() {
+  return {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "X-Frame-Options": "DENY",
+    "Cache-Control": "no-store",
+  };
+}
+
 function json(body, status, env) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json", ...corsHeaders(env) },
+    headers: {
+      "Content-Type": "application/json",
+      ...baseHeaders(),
+      ...corsHeaders(env),
+    },
   });
 }
 
@@ -487,10 +537,7 @@ function html(body, status) {
     status,
     headers: {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Content-Type-Options": "nosniff",
-      "Referrer-Policy": "no-referrer",
-      "X-Frame-Options": "DENY",
-      "Cache-Control": "no-store",
+      ...baseHeaders(),
     },
   });
 }
