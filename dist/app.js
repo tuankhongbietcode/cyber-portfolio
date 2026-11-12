@@ -575,7 +575,7 @@
     print([
       { html: `<div class="nf"><pre class="nf__logo" aria-hidden="true">${logo}</pre><div class="nf__rows">${rows}</div></div>` },
       '',
-      { html: `<span class="t-dim">${t('tip:')}</span>${tips}` },
+      { html: `<span class="t-dim">${t('tip:')}</span> ${tips}` },
     ]);
   }
 
