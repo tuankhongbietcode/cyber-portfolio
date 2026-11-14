@@ -875,7 +875,7 @@ body.term-open { overflow: hidden; }
 /* A count strip so the section has a shape before anything is expanded. */
 .wstat {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   margin-bottom: 30px;
   background: var(--line-2);
@@ -1413,6 +1413,7 @@ html.js .reveal:not(.is-in) {
 
   .sec { padding-block: 64px; }
   .wstat { grid-template-columns: 1fr 1fr; }
+  .wstat > div:last-child { grid-column: 1 / -1; }
   .wstat > div { padding: 15px 16px; }
   .case__sum { grid-template-columns: 1fr 26px; gap: 12px; }
   .case__idx { display: none; }
@@ -1464,3 +1465,12 @@ html.js .reveal:not(.is-in) {
   details > *:not(summary) { display: block !important; content-visibility: visible !important; }
   .case__chev, .flow li::after { display: none !important; }
 }
+
+/* Links inside a case's facts list */
+.facts dd a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.facts dd a:hover { text-decoration-thickness: 2px; }

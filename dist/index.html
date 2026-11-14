@@ -66,7 +66,7 @@
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "dateCreated": "2026-10-13",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-14",
   "inLanguage": "en",
   "mainEntity": {
     "@type": "Person",
@@ -156,6 +156,17 @@
       "position": 3,
       "item": {
         "@type": "CreativeWork",
+        "name": "Security advisory GHSA-jxr9-96r9-v98c",
+        "description": "Coordinated disclosure of a High-severity (CVSS 7.1) insecure file permission flaw in the @congminh1254/shopee-sdk npm package that exposed Shopee access and refresh tokens to other local users; fixed in 2.12.1 and published as GHSA-jxr9-96r9-v98c.",
+        "url": "https://github.com/congminh1254/shopee-sdk/security/advisories/GHSA-jxr9-96r9-v98c",
+        "about": ["Vulnerability Disclosure", "Application Security", "npm"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "CreativeWork",
         "name": "Terminal-first portfolio site",
         "description": "A hand-built single-page site with no framework and no build step: a working virtual filesystem shell with tab completion, and a portrait rendered as 2,473 animated glyph particles on a canvas.",
         "about": ["Front End Development", "JavaScript", "Canvas", "Accessibility"]
@@ -163,7 +174,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 4,
+      "position": 5,
       "item": {
         "@type": "CreativeWork",
         "name": "Offensive security case files",
@@ -415,13 +426,14 @@
     <header class="sec__head reveal">
       <p class="sec__idx">02</p>
       <h2>Work</h2>
-      <p class="sec__note">Five case files. Two expand on an internship above, one on the engagement
-        above; two are new. Open one to see the evidence, not just the headline.</p>
+      <p class="sec__note">Six case files. Two expand on an internship above, one on the engagement
+        above; three are new. Open one to see the evidence, not just the headline.</p>
     </header>
 
     <div class="wstat reveal">
-      <div><b>05</b><span>case files</span></div>
+      <div><b>06</b><span>case files</span></div>
       <div><b>02</b><span>verified professional record</span></div>
+      <div><b>01</b><span>published security advisory</span></div>
       <div><b>01</b><span>built and shipped</span></div>
       <div><b>02</b><span>in preparation</span></div>
     </div>
@@ -701,9 +713,48 @@
         </div>
       </details>
 
-      <details class="case case--live reveal">
+      <details class="case reveal">
         <summary class="case__sum">
           <span class="case__idx">004</span>
+          <span class="case__main">
+            <span class="case__title">Published advisory — plaintext tokens any local user could read</span>
+            <span class="case__sub">A High-severity flaw in an npm SDK for the Shopee Open Platform: found, proven, reported privately, fixed by the maintainer and published as GHSA-jxr9-96r9-v98c.</span>
+            <span class="case__tags"><i>AppSec</i><i>Disclosure</i><i>Published</i></span>
+          </span>
+          <span class="case__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="case__panel">
+          <p>In <code>@congminh1254/shopee-sdk</code>, the optional <code>CustomTokenStorage</code> wrote a
+            merchant's <code>access_token</code> and <code>refresh_token</code> to a <code>.token/</code> folder in
+            the project directory with the process's default permissions. Under a normal umask that means
+            <code>0644</code>: readable by every local user, and by any backup, image or CI artifact that copies
+            the workspace.</p>
+          <p>The refresh token is what made it serious. Whoever reads the file can keep minting new access
+            tokens, and with them call the Shopee Open Platform as the merchant — read orders with buyer names,
+            phone numbers and addresses, and change products, stock and prices.</p>
+          <p>The report went in privately through GitHub's security advisory process, with the affected code, a
+            CVSS vector, a suggested fix, and a proof of concept that needs no Shopee account and no network: a
+            fake token, one call to <code>store()</code>, then <code>stat</code> and <code>cat</code> as another
+            user. The maintainer accepted it and shipped 2.12.1 — <code>0700</code> on the folder,
+            <code>0600</code> on the files, old files tightened on start-up, and a <code>.gitignore</code> so the
+            tokens never reach version control.</p>
+          <ol class="flow"><li>Find</li><li>Prove</li><li>Report</li><li>Publish</li></ol>
+          <dl class="facts facts--inline">
+            <div><dt>Advisory</dt><dd><a href="https://github.com/congminh1254/shopee-sdk/security/advisories/GHSA-jxr9-96r9-v98c" target="_blank" rel="noopener">GHSA-jxr9-96r9-v98c <span aria-hidden="true">↗</span></a> — reported 4 Nov 2026, published 10 Nov 2026</dd></div>
+            <div><dt>Severity</dt><dd>High · CVSS 3.1 score 7.1 · <code>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N</code></dd></div>
+            <div><dt>Weakness</dt><dd>CWE-276 incorrect default permissions · CWE-732 incorrect permissions on a critical resource</dd></div>
+            <div><dt>Fixed</dt><dd>Version 2.12.1 — every version up to 2.12.0 is affected</dd></div>
+            <div><dt>Credit</dt><dd>Reporter and analyst. No CVE ID has been assigned yet.</dd></div>
+          </dl>
+          <p class="case__proof"><b>What it demonstrates</b> That I can carry a finding all the way: from a line
+            of code to a scored impact, a proof anyone can rerun, and a fix the maintainer could ship. More reports
+            are in coordinated disclosure and go up here only once they are published.</p>
+        </div>
+      </details>
+
+      <details class="case case--live reveal">
+        <summary class="case__sum">
+          <span class="case__idx">005</span>
           <span class="case__main">
             <span class="case__title">This site — a terminal you can actually use</span>
             <span class="case__sub">No framework, no build step. A working virtual filesystem, tab completion, and a portrait drawn from 2,473 live glyph particles.</span>
@@ -736,7 +787,7 @@
 
       <details class="case case--wip reveal">
         <summary class="case__sum">
-          <span class="case__idx">005</span>
+          <span class="case__idx">006</span>
           <span class="case__main">
             <span class="case__title">Offensive security case files</span>
             <span class="case__sub">Where the CPTS work will live — enumeration, foothold, escalation, pivoting, and the report that ties it together.</span>

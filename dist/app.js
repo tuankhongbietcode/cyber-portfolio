@@ -320,6 +320,28 @@
         'SCOPE    SQL injection (auth bypass), HTTP verb tampering, reflected XSS',
         'STATUS   verified professional record',
       ]),
+      'shopee-sdk-advisory.md': file([
+        '# Published advisory: plaintext tokens any local user could read',
+        '',
+        'In @congminh1254/shopee-sdk, the optional CustomTokenStorage wrote a',
+        'merchant\'s access_token and refresh_token to .token/ in the project',
+        'directory with the process\'s default permissions. Under a normal umask',
+        'that is 0644: readable by every local user, and by any backup, image or',
+        'CI artifact that copies the workspace.',
+        '',
+        'The refresh token made it serious: whoever reads the file can keep',
+        'minting access tokens and act as the merchant, reading orders with',
+        'buyer names, phones and addresses, and changing products and prices.',
+        '',
+        'Reported privately through a GitHub security advisory, with a proof of',
+        'concept that needs no Shopee account and no network. Fixed in 2.12.1:',
+        '0700 on the folder, 0600 on the files, and a .gitignore for .token/.',
+        '',
+        'FLOW     find → prove → report → publish',
+        'ADVISORY GHSA-jxr9-96r9-v98c · published 2026-11-10',
+        'SEVERITY High · CVSS 3.1 score 7.1 · CWE-276, CWE-732',
+        'CREDIT   reporter and analyst · no CVE ID assigned yet',
+      ]),
       'this-site.md': file([
         '# This site — a terminal you can actually use',
         '',
@@ -632,6 +654,7 @@
         { html: '<span class="t-accent">open projects/splunk-lab.md</span>' },
         { html: '<span class="t-accent">open projects/charity-engagement.md</span>' },
         { html: '<span class="t-accent">open projects/web-assessment.md</span>' },
+        { html: '<span class="t-accent">open projects/shopee-sdk-advisory.md</span>' },
         { html: '<span class="t-accent">open projects/this-site.md</span>' },
         { html: '<span class="t-accent">open projects/cpts-casefiles.md</span>' },
         { cls: 't-dim', text: t('or jump: open work · experience · toolkit · contact') },
@@ -644,7 +667,7 @@
     if (res.ok && res.node.type === 'file') { cmdCat([arg]); return; }
 
     const idx = Number(arg);
-    if (Number.isInteger(idx) && idx >= 1 && idx <= 5) {
+    if (Number.isInteger(idx) && idx >= 1 && idx <= 6) {
       const card = $$('.case')[idx - 1];
       if (card) {
         card.open = true;
