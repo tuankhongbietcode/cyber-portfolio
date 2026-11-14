@@ -1474,3 +1474,35 @@ html.js .reveal:not(.is-in) {
   text-underline-offset: 3px;
 }
 .facts dd a:hover { text-decoration-thickness: 2px; }
+
+/* Advisory table inside a case */
+.adv {
+  margin: 4px 0 26px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  scrollbar-width: thin;
+}
+.adv__t { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .8rem; }
+.adv__t th {
+  padding: 9px 12px;
+  text-align: left;
+  font: 600 .66rem var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--mute);
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.adv__t td { padding: 8px 12px; border-bottom: 1px solid var(--line-2); color: var(--dim); vertical-align: top; }
+.adv__t tr:last-child td { border-bottom: 0; }
+.adv__t td:first-child, .adv__t td:nth-child(4), .adv__t td:last-child { white-space: nowrap; }
+.adv__t a { color: var(--accent); text-decoration: none; }
+.adv__t a:hover code { text-decoration: underline; text-underline-offset: 3px; }
+.adv__t code { font-size: .74rem; color: inherit; }
+.adv__t td:nth-child(2) code { color: var(--text); }
+.adv__eco { display: block; font: 400 .66rem var(--mono); color: var(--mute); }
+.adv__sev { font: 500 .74rem var(--mono); }
+.adv__sev--high { color: var(--warn); }
+.adv__sev--moderate { color: var(--text); }

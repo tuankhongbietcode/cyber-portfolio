@@ -156,10 +156,9 @@
       "position": 3,
       "item": {
         "@type": "CreativeWork",
-        "name": "Security advisory GHSA-jxr9-96r9-v98c",
-        "description": "Coordinated disclosure of a High-severity (CVSS 7.1) insecure file permission flaw in the @congminh1254/shopee-sdk npm package that exposed Shopee access and refresh tokens to other local users; fixed in 2.12.1 and published as GHSA-jxr9-96r9-v98c.",
-        "url": "https://github.com/congminh1254/shopee-sdk/security/advisories/GHSA-jxr9-96r9-v98c",
-        "about": ["Vulnerability Disclosure", "Application Security", "npm"]
+        "name": "Fourteen published security advisories in payment and commerce SDKs",
+        "description": "Coordinated disclosure of 14 GitHub security advisories, published 10-12 November 2026: payment-signature verification flaws in the official payOS SDKs for Node, Python, PHP, .NET, Java and Go and its checkout widget, in the community vnpay npm library, and an insecure token-storage flaw in an npm Shopee SDK.",
+        "about": ["Vulnerability Disclosure", "Application Security", "Payment Security"]
       }
     },
     {
@@ -433,7 +432,7 @@
     <div class="wstat reveal">
       <div><b>06</b><span>case files</span></div>
       <div><b>02</b><span>verified professional record</span></div>
-      <div><b>01</b><span>published security advisory</span></div>
+      <div><b>14</b><span>published security advisories</span></div>
       <div><b>01</b><span>built and shipped</span></div>
       <div><b>02</b><span>in preparation</span></div>
     </div>
@@ -717,38 +716,58 @@
         <summary class="case__sum">
           <span class="case__idx">004</span>
           <span class="case__main">
-            <span class="case__title">Published advisory — plaintext tokens any local user could read</span>
-            <span class="case__sub">A High-severity flaw in an npm SDK for the Shopee Open Platform: found, proven, reported privately, fixed by the maintainer and published as GHSA-jxr9-96r9-v98c.</span>
+            <span class="case__title">Fourteen published security advisories in payment and commerce SDKs</span>
+            <span class="case__sub">Signature and token-handling flaws in payOS's official SDKs across six languages, the community vnpay library and an npm Shopee SDK — reported privately, fixed by the maintainers, published on GitHub.</span>
             <span class="case__tags"><i>AppSec</i><i>Disclosure</i><i>Published</i></span>
           </span>
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
         <div class="case__panel">
-          <p>In <code>@congminh1254/shopee-sdk</code>, the optional <code>CustomTokenStorage</code> wrote a
-            merchant's <code>access_token</code> and <code>refresh_token</code> to a <code>.token/</code> folder in
-            the project directory with the process's default permissions. Under a normal umask that means
-            <code>0644</code>: readable by every local user, and by any backup, image or CI artifact that copies
-            the workspace.</p>
-          <p>The refresh token is what made it serious. Whoever reads the file can keep minting new access
-            tokens, and with them call the Shopee Open Platform as the merchant — read orders with buyer names,
-            phone numbers and addresses, and change products, stock and prices.</p>
-          <p>The report went in privately through GitHub's security advisory process, with the affected code, a
-            CVSS vector, a suggested fix, and a proof of concept that needs no Shopee account and no network: a
-            fake token, one call to <code>store()</code>, then <code>stat</code> and <code>cat</code> as another
-            user. The maintainer accepted it and shipped 2.12.1 — <code>0700</code> on the folder,
-            <code>0600</code> on the files, old files tightened on start-up, and a <code>.gitignore</code> so the
-            tokens never reach version control.</p>
+          <p>Between late October and early November 2026 I reviewed open-source SDKs that Vietnamese merchants
+            use to take payments and run shops. The pattern kept repeating: code that is supposed to prove a
+            message really came from the payment provider, but answers yes when it cannot tell.</p>
+          <p>The most direct case was in <code>vnpay</code>, a community npm library — not VNPAY's own gateway.
+            <code>verifyReturnUrl()</code> and <code>verifyIpnCall()</code> set <code>isSuccess: true</code> from the
+            response code alone, even when the signature failed, and the README's example only checked
+            <code>isSuccess</code>. An integration written from the documentation would accept a forged payment
+            notification. A companion report covered response checks that passed when the signature was missing.</p>
+          <p>In payOS's official SDKs the same two weaknesses showed up in every language: webhook signatures built
+            from unencoded <code>key=value</code> pairs, so a signed payload could be reshaped into a different one
+            that still verifies, and API responses treated as verified when the signature was absent. Each SDK got
+            its own advisory and release, plus one for the checkout widget's iframe and <code>postMessage</code>
+            handling. The highest-rated finding, High at 7.1, was in <code>@congminh1254/shopee-sdk</code>: access
+            and refresh tokens written to disk where any local user could read them.</p>
           <ol class="flow"><li>Find</li><li>Prove</li><li>Report</li><li>Publish</li></ol>
+          <div class="adv" role="region" aria-label="Published advisories" tabindex="0">
+            <table class="adv__t">
+              <thead><tr><th>Advisory</th><th>Package</th><th>Issue</th><th>Severity</th><th>Fixed in</th></tr></thead>
+              <tbody>
+                <tr><td><a href="https://github.com/congminh1254/shopee-sdk/security/advisories/GHSA-jxr9-96r9-v98c" target="_blank" rel="noopener"><code>GHSA-jxr9-96r9-v98c</code></a></td><td><code>@congminh1254/shopee-sdk</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Tokens written readable by every local user</td><td data-i18n-skip class="adv__sev adv__sev--high">High 7.1</td><td><code>2.12.1</code></td></tr>
+                <tr><td><a href="https://github.com/lehuygiang28/vnpay/security/advisories/GHSA-24f3-hqw8-j3ff" target="_blank" rel="noopener"><code>GHSA-24f3-hqw8-j3ff</code></a></td><td><code>vnpay</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Unverified payment notification reported as success</td><td data-i18n-skip class="adv__sev adv__sev--moderate">Moderate 5.3</td><td><code>2.5.1</code></td></tr>
+                <tr><td><a href="https://github.com/lehuygiang28/vnpay/security/advisories/GHSA-8qrm-33xq-q6rg" target="_blank" rel="noopener"><code>GHSA-8qrm-33xq-q6rg</code></a></td><td><code>vnpay</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Response verification fails open without a signature</td><td data-i18n-skip class="adv__sev adv__sev--moderate">Moderate 5.9</td><td><code>2.5.2</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-node/security/advisories/GHSA-qrhp-2w9h-73m7" target="_blank" rel="noopener"><code>GHSA-qrhp-2w9h-73m7</code></a></td><td><code>@payos/node</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.6</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-node/security/advisories/GHSA-6gcq-x2cf-jqw5" target="_blank" rel="noopener"><code>GHSA-6gcq-x2cf-jqw5</code></a></td><td><code>@payos/node</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Response signature check fails open</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.6</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-python/security/advisories/GHSA-7w9h-f6cc-xjmw" target="_blank" rel="noopener"><code>GHSA-7w9h-f6cc-xjmw</code></a></td><td><code>payos</code> <span class="adv__eco" data-i18n-skip>PyPI</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>1.1.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-python/security/advisories/GHSA-7884-9wf9-7vgm" target="_blank" rel="noopener"><code>GHSA-7884-9wf9-7vgm</code></a></td><td><code>payos</code> <span class="adv__eco" data-i18n-skip>PyPI</span></td><td>Response signature check fails open</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>1.1.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-php/security/advisories/GHSA-h4qh-3qph-xfm6" target="_blank" rel="noopener"><code>GHSA-h4qh-3qph-xfm6</code></a></td><td><code>payos/payos</code> <span class="adv__eco" data-i18n-skip>Composer</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-php/security/advisories/GHSA-fp4v-3mhm-pwjx" target="_blank" rel="noopener"><code>GHSA-fp4v-3mhm-pwjx</code></a></td><td><code>payos/payos</code> <span class="adv__eco" data-i18n-skip>Composer</span></td><td>Response signature check fails open</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-dotnet/security/advisories/GHSA-2wmq-932c-mf92" target="_blank" rel="noopener"><code>GHSA-2wmq-932c-mf92</code></a></td><td><code>payOS</code> <span class="adv__eco" data-i18n-skip>NuGet</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.1.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-dotnet/security/advisories/GHSA-pmp4-56f8-xwjc" target="_blank" rel="noopener"><code>GHSA-pmp4-56f8-xwjc</code></a></td><td><code>payOS</code> <span class="adv__eco" data-i18n-skip>NuGet</span></td><td>Response signature check fails open</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.1.1</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-java/security/advisories/GHSA-mc2r-v3x7-j5rv" target="_blank" rel="noopener"><code>GHSA-mc2r-v3x7-j5rv</code></a></td><td><code>vn.payos:payos-java</code> <span class="adv__eco" data-i18n-skip>Maven</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.2</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-lib-golang/security/advisories/GHSA-ghjh-8q98-fg8g" target="_blank" rel="noopener"><code>GHSA-ghjh-8q98-fg8g</code></a></td><td><code>payos-lib-golang/v2</code> <span class="adv__eco" data-i18n-skip>Go</span></td><td>Ambiguous webhook signature</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.7</td><td><code>2.0.2</code></td></tr>
+                <tr><td><a href="https://github.com/payOSHQ/payos-checkout-react-lib/security/advisories/GHSA-v238-c69x-9mmp" target="_blank" rel="noopener"><code>GHSA-v238-c69x-9mmp</code></a></td><td><code>@payos/payos-checkout</code> <span class="adv__eco" data-i18n-skip>npm</span></td><td>Checkout iframe trusts unvalidated URLs and messages</td><td data-i18n-skip class="adv__sev adv__sev--low">Low 3.4</td><td><code>1.0.9</code></td></tr>
+              </tbody>
+            </table>
+          </div>
           <dl class="facts facts--inline">
-            <div><dt>Advisory</dt><dd><a href="https://github.com/congminh1254/shopee-sdk/security/advisories/GHSA-jxr9-96r9-v98c" target="_blank" rel="noopener">GHSA-jxr9-96r9-v98c <span aria-hidden="true">↗</span></a> — reported 4 Nov 2026, published 10 Nov 2026</dd></div>
-            <div><dt>Severity</dt><dd>High · CVSS 3.1 score 7.1 · <code>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N</code></dd></div>
-            <div><dt>Weakness</dt><dd>CWE-276 incorrect default permissions · CWE-732 incorrect permissions on a critical resource</dd></div>
-            <div><dt>Fixed</dt><dd>Version 2.12.1 — every version up to 2.12.0 is affected</dd></div>
-            <div><dt>Credit</dt><dd>Reporter and analyst. No CVE ID has been assigned yet.</dd></div>
+            <div><dt>Published</dt><dd>14 advisories — 1 High, 2 Moderate, 11 Low — between 10 and 12 Nov 2026</dd></div>
+            <div><dt>Ecosystems</dt><dd>npm, PyPI, Composer, NuGet, Maven and Go</dd></div>
+            <div><dt>Weakness</dt><dd>Mostly CWE-347, improper verification of a cryptographic signature</dd></div>
+            <div><dt>Credit</dt><dd>Reporter and analyst on all fourteen. No CVE IDs have been assigned yet.</dd></div>
           </dl>
-          <p class="case__proof"><b>What it demonstrates</b> That I can carry a finding all the way: from a line
-            of code to a scored impact, a proof anyone can rerun, and a fix the maintainer could ship. More reports
-            are in coordinated disclosure and go up here only once they are published.</p>
+          <p class="case__proof"><b>What it demonstrates</b> That I can find the same flaw class across a
+            whole family of SDKs, prove it with a test anyone can rerun, and work with maintainers until every
+            package ships a fix — the part of security work that actually protects the merchants using them.</p>
         </div>
       </details>
 
