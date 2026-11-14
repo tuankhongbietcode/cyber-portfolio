@@ -192,6 +192,7 @@
     <a href="#terminal">Terminal</a>
     <a href="#experience">Experience</a>
     <a href="#work">Work</a>
+    <a href="#lab">Lab</a>
     <a href="#toolkit">Toolkit</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -761,9 +762,107 @@
   </section>
 
   <!-- ══ TOOLKIT ═══════════════════════════════════════════════════ -->
-  <section class="sec" id="toolkit">
+  <section class="sec" id="lab">
     <header class="sec__head reveal">
       <p class="sec__idx">03</p>
+      <h2>Detection lab</h2>
+      <p class="sec__note">A hunt you can run yourself. One account was taken over overnight, and the
+        evidence is scattered across six log families. The events are synthetic and generated in your
+        browser — nothing here is a real log — and you search them with a small SPL-style language.</p>
+    </header>
+
+    <div class="lab reveal" id="labApp">
+      <div class="lab__mission">
+        <h3>Mission</h3>
+        <p>Find which account was taken over, how the attacker got in, what they touched, and where the
+          data went. Tap a step to run its search, or write your own.</p>
+        <ol class="lab__steps">
+          <li><button class="lab__step" type="button" data-q="sourcetype=WinEventLog:Security action=failure | stats count, dc(user) as accounts by src_ip | sort -accounts | head 5">
+            <span class="lab__n" aria-hidden="true">1</span>
+            <span class="lab__qtext">Which source IP failed logins against the most accounts?</span>
+            <code>stats count, dc(user) as accounts by src_ip</code></button></li>
+          <li><button class="lab__step" type="button" data-q="src_ip=203.0.113.45 action=success">
+            <span class="lab__n" aria-hidden="true">2</span>
+            <span class="lab__qtext">Did that address ever get in?</span>
+            <code>src_ip=203.0.113.45 action=success</code></button></li>
+          <li><button class="lab__step" type="button" data-q="user=svc-backup | sort _time | table _time host sourcetype action src_ip detail">
+            <span class="lab__n" aria-hidden="true">3</span>
+            <span class="lab__qtext">What did that account do next, and what looks out of place?</span>
+            <code>user=svc-backup | sort _time</code></button></li>
+          <li><button class="lab__step" type="button" data-q="sourcetype=fw:traffic src_ip=10.20.4.15 | sort -bytes | head 3 | table _time src_ip dest_ip dest_port bytes">
+            <span class="lab__n" aria-hidden="true">4</span>
+            <span class="lab__qtext">Where did the data go?</span>
+            <code>sourcetype=fw:traffic | sort -bytes | head 3</code></button></li>
+        </ol>
+      </div>
+
+      <form class="lab__form" id="labForm" autocomplete="off" spellcheck="false">
+        <label class="lab__sr" for="labQ">Search query</label>
+        <div class="lab__bar">
+          <span class="lab__prompt" aria-hidden="true">search&nbsp;&rsaquo;</span>
+          <input id="labQ" type="text" placeholder="user=svc-backup | sort _time" autocapitalize="off" enterkeyhint="search">
+          <button class="btn btn--primary" type="submit">Run</button>
+        </div>
+      </form>
+      <p class="lab__stat" id="labStat" role="status" aria-live="polite"></p>
+
+      <div class="lab__res">
+        <aside class="lab__side" aria-label="Fields in these results">
+          <h4>Fields</h4>
+          <p class="lab__hint">Tap a value to add it to the search.</p>
+          <div id="labFields" data-i18n-skip></div>
+        </aside>
+        <div class="lab__main">
+          <figure class="lab__hist">
+            <div id="labHist" data-i18n-skip></div>
+            <figcaption>Events per hour, UTC, for the search before any pipe</figcaption>
+          </figure>
+          <div class="lab__tablewrap" role="region" aria-label="Search results" tabindex="0">
+            <div id="labTable" data-i18n-skip></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab__more">
+        <details class="lab__d">
+          <summary>Query reference</summary>
+          <ul class="lab__ref">
+            <li><b>Search</b> — <code>field=value</code> <code>field!=value</code> <code>bytes&gt;1000000</code>
+              <code>*wild*</code> <code>"a phrase"</code>, combined with <code>AND</code> (implicit),
+              <code>OR</code>, <code>NOT</code> and parentheses.</li>
+            <li><b>Pipes</b> — <code>stats</code> (count, dc, sum, avg, min, max, values; add <code>by</code>
+              and <code>as</code>), <code>sort</code>, <code>head</code>, <code>tail</code>,
+              <code>table</code>, <code>top</code>, <code>dedup</code>, <code>where</code>.</li>
+            <li><b>Fields</b> — <code>_time</code> <code>sourcetype</code> <code>host</code>
+              <code>src_ip</code> <code>dest_ip</code> <code>dest_port</code> <code>user</code>
+              <code>action</code> <code>status</code> <code>bytes</code> <code>detail</code></li>
+            <li><b>Keys</b> — Enter runs the search, the up and down arrows walk your history.</li>
+          </ul>
+        </details>
+        <details class="lab__d">
+          <summary>Reveal the answer</summary>
+          <div class="lab__ans">
+            <p>The account is <code>svc-backup</code>. From <code>203.0.113.45</code> an attacker probed the web
+              server, then tried every user account against the domain controller between 02:14 and 02:31 —
+              one password, many accounts, which is a spray rather than a brute force — and got into the
+              backup service account at 02:33. That logon came from outside, while the account normally logs
+              on from the file server.</p>
+            <p>On the file server it ran an encoded PowerShell command and listed the Domain Admins group. It then
+              read <code>HR.SALARIES</code> in the Oracle database, 48,210 rows, which a backup account has no reason to
+              do, and pushed about 51 MB to <code>198.51.100.77</code> over 443 at 02:44. The legitimate backup that
+              night went to a different address and was smaller.</p>
+            <p>The detection that would have caught it early, in real Splunk:
+              <code>index=wineventlog action=failure | bin _time span=15m | stats dc(user) as accounts by _time, src_ip | where accounts&gt;=10</code>.
+              The lab's engine is a subset and does not run <code>bin</code>, but the idea is the same: many accounts, one source, a short window.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="toolkit">
+    <header class="sec__head reveal">
+      <p class="sec__idx">04</p>
       <h2>Toolkit</h2>
       <p class="sec__note">Tools are secondary — thinking is the skill. But a capability without the
         tool that implements it is just a category, so every entry below names the tools and where I
@@ -882,7 +981,7 @@
   <!-- ══ CONTACT ═══════════════════════════════════════════════════ -->
   <section class="sec sec--contact" id="contact">
     <header class="sec__head reveal">
-      <p class="sec__idx">04</p>
+      <p class="sec__idx">05</p>
       <h2>Let&rsquo;s exchange signals.</h2>
       <p class="sec__note">Open to internship and junior roles in security operations, SOC or
         offensive security — and to lab collaboration with people who take notes.</p>
@@ -948,6 +1047,7 @@
      Kept in its own file (analytics-beacon.js), not inline, for the same CSP
      reason as bootstrap.js above: script-src 'self' trusts local files, not
      inline content. setup.sh rewrites the ENDPOINT line inside that file. -->
+<script src="lab.js" defer></script>
 <script src="analytics-beacon.js"></script>
 </body>
 </html>
