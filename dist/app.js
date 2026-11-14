@@ -607,7 +607,7 @@
   }
 
   /* ── Sections the shell can jump to ──────────────────────────────────── */
-  const SECTION_IDS = ['top', 'terminal', 'experience', 'work', 'lab', 'toolkit', 'contact'];
+  const SECTION_IDS = ['top', 'terminal', 'experience', 'work', 'toolkit', 'contact'];
 
   function jumpTo(id) {
     const el = document.getElementById(id);
@@ -620,7 +620,6 @@
   const OPENABLE = {
     work: () => jumpTo('work'),
     experience: () => jumpTo('experience'),
-    lab: () => jumpTo('lab'),
     toolkit: () => jumpTo('toolkit'),
     contact: () => jumpTo('contact'),
     about: () => { print([{ html: '<span class="t-dim">cat about.txt</span>' }]); return cmdCat(['about.txt']); },
@@ -635,7 +634,7 @@
         { html: '<span class="t-accent">open projects/web-assessment.md</span>' },
         { html: '<span class="t-accent">open projects/this-site.md</span>' },
         { html: '<span class="t-accent">open projects/cpts-casefiles.md</span>' },
-        { cls: 't-dim', text: t('or jump: open work · lab · experience · toolkit · contact') },
+        { cls: 't-dim', text: t('or jump: open work · experience · toolkit · contact') },
       ]);
       return;
     }
