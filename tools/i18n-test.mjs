@@ -135,7 +135,9 @@ const expectedEnglish = [
   'STACK    Splunk Enterprise, Deployment Server, Universal Forwarders, SPL',
   'PLATFORM VMware ESXi, EVE-NG / UnetLab',
   'SCOPE    routing, switching, firewall, VPN, wireless, Cisco ISE',
-  'TRACK    CPTS — Certified Penetration Testing Specialist',
+  'TRACK    HTB CPTS — Certified Penetration Testing Specialist',
+  'projects/charity-engagement.md.',
+  'Luật 91/2025/QH15 · Luật Trẻ em 2016 · Điều 289 BLHS 2015',
 ].concat([
   /* JSON scaffolding in skills.json: translating the braces would break the
      file's shape for no gain, and the values inside them are translated. */

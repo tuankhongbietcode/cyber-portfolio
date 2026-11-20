@@ -15,18 +15,19 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
 
 /* Names, numbers, dates, brands and product terms are deliberately left
    English — the dictionary is a fall-through table, not a full mirror. */const KEEP = new Set([
-  'Võ Lê Anh Tuấn', 'vlat273', 'Got It', 'VNCS', 'VNPRO', 'Swinburne University of Technology',
-  'Swinburne', '01', '02', '03', '04', '05', '001', '002', '003', '004', '005', '2026', '©',
+  'Võ Lê Anh Tuấn', 'vlat273', 'Got It', 'VNCS', 'VNPRO', 'Quỹ Nuôi Em · COS40005', 'Swinburne University of Technology',
+  'Swinburne', '01', '02', '03', '04', '05', '06', '14', '001', '002', '003', '004', '005', '006', '2026', '©',
+  '1', '2', '3', '4', '5', '6', 'G1', 'G2', 'G3', 'G4',
   '↗', '↑', '/', '·', '+', 'K', 'Ctrl', '.', ',', '&rsquo;', '2023–2027', '2023', '2026.05 — 2026.08',
-  '2025.11 — 2026.04', 'CPTS', 'OffSec', 'anhtuanpm3939@gmail.com', 'linkedin.com/in/vlat273',
+  '2025.11 — 2026.04', 'CPTS', 'HTB Academy', 'anhtuanpm3939@gmail.com', 'linkedin.com/in/vlat273',
   'TNE20002 — Network Routing Principles · Swinburne University of Technology',
-  'Certified Penetration Testing Specialist · OffSec', 'CPTS — Certified Penetration Testing Specialist',
+  'HTB Certified Penetration Testing Specialist', 'HTB CPTS — Certified Penetration Testing Specialist',
   'Nmap', 'ffuf', 'NetExec', 'Burp Suite', 'BloodHound', 'Impacket', 'Kerbrute', 'Markdown',
   'Wireshark', 'SPL', 'Bash', 'PowerShell', 'Python', 'Linux', 'Windows Server', 'Cisco IOS',
   'VMware ESXi', 'EVE-NG', 'EVE-NG / UnetLab', 'Microsoft 365', 'SIEM', 'Splunk', 'Splunk Enterprise',
   'Sysmon', 'Windows Event Log', 'Windows Event, Sysmon, Linux, web app, firewall', 'Linux syslog',
   'Firewall / syslog', 'Universal', 'Forwarders', 'Indexer · Search Head', 'SPLUNK ENTERPRISE',
-  'Oracle', 'CIM', 'Splunk CIM', 'Email · chat', 'Hand-written', 'Forwarder Management', 'transforms.conf',
+  'Oracle', 'Oracle audit', 'CIM', 'Splunk CIM', 'Email · chat', 'Hand-written', 'Forwarder Management', 'transforms.conf',
   'VMWARE ESXI', 'Splunk Enterprise, Deployment Server, Universal Forwarders, SPL',
   'VMware ESXi, EVE-NG / UnetLab', 'Routing', 'Switching', 'Firewall', 'VPN', 'Wireless', 'Cisco ISE',
   'Routing, switching, firewall, VPN, wireless, Cisco ISE', 'SIEM & detection', 'Scripting',
@@ -34,7 +35,7 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
   'lab use', 'professional', 'lab', 'studying', 'SQL injection (auth bypass)',
   'Active Directory', 'Post-exploitation', 'Canvas', 'Front end', 'AppSec', 'Web',
   '>_', 'LinkedIn', 'Swinburne · 2023–2027', 'guest@vlat273: ~', 'guest@vlat273:~$',
-  'cat experience.log', 'VLAN', '2023 — 2027',
+  'cat experience.log', 'VLAN', '2023 — 2027', 'PTES', 'OWASP WSTG', 'CVSS v3.1',
   'Dashboard', 'JSON-LD, OG/Twitter cards, manifest, self-hosted subset fonts, full no-JS fallback',
   'Stack', 'Engine', 'Detail', 'Track', 'Verify', 'Focus', 'Status', 'Output', 'Environment', 'Owned',
   'Also', 'Studying', 'Recognition', 'Sources', 'Platform', 'Scope', 'Found',
@@ -43,7 +44,7 @@ for (const m of src.matchAll(/^\s{4}"((?:[^"\\]|\\.)*)":/gm)) {
   'Expected', 'Deployment Server', 'Universal Forwarders', 'eve-ng', 'nmap',
   /* The CV row label, a bare arrow glyph, and the footer's date stamp are
      language-neutral — an abbreviation, a symbol, and an ISO month. */
-  'CV', '↓', '2026-10',
+  'CV', '↓', '2026-11',
   'Access control',
 ]);
 

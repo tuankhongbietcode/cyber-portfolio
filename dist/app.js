@@ -72,6 +72,14 @@
   const year = $('#year');
   if (year) year.textContent = new Date().getFullYear();
 
+  /* Deep links to the advisory case must reveal its evidence, not just its heading. */
+  const advisoryCase = $('#advisories');
+  const openAdvisories = () => {
+    if (advisoryCase && location.hash === '#advisories') advisoryCase.open = true;
+  };
+  addEventListener('hashchange', openAdvisories);
+  openAdvisories();
+
   /* Reveal on scroll.
      threshold is 0, not a fraction: with a fraction, an element has to be that
      proportion visible before it fires, so the last short line in a section can
@@ -166,9 +174,7 @@
       '',
       '2026.10 — now      Quỹ Nuôi Em · COS40005',
       '                             Authorised Security Assessment — Engagement',
-      '                             Design. Quỹ Nuôi Em\'s Next.js donation',
-      '                             platform holding donor records and children',
-      '                             profiles. Wrote the 18-page statement of work',
+      '                             Design. Wrote the 18-page statement of work',
       '                             and rules of engagement plus a plain-language',
       '                             test plan. NDA signed — phase 1 complete.',
       '                             The report is with the client and stays',
@@ -231,7 +237,7 @@
       '  },',
       '',
       '  "track": [',
-      '    { "name": "CPTS", "by": "offsec", "status": "in progress" }',
+      '    { "name": "CPTS", "by": "Hack The Box", "status": "in progress" }',
       '  ],',
       '',
       '  "studying": [',
@@ -280,35 +286,15 @@
       'charity-engagement.md': file([
         '# Engagement design for an authorised charity assessment',
         '',
-        'Quỹ Nuôi Em runs a Next.js donation platform holding donor records and',
-        'children profiles. Before testing anything, I wrote the document that has',
-        'to be signed: an 18-page statement of work and rules of engagement in two',
-        'parts — the part a non-technical signer reads to decide, and the technical',
-        'part that binds me — plus a two-page plain-language test plan so nobody',
-        'signs something they cannot follow.',
+        'For Quỹ Nuôi Em\'s live donation platform, I wrote an 18-page',
+        'statement of work and rules of engagement, plus a two-page plain-',
+        'language test plan for the non-technical signer.',
         '',
-        'SCOPE    7 asset classes listed with the reason each is in; 13 numbered',
-        '         exclusions with the reason each is out. Assets on a look-alike',
-        '         domain are out even if they carry the charity name — a signature',
-        '         for a domain the signer does not own is worth nothing. Public',
-        '         sources holding donor data are excluded by default.',
-        'MODEL    grey box — two lowest-privilege test accounts, no source access',
-        'GATES    G1 NDA + signed + assets · G2 + contact, blackout, IP ·',
-        '         G3 + ethics review, staging data · G4 remediation confirmed',
-        'PHASES   1 recon · 2 scan · 3 analyse · 4 exploit (staging only) ·',
-        '         5 retest · 6 report. Production stops after phase 3.',
-        'LIMITS   ≤ 5,000 req/day · ≤ 5 req/s · ≤ 3 h/session · one declared',
-        '         static IP · payload ≤ 10 KB · no brute force, load testing,',
-        '         social engineering or automated exploitation',
-        'STOPS    seven named conditions halt everything, including finding an',
-        '         unauthenticated internal resource',
-        'DATA     no copying child or donor records · redacted screenshots ·',
-        '         30-day deletion · 1 h notify on user impact, 24 h on exposure',
-        'BASIS    PTES · OWASP WSTG v4.2 · OWASP Top 10 2021 · CVSS v3.1 ·',
-        '         safe harbour modelled on the HackerOne Gold Standard ·',
-        '         Luật 91/2025/QH15 · Luật Trẻ em 2016 · Điều 289 BLHS 2015',
-        'STATUS   NDA signed — phase 1 complete, report delivered to the',
-        '         client, details private until remediation',
+        'SCOPE    each included asset and exclusion has an owner and reason',
+        'GATES    written approval before each phase',
+        'SAFETY   safe test windows, stop conditions, redacted evidence',
+        'REPORT   findings and operational details stay with the client',
+        'STATUS   NDA signed — phase 1 complete, report delivered',
       ]),
       'web-assessment.md': file([
         '# Authorised web application assessment — and the fixes',
@@ -382,7 +368,7 @@
         'data. The point is methodology and remediation, not a scoreboard.',
         '',
         'FLOW     enumerate → foothold → escalate → report',
-        'TRACK    CPTS — Certified Penetration Testing Specialist',
+        'TRACK    HTB CPTS — Certified Penetration Testing Specialist',
         'RULE     authorised labs only, sanitised before publishing',
         'STATUS   building — first case files land as labs complete',
       ]),
@@ -596,7 +582,7 @@
       ['School', 'Swinburne University'],
       ['Base', 'Ho Chi Minh City'],
       ['Focus', 'Offensive security'],
-      ['Track', 'CPTS / OffSec'],
+      ['Track', 'HTB CPTS'],
       ['Status', 'open to internship'],
     ],
     tips: ['avatar', 'cat about.txt', 'ls projects', 'open work'],

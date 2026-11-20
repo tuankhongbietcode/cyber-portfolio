@@ -55,7 +55,7 @@ const MAP = [
   ['    "professional": "used in a paid role",', '  "chuyên nghiệp": "đã dùng trong công việc có lương",'],
   ['    "lab": "used in practice, not yet in production",', '  "lab": "đã dùng khi luyện tập, chưa dùng ở production",'],
   ['    "studying": "actively learning"', '  "đang học": "đang học chủ động"'],
-  ['    { "name": "CPTS", "by": "offsec", "status": "in progress" }', '    { "name": "CPTS", "by": "offsec", "status": "đang học" }'],
+  ['    { "name": "CPTS", "by": "Hack The Box", "status": "in progress" }', '    { "name": "CPTS", "by": "Hack The Box", "status": "đang học" }'],
   ['  "note": "tools are secondary — thinking is the skill"', '  "note": "công cụ là thứ yếu — tư duy mới là kỹ năng"'],
 
   ['base       Ho Chi Minh City, Vietnam', 'base       TP. Hồ Chí Minh, Việt Nam'],
@@ -139,7 +139,9 @@ const KEEP = new Set([
   'STACK    Splunk Enterprise, Deployment Server, Universal Forwarders, SPL',
   'PLATFORM VMware ESXi, EVE-NG / UnetLab',
   'SCOPE    routing, switching, firewall, VPN, wireless, Cisco ISE',
-  'TRACK    CPTS — Certified Penetration Testing Specialist',
+  'TRACK    HTB CPTS — Certified Penetration Testing Specialist',
+  'projects/charity-engagement.md.',
+  'Luật 91/2025/QH15 · Luật Trẻ em 2016 · Điều 289 BLHS 2015',
   '  Swinburne University of Technology  ·  2023–2027',
   /* tool arrays: the names are the names */
   '    "enumeration":       ["nmap", "ffuf", "netexec"],',

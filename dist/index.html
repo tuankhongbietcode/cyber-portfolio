@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security Portfolio</title>
-<meta name="description" content="Cybersecurity student at Swinburne, working in system administration and security at Got It. Came up through networks and SIEM, now training toward offensive security. Method first, evidence always, no inflated claims.">
+<meta name="description" content="Cybersecurity student at Swinburne and Systems &amp; Security Intern at Got It. Published 14 GitHub Security Advisories across payment and commerce SDKs.">
 <meta name="author" content="Võ Lê Anh Tuấn">
 <meta name="keywords" content="cybersecurity, offensive security, penetration testing, CPTS, SIEM, Splunk, network security, Ho Chi Minh City">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -25,7 +25,7 @@
 
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
-<meta property="og:description" content="Cybersecurity student at Swinburne, working in system administration and security at Got It. Came up through networks and SIEM, now training toward offensive security.">
+<meta property="og:description" content="Cybersecurity student at Swinburne and Systems &amp; Security Intern at Got It. 14 published GitHub Security Advisories across payment and commerce SDKs.">
 <meta property="og:site_name" content="Võ Lê Anh Tuấn">
 <meta property="og:locale" content="en_US">
 <meta property="og:image:width" content="1200">
@@ -35,7 +35,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Võ Lê Anh Tuấn — Cybersecurity &amp; Offensive Security">
-<meta name="twitter:description" content="Cybersecurity student at Swinburne, working in system administration and security at Got It. Came up through networks and SIEM, now training toward offensive security.">
+<meta name="twitter:description" content="Cybersecurity student at Swinburne and Systems &amp; Security Intern at Got It. 14 published GitHub Security Advisories across payment and commerce SDKs.">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -66,7 +66,7 @@
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "dateCreated": "2026-10-13",
-  "dateModified": "2026-11-14",
+  "dateModified": "2026-11-20",
   "inLanguage": "en",
   "mainEntity": {
     "@type": "Person",
@@ -75,7 +75,7 @@
     "jobTitle": "System Administration & Security",
     "description": "Cybersecurity student who came up through networks and SIEM, works in system administration and security, and now trains toward offensive security.",
     "email": "mailto:anhtuanpm3939@gmail.com",
-    "sameAs": ["https://www.linkedin.com/in/vlat273/"],
+    "sameAs": ["https://www.linkedin.com/in/vlat273/", "https://github.com/tuankhongbietcode"],
     "alumniOf": {
       "@type": "CollegeOrUniversity",
       "name": "Swinburne University of Technology"
@@ -241,11 +241,14 @@
       <h1>I trace the <span class="accent">attack path</span>.</h1>
 
       <p class="lead">
-        Cybersecurity student at Swinburne, working in system administration and security at Got&nbsp;It.
-        I came up through networks and SIEM and now train toward
-        offensive security — which means I read an attack path from both sides. Method first, evidence
-        always, no inflated claims.
+        Cybersecurity student at Swinburne and Systems &amp; Security Intern at Got&nbsp;It.
+        I work across networks, SIEM and system administration while training in offensive security.
       </p>
+
+      <a class="hero__proof" href="#advisories">
+        <strong>14</strong>
+        <span>published GitHub Security Advisories <small>View credited reports and fixes <span aria-hidden="true">↗</span></small></span>
+      </a>
 
       <div class="actions">
         <button class="btn btn--primary" id="openTerminal" type="button">
@@ -351,7 +354,7 @@
             limits, and what I do the moment something goes wrong. Phase 1 is complete — the report is
             with the client and stays private until remediation. Breakdown in case 002.</p>
           <dl class="log__facts">
-            <div><dt>Environment</dt><dd>Quỹ Nuôi Em's Next.js donation platform with live donors, real money, and children's profiles on it</dd></div>
+            <div><dt>Environment</dt><dd>Quỹ Nuôi Em's live donation platform</dd></div>
             <div><dt>Owned</dt><dd>Scope definition, rules of engagement, rate limits, data-handling obligations, stop conditions, reporting structure</dd></div>
             <div><dt>Output</dt><dd>An 18-page statement of work and rules of engagement, plus a two-page plain-language test plan for the non-technical signer</dd></div>
           </dl>
@@ -563,110 +566,18 @@
         </summary>
         <div class="case__panel">
           <p class="case__ctx">A COS40005 engagement — full role context in Experience.</p>
-          <p>Quỹ Nuôi Em runs a Next.js donation platform that holds donor records and children's
-            profiles. I designed and wrote the document that governs the engagement: an 18-page
+          <p>For Quỹ Nuôi Em's live donation platform, I designed and wrote the document that governs the engagement: an 18-page
             statement of work and rules of engagement in two parts — the part a non-technical signer
             reads to decide, and the technical part that binds me — plus a two-page plain-language
             test plan so nobody signs something they cannot follow. The NDA is now signed and
             phase 1 is complete; the report is with the client and stays private until remediation.</p>
-          <p>The scope is deliberately narrow. Seven asset classes are listed with the reason each is
-            in; thirteen exclusions are numbered with the reason each is out. Assets on a
-            look-alike domain are out even if they carry the charity's name, because a signature for
-            a domain the signer does not own is worth nothing. Public data sources holding donor
-            information are excluded by default — they add risk to the people in them and no value
-            to the charity.</p>
-          <p>Four gates control six phases, and no gate can be passed while its conditions are still
-            blank. Two of the eleven prerequisites belong to me: declaring a single static source IP
-            so the charity can tell my traffic from a real attack, and clearing the academic ethics
-            review, which matters more than usual here because children's data is involved.</p>
-          <figure class="case__fig">
-            <svg viewBox="0 0 760 268" role="img" aria-labelledby="fig-roe">
-              <title id="fig-roe">Four gates control six phases. Gate 1 needs an NDA, a signed document and a confirmed asset list. Gate 2 adds a named contact, a blackout window, staging identification and a declared source IP. Gate 3 adds the academic ethics review and staging data. Gate 4 opens only when the charity confirms remediation in writing. The phases run recon, scanning and enumeration, vulnerability analysis, controlled exploitation, retest and reporting. Controlled exploitation is confined to the staging copy; production stops after vulnerability analysis.</title>
-              <defs>
-                <marker id="roe-ar" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
-                  <path class="fig-ar" d="M0 0 L8 4 L0 8 Z"/>
-                </marker>
-                <marker id="roe-ar-mute" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="6" markerHeight="6" orient="auto">
-                  <path class="fig-ar-mute" d="M0 0 L8 4 L0 8 Z"/>
-                </marker>
-              </defs>
-
-              <text class="fig-stage" x="16" y="16">GATES — nothing starts while a condition is still blank</text>
-
-              <rect class="fig-box" x="16" y="26" width="170" height="30" rx="6"/>
-              <text class="fig-label" x="101" y="38" text-anchor="middle">G1</text>
-              <text class="fig-tick" x="101" y="50" text-anchor="middle">NDA · signed · assets</text>
-
-              <rect class="fig-box" x="198" y="26" width="170" height="30" rx="6"/>
-              <text class="fig-label" x="283" y="38" text-anchor="middle">G2</text>
-              <text class="fig-tick" x="283" y="50" text-anchor="middle">+ contact · blackout · IP</text>
-
-              <rect class="fig-box" x="380" y="26" width="170" height="30" rx="6"/>
-              <text class="fig-label" x="465" y="38" text-anchor="middle">G3</text>
-              <text class="fig-tick" x="465" y="50" text-anchor="middle">+ ethics · staging data</text>
-
-              <rect class="fig-box" x="562" y="26" width="170" height="30" rx="6"/>
-              <text class="fig-label" x="647" y="38" text-anchor="middle">G4</text>
-              <text class="fig-tick" x="647" y="50" text-anchor="middle">remediation confirmed</text>
-
-              <path class="fig-dash" d="M101 56 V78 M283 56 V78 M465 56 V78"/>
-              <path class="fig-dash" d="M647 56 V78" marker-end="url(#roe-ar-mute)"/>
-
-              <text class="fig-stage" x="16" y="96">PHASES</text>
-
-              <rect class="fig-box" x="16" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="72" y="126" text-anchor="middle">1</text>
-              <text class="fig-tick" x="72" y="140" text-anchor="middle">Recon</text>
-
-              <rect class="fig-box" x="138" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="194" y="126" text-anchor="middle">2</text>
-              <text class="fig-tick" x="194" y="140" text-anchor="middle">Scan · enumerate</text>
-
-              <rect class="fig-box" x="260" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="316" y="126" text-anchor="middle">3</text>
-              <text class="fig-tick" x="316" y="140" text-anchor="middle">Analyse</text>
-
-              <rect class="fig-box fig-box--accent" x="382" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="438" y="126" text-anchor="middle">4</text>
-              <text class="fig-tick" x="438" y="140" text-anchor="middle">Exploit</text>
-              <text class="fig-sub" x="438" y="151" text-anchor="middle">staging only</text>
-
-              <rect class="fig-box" x="504" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="560" y="126" text-anchor="middle">5</text>
-              <text class="fig-tick" x="560" y="140" text-anchor="middle">Retest</text>
-
-              <rect class="fig-box" x="626" y="106" width="112" height="52" rx="6"/>
-              <text class="fig-label" x="682" y="126" text-anchor="middle">6</text>
-              <text class="fig-tick" x="682" y="140" text-anchor="middle">Report</text>
-
-              <path class="fig-flow" d="M128 132 H138 M250 132 H260 M372 132 H382 M494 132 H504 M616 132 H626" marker-end="url(#roe-ar)"/>
-
-              <!-- the ceiling: what production is allowed to reach -->
-              <path class="fig-wire" d="M16 172 H372"/>
-              <path class="fig-wire" d="M16 172 V164 M372 172 V164"/>
-              <text class="fig-sub" x="194" y="186" text-anchor="middle">production ceiling — phases 1–3 only</text>
-
-              <path class="fig-wire" d="M382 172 H494"/>
-              <path class="fig-wire" d="M382 172 V164 M494 172 V164"/>
-              <text class="fig-sub" x="438" y="186" text-anchor="middle">A-05S, synthetic data</text>
-
-              <!-- hard limits, the part that replaces insurance -->
-              <rect class="fig-chip" x="16" y="200" width="722" height="46" rx="6"/>
-              <text class="fig-label" x="30" y="218">Hard limits</text>
-              <text class="fig-tick" x="30" y="234">≤ 5,000 requests/day · ≤ 5 req/s · ≤ 3 h per session · one declared static IP · payload ≤ 10 KB</text>
-              <text class="fig-sub" x="30" y="243">no brute force · no load testing · no social engineering · no automated exploitation</text>
-            </svg>
-            <p class="case__fighint">Scroll the diagram sideways to see all of it.</p>
-            <figcaption>Gates are the control, not the phases. A gate cannot be passed while any of its
-              conditions is still blank, and exploitation never reaches production — the ceiling is
-              drawn in deliberately.</figcaption>
-          </figure>
+          <p>Every included asset and exclusion has an owner and a written reason. The plan sets approval gates, safe test windows, stop conditions and a reporting path before testing begins.</p>
+          <p>Evidence is redacted before sharing. The detailed scope, operational limits and findings stay with the client under the NDA.</p>
+          <ol class="flow"><li>Scope</li><li>Approve</li><li>Assess</li><li>Report</li></ol>
           <dl class="facts facts--inline">
-            <div><dt>Scope</dt><dd>7 asset classes listed with the reason each is in; 13 numbered exclusions with the reason each is out</dd></div>
-            <div><dt>Model</dt><dd>Grey box — two lowest-privilege test accounts, no source access</dd></div>
-            <div><dt>Standards</dt><dd>PTES, OWASP WSTG v4.2, OWASP Top 10 (2021), CVSS v3.1, safe harbour modelled on the HackerOne Gold Standard</dd></div>
-            <div><dt>Data</dt><dd>No copying child or donor records · redacted screenshots · 30-day deletion · notify within 1 h for user impact, 24 h for exposed personal data</dd></div>
-            <div><dt>Stops</dt><dd>Seven named conditions halt everything, including finding an unauthenticated internal resource</dd></div>
+            <div><dt>Deliverables</dt><dd>18-page statement of work and rules of engagement; two-page plain-language test plan</dd></div>
+            <div><dt>Safeguards</dt><dd>Written scope and exclusions, approval gates, stop conditions, redacted evidence</dd></div>
+            <div><dt>Standards</dt><dd>PTES, OWASP WSTG and CVSS v3.1</dd></div>
             <div><dt>Status</dt><dd>NDA signed — phase 1 complete, report delivered to the client, details held private until remediation</dd></div>
           </dl>
           <p class="case__proof"><b>What it demonstrates</b> That I know a pentest is a contract
@@ -712,7 +623,7 @@
         </div>
       </details>
 
-      <details class="case reveal">
+      <details class="case reveal" id="advisories">
         <summary class="case__sum">
           <span class="case__idx">004</span>
           <span class="case__main">
@@ -810,7 +721,7 @@
           <span class="case__main">
             <span class="case__title">Offensive security case files</span>
             <span class="case__sub">Where the CPTS work will live — enumeration, foothold, escalation, pivoting, and the report that ties it together.</span>
-            <span class="case__tags"><i>CPTS</i><i>OffSec</i><i>In progress</i></span>
+            <span class="case__tags"><i>CPTS</i><i>HTB Academy</i><i>In progress</i></span>
           </span>
           <span class="case__chev" aria-hidden="true"></span>
         </summary>
@@ -819,7 +730,7 @@
             sanitised first — no flags, no credentials, no client data.</p>
           <ol class="flow"><li>Enumerate</li><li>Foothold</li><li>Escalate</li><li>Report</li></ol>
           <dl class="facts facts--inline">
-            <div><dt>Track</dt><dd>CPTS — Certified Penetration Testing Specialist</dd></div>
+            <div><dt>Track</dt><dd>HTB CPTS — Certified Penetration Testing Specialist</dd></div>
             <div><dt>Rule</dt><dd>Authorised labs only, sanitised before publishing</dd></div>
             <div><dt>Status</dt><dd>Building — first case files land as labs complete</dd></div>
           </dl>
@@ -924,7 +835,7 @@
       <div class="track__col">
         <p class="track__label">Certification track</p>
         <ul class="track__list">
-          <li class="is-now"><b>CPTS</b><span>Certified Penetration Testing Specialist · OffSec</span><i>in progress</i></li>
+          <li class="is-now"><b>CPTS</b><span>HTB Certified Penetration Testing Specialist</span><i>in progress</i></li>
           <li class="is-hold"><b>No certification claimed</b><span>If it is not held, it is not on this page. That is the rule.</span><i>by policy</i></li>
         </ul>
       </div>
@@ -989,7 +900,7 @@
 
 <footer class="foot">
   <p>© <span id="year">2026</span> Võ Lê Anh Tuấn</p>
-  <p class="foot__mid">Built by hand — no framework, no build step. Last updated <time datetime="2026-10-15">2026-10</time>.</p>
+  <p class="foot__mid">Built by hand — no framework, no build step. Last updated <time datetime="2026-11-20">2026-11</time>.</p>
   <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
 </footer>
 

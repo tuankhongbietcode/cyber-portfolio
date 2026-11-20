@@ -385,11 +385,31 @@ code, kbd, pre { font-family: var(--mono); }
   line-height: 1.68;
 }
 
+.hero__proof {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 56ch;
+  margin-top: 24px;
+  padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+  border-radius: var(--r);
+  background: var(--accent-2);
+  color: var(--text);
+  text-decoration: none;
+  font-size: .83rem;
+  line-height: 1.45;
+}
+.hero__proof:hover,
+.hero__proof:focus-visible { border-color: var(--accent); }
+.hero__proof strong { color: var(--accent); font: 600 2rem/1 var(--mono); }
+.hero__proof small { display: block; margin-top: 3px; color: var(--dim); font-size: .75rem; }
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 34px;
+  margin-top: 24px;
 }
 
 .btn {
